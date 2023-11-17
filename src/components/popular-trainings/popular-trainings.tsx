@@ -1,5 +1,5 @@
 import React from "react";
-import PopularTraningsItem from "./items/popular-trainings-item/popular-trainings-item";
+import TraningsItem from "../trainings-item/trainings-item";
 
 function PopularTranings(): JSX.Element {
   return (
@@ -28,11 +28,11 @@ function PopularTranings(): JSX.Element {
             </div>
           </div>
           <ul className="popular-trainings__list">
-            <PopularTraningsItem />
-            <PopularTraningsItem />
-            <PopularTraningsItem />
-            <PopularTraningsItem />
-            <PopularTraningsItem />
+            <TraningsItem />
+            <TraningsItem />
+            <TraningsItem />
+            <TraningsItem />
+            <TraningsItem />
           </ul>
         </div>
       </div>

@@ -14,8 +14,8 @@ function Main(): JSX.Element {
         <SpecialOffers />
         <PopularTrainings />
         <LookForCompany />
-        </main>
-        </div>
+      </main>
+    </div>
   );
 }
 
