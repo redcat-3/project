@@ -1,7 +1,7 @@
 import Header from "../../components/header/header";
 import TraningsItem from "../../components/trainings-item/trainings-item";
 
-function MyTraning(): JSX.Element {
+function MyTranings(): JSX.Element {
   return (
     <div className="wrapper">
       <Header />
@@ -148,7 +148,7 @@ function MyTraning(): JSX.Element {
   );
 }
 
-export default MyTraning;
+export default MyTranings;
 
 
 
