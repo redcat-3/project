@@ -22,7 +22,16 @@ export enum AppRoute {
   Error404 = '/error404'
 }
 
+export enum APIRoute {
+  Comments = '/comments',
+  Workouts = '/workouts',
+  Login = '/login',
+}
+
 export const TabIndex = {
   index0: 0,
   indexMinus1: -1
 }
+
+export const BACKEND_URL = 'http://localhost:4000';
+export const REQUEST_TIMEOUT = 5000;
