@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 function BackgroundLogo(): JSX.Element {
   return (
@@ -13,4 +13,3 @@ function BackgroundLogo(): JSX.Element {
   );
 }
 export default React.memo(BackgroundLogo);
-  

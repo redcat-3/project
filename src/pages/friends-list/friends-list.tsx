@@ -1,8 +1,7 @@
-import FriendsListItem from "../../components/friends-list-item/friends-list-item";
-import Header from "../../components/header/header";
+import FriendsListItem from '../../components/friends-list-item/friends-list-item';
+import Header from '../../components/header/header';
 
 function CreateTraning(): JSX.Element {
-
   return (
     <div className="wrapper">
       <Header />
@@ -34,9 +33,4 @@ function CreateTraning(): JSX.Element {
     </div>
   );
 }
-
 export default CreateTraning;
-
-
-
-

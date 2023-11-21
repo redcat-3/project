@@ -1,5 +1,5 @@
-import Header from "../../components/header/header";
-import TraningsItem from "../../components/trainings-item/trainings-item";
+import Header from '../../components/header/header';
+import TraningsItem from '../../components/trainings-item/trainings-item';
 
 function MyTranings(): JSX.Element {
   return (
@@ -16,7 +16,8 @@ function MyTranings(): JSX.Element {
                   <button className="btn-flat btn-flat--underlined my-training-form__btnback" type="button">
                     <svg width="14" height="10" aria-hidden="true">
                       <use xlinkHref="#arrow-left"></use>
-                    </svg><span>Назад</span>
+                    </svg>
+                    <span>Назад</span>
                   </button>
                   <h3 className="my-training-form__title">фильтры</h3>
                   <form className="my-training-form__form">
@@ -82,40 +83,52 @@ function MyTranings(): JSX.Element {
                         <li className="my-training-form__check-list-item">
                           <div className="custom-toggle custom-toggle--checkbox">
                             <label>
-                              <input type="checkbox" value="duration-1" name="duration" /><span className="custom-toggle__icon">
+                              <input type="checkbox" value="duration-1" name="duration" />
+                              <span className="custom-toggle__icon">
                                 <svg width="9" height="6" aria-hidden="true">
                                   <use xlinkHref="#arrow-check"></use>
-                                </svg></span><span className="custom-toggle__label">10 мин - 30 мин</span>
+                                </svg>
+                              </span>
+                              <span className="custom-toggle__label">10 мин - 30 мин</span>
                             </label>
                           </div>
                         </li>
                         <li className="my-training-form__check-list-item">
                           <div className="custom-toggle custom-toggle--checkbox">
                             <label>
-                              <input type="checkbox" value="duration-1" name="duration" checked /><span className="custom-toggle__icon">
+                              <input type="checkbox" value="duration-1" name="duration" checked />
+                              <span className="custom-toggle__icon">
                                 <svg width="9" height="6" aria-hidden="true">
                                   <use xlinkHref="#arrow-check"></use>
-                                </svg></span><span className="custom-toggle__label">30 мин - 50 мин</span>
+                                </svg>
+                              </span>
+                              <span className="custom-toggle__label">30 мин - 50 мин</span>
                             </label>
                           </div>
                         </li>
                         <li className="my-training-form__check-list-item">
                           <div className="custom-toggle custom-toggle--checkbox">
                             <label>
-                              <input type="checkbox" value="duration-1" name="duration" /><span className="custom-toggle__icon">
+                              <input type="checkbox" value="duration-1" name="duration" />
+                              <span className="custom-toggle__icon">
                                 <svg width="9" height="6" aria-hidden="true">
                                   <use xlinkHref="#arrow-check"></use>
-                                </svg></span><span className="custom-toggle__label">50 мин - 80 мин</span>
+                                </svg>
+                              </span>
+                              <span className="custom-toggle__label">50 мин - 80 мин</span>
                             </label>
                           </div>
                         </li>
                         <li className="my-training-form__check-list-item">
                           <div className="custom-toggle custom-toggle--checkbox">
                             <label>
-                              <input type="checkbox" value="duration-1" name="duration" /><span className="custom-toggle__icon">
+                              <input type="checkbox" value="duration-1" name="duration" />
+                              <span className="custom-toggle__icon">
                                 <svg width="9" height="6" aria-hidden="true">
                                   <use xlinkHref="#arrow-check"></use>
-                                </svg></span><span className="custom-toggle__label">80 мин - 100 мин</span>
+                                </svg>
+                              </span>
+                              <span className="custom-toggle__label">80 мин - 100 мин</span>
                             </label>
                           </div>
                         </li>
@@ -147,9 +160,4 @@ function MyTranings(): JSX.Element {
     </div>
   );
 }
-
 export default MyTranings;
-
-
-
-

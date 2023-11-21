@@ -1,13 +1,12 @@
-import Header from "../../components/header/header";
-import MyOrdersItem from "../../components/my-orders-item/my-orders-item";
+import Header from '../../components/header/header';
+import MyOrdersItem from '../../components/my-orders-item/my-orders-item';
 
 function MyOrders(): JSX.Element {
-
   return (
     <div className="wrapper">
       <Header />
       <main>
-      <section className="my-orders">
+        <section className="my-orders">
           <div className="container">
             <div className="my-orders__wrapper">
               <button className="btn-flat btn-flat--underlined my-orders__back" type="button">
@@ -50,9 +49,4 @@ function MyOrders(): JSX.Element {
     </div>
   );
 }
-
 export default MyOrders;
-
-
-
-

@@ -3,11 +3,11 @@ const SpecialOffersItem = (): JSX.Element => (
     <aside className="promo-slider">
       <div className="promo-slider__overlay"></div>
       <div className="promo-slider__image">
-        <img 
-          src="img/content/promo-1.png" 
-          srcSet="img/content/promo-1@2x.png 2x" 
-          width="1040" 
-          height="469" 
+        <img
+          src="img/content/promo-1.png"
+          srcSet="img/content/promo-1@2x.png 2x"
+          width="1040"
+          height="469"
           alt="promo-photo"
         />
       </div>
@@ -35,5 +35,4 @@ const SpecialOffersItem = (): JSX.Element => (
     </aside>
   </li>
 );
-      
-  export default SpecialOffersItem;  
+export default SpecialOffersItem;

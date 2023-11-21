@@ -1,5 +1,5 @@
-import Header from "../../components/header/header";
-import MyPurchasesItem from "./my-purchases-item/my-purchases-item";
+import Header from '../../components/header/header';
+import MyPurchasesItem from './my-purchases-item/my-purchases-item';
 
 function MyPurchases(): JSX.Element {
   return (
@@ -12,17 +12,21 @@ function MyPurchases(): JSX.Element {
               <button className="btn-flat my-purchases__back" type="button">
                 <svg width="14" height="10" aria-hidden="true">
                   <use xlinkHref="#arrow-left"></use>
-                </svg><span>Назад</span>
+                </svg>
+                <span>Назад</span>
               </button>
               <div className="my-purchases__title-wrapper">
                 <h1 className="my-purchases__title">Мои покупки</h1>
                 <div className="my-purchases__controls">
                   <div className="custom-toggle custom-toggle--switch custom-toggle--switch-right my-purchases__switch" data-validate-type="checkbox">
                     <label>
-                      <input type="checkbox" value="user-agreement-1" name="user-agreement" /><span className="custom-toggle__icon">
+                      <input type="checkbox" value="user-agreement-1" name="user-agreement" />
+                      <span className="custom-toggle__icon">
                         <svg width="9" height="6" aria-hidden="true">
                           <use xlinkHref="#arrow-check"></use>
-                        </svg></span><span className="custom-toggle__label">Только активные</span>
+                        </svg>
+                      </span>
+                      <span className="custom-toggle__label">Только активные</span>
                     </label>
                   </div>
                 </div>
@@ -43,9 +47,4 @@ function MyPurchases(): JSX.Element {
     </div>
   );
 }
-
 export default MyPurchases;
-
-
-
-

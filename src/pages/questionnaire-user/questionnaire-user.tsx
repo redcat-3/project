@@ -1,5 +1,5 @@
-import BackgroundLogo from "../../components/background-logo/background-logo";
-import PopupQuestionnaireUser from "../../components/popup-questionnaire-user/popup-questionnaire-user";
+import BackgroundLogo from '../../components/background-logo/background-logo';
+import PopupQuestionnaireUser from '../../components/popup-questionnaire-user/popup-questionnaire-user';
 
 function QuestionnaireUser(): JSX.Element {
   return (
@@ -11,5 +11,4 @@ function QuestionnaireUser(): JSX.Element {
     </div>
   );
 }
-
 export default QuestionnaireUser;

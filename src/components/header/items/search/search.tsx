@@ -25,6 +25,4 @@ const Search = (): JSX.Element => (
     </form>
   </div>
 );
-      
-export default Search;  
-
+export default Search;

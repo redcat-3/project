@@ -4,15 +4,15 @@ function PersonalAccountCoachItem(): JSX.Element {
       <div className="certificate-card certificate-card--edit">
         <div className="certificate-card__image">
           <picture>
-            <source 
-              type="image/webp" 
+            <source
+              type="image/webp"
               srcSet="img/content/certificates-and-diplomas/certificate-1.webp, img/content/certificates-and-diplomas/certificate-1@2x.webp 2x"
             />
-            <img 
-              src="img/content/certificates-and-diplomas/certificate-1.jpg" 
-              srcSet="img/content/certificates-and-diplomas/certificate-1@2x.jpg 2x" 
-              width="294" 
-              height="360" 
+            <img
+              src="img/content/certificates-and-diplomas/certificate-1.jpg"
+              srcSet="img/content/certificates-and-diplomas/certificate-1@2x.jpg 2x"
+              width="294"
+              height="360"
               alt="Сертификат - Биомеханика ударов в боксе"
             />
           </picture>

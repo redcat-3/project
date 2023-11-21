@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 function MyPurchasesItem(): JSX.Element {
   return (
@@ -7,15 +7,15 @@ function MyPurchasesItem(): JSX.Element {
         <div className="thumbnail-training__inner">
           <div className="thumbnail-training__image">
             <picture>
-              <source 
-                type="image/webp" 
+              <source
+                type="image/webp"
                 srcSet="img/content/thumbnails/training-01.webp, img/content/thumbnails/training-01@2x.webp 2x"
               />
-              <img 
-                src="img/content/thumbnails/training-01.jpg" 
-                srcSet="img/content/thumbnails/training-01@2x.jpg 2x" 
-                width="330" 
-                height="190" 
+              <img
+                src="img/content/thumbnails/training-01.jpg"
+                srcSet="img/content/thumbnails/training-01@2x.jpg 2x"
+                width="330"
+                height="190"
                 alt=""
               />
             </picture>
@@ -26,17 +26,22 @@ function MyPurchasesItem(): JSX.Element {
           <h2 className="thumbnail-training__title">energy</h2>
           <div className="thumbnail-training__info">
             <ul className="thumbnail-training__hashtags-list">
-            <li className="thumbnail-training__hashtags-item">
-                <div className="hashtag thumbnail-training__hashtag"><span>#пилатес</span></div>
-            </li>
-            <li className="thumbnail-training__hashtags-item">
-                <div className="hashtag thumbnail-training__hashtag"><span>#320ккал</span></div>
-            </li>
+              <li className="thumbnail-training__hashtags-item">
+                <div className="hashtag thumbnail-training__hashtag">
+                  <span>#пилатес</span>
+                </div>
+              </li>
+              <li className="thumbnail-training__hashtags-item">
+                <div className="hashtag thumbnail-training__hashtag">
+                  <span>#320ккал</span>
+                </div>
+              </li>
             </ul>
             <div className="thumbnail-training__rate">
-            <svg width="16" height="16" aria-hidden="true">
+              <svg width="16" height="16" aria-hidden="true">
                 <use xlinkHref="#icon-star"></use>
-            </svg><span className="thumbnail-training__rate-value">4</span>
+              </svg>
+              <span className="thumbnail-training__rate-value">4</span>
             </div>
           </div>
           <div className="thumbnail-training__text-wrapper">
@@ -52,4 +57,3 @@ function MyPurchasesItem(): JSX.Element {
   );
 }
 export default React.memo(MyPurchasesItem);
-  

@@ -1,7 +1,7 @@
-import Header from "../../components/header/header";
-import UserCardCoachGallaryItem from "./items/user-card-coach-gallary-item/user-card-coach-gallary-item";
-import UserCardCoachHashtagItem from "./items/user-card-coach-hashtag-item/user-card-coach-hashtag-item";
-import UserCardCoachTrainingItem from "./items/user-card-coach-training-item/user-card-coach-training-item";
+import Header from '../../components/header/header';
+import UserCardCoachGallaryItem from './items/user-card-coach-gallary-item/user-card-coach-gallary-item';
+import UserCardCoachHashtagItem from './items/user-card-coach-hashtag-item/user-card-coach-hashtag-item';
+import UserCardCoachTrainingItem from './items/user-card-coach-training-item/user-card-coach-training-item';
 
 function UserCardCoach(): JSX.Element {
   return (
@@ -14,7 +14,8 @@ function UserCardCoach(): JSX.Element {
               <button className="btn-flat inner-page__back" type="button">
                 <svg width="14" height="10" aria-hidden="true">
                   <use xlinkHref="#arrow-left"></use>
-                </svg><span>Назад</span>
+                </svg>
+                <span>Назад</span>
               </button>
               <div className="inner-page__content">
                 <section className="user-card-coach">
@@ -26,17 +27,23 @@ function UserCardCoach(): JSX.Element {
                           <h2 className="user-card-coach__title">Валерия</h2>
                         </div>
                         <div className="user-card-coach__label">
-                          <a href="popup-user-map.html"><svg className="user-card-coach__icon-location" width="12" height="14" aria-hidden="true">
-                            <use xlinkHref="#icon-location"></use>
-                          </svg><span>Адмиралтейская</span></a>
+                          <a href="popup-user-map.html">
+                            <svg className="user-card-coach__icon-location" width="12" height="14" aria-hidden="true">
+                              <use xlinkHref="#icon-location"></use>
+                            </svg>
+                            <span>Адмиралтейская</span>
+                          </a>
                         </div>
                         <div className="user-card-coach__status-container">
                           <div className="user-card-coach__status user-card-coach__status--tag">
                             <svg className="user-card-coach__icon-cup" width="12" height="13" aria-hidden="true">
                               <use xlinkHref="#icon-cup"></use>
-                            </svg><span>Тренер</span>
+                            </svg>
+                            <span>Тренер</span>
                           </div>
-                          <div className="user-card-coach__status user-card-coach__status--check"><span>Готов тренировать</span></div>
+                          <div className="user-card-coach__status user-card-coach__status--check">
+                            <span>Готов тренировать</span>
+                          </div>
                         </div>
                         <div className="user-card-coach__text">
                           <p>Привет! Меня зовут Иванова Валерия, мне 34 года. Я&nbsp;профессиональный тренер по&nbsp;боксу. Не&nbsp;боюсь пробовать новое, также увлекаюсь кроссфитом, йогой и&nbsp;силовыми тренировками.</p>
@@ -45,7 +52,8 @@ function UserCardCoach(): JSX.Element {
                         <button className="btn-flat user-card-coach__sertificate" type="button">
                           <svg width="12" height="13" aria-hidden="true">
                             <use xlinkHref="#icon-teacher"></use>
-                          </svg><span>Посмотреть сертификаты</span>
+                          </svg>
+                          <span>Посмотреть сертификаты</span>
                         </button>
                         <ul className="user-card-coach__hashtag-list">
                           <UserCardCoachHashtagItem />
@@ -90,12 +98,12 @@ function UserCardCoach(): JSX.Element {
                           <div className="custom-toggle custom-toggle--checkbox">
                             <label>
                               <input type="checkbox" value="user-agreement-1" name="user-agreement" checked />
-                                <span className="custom-toggle__icon">
-                                  <svg width="9" height="6" aria-hidden="true">
-                                    <use xlinkHref="#arrow-check"></use>
-                                  </svg>
-                                </span>
-                                <span className="custom-toggle__label">Получать уведомление на почту о новой тренировке</span>
+                              <span className="custom-toggle__icon">
+                                <svg width="9" height="6" aria-hidden="true">
+                                  <use xlinkHref="#arrow-check"></use>
+                                </svg>
+                              </span>
+                              <span className="custom-toggle__label">Получать уведомление на почту о новой тренировке</span>
                             </label>
                           </div>
                         </div>
@@ -111,9 +119,4 @@ function UserCardCoach(): JSX.Element {
     </div>
   );
 }
-
 export default UserCardCoach;
-
-
-
-

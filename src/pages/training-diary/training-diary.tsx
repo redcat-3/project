@@ -1,6 +1,6 @@
-import Header from "../../components/header/header";
-import TrainingDiaryCell from "./items/training-diary-cell/training-diary-cell";
-import TrainingDiaryItem from "./items/training-diary-item/training-diary-item";
+import Header from '../../components/header/header';
+import TrainingDiaryCell from './items/training-diary-cell/training-diary-cell';
+import TrainingDiaryItem from './items/training-diary-item/training-diary-item';
 
 function TrainingDiary(): JSX.Element {
   return (
@@ -111,5 +111,4 @@ function TrainingDiary(): JSX.Element {
     </div>
   );
 }
-
 export default TrainingDiary;

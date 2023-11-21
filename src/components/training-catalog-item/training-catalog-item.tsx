@@ -1,5 +1,5 @@
-import React from "react";
-import ThumbnailTrainingHashtagsItem from "../thumbnail-training-hashtags-item/thumbnail-training-hashtags-item";
+import React from 'react';
+import ThumbnailTrainingHashtagsItem from '../thumbnail-training-hashtags-item/thumbnail-training-hashtags-item';
 
 function TrainingCatalogItem(): JSX.Element {
   return (
@@ -8,26 +8,26 @@ function TrainingCatalogItem(): JSX.Element {
         <div className="thumbnail-training__inner">
           <div className="thumbnail-training__image">
             <picture>
-              <source 
-                type="image/webp" 
+              <source
+                type="image/webp"
                 srcSet="img/content/thumbnails/training-02.webp, img/content/thumbnails/training-02@2x.webp 2x"
               />
-              <img 
-                src="img/content/thumbnails/training-02.jpg" 
-                srcSet="img/content/thumbnails/training-02@2x.jpg 2x" 
-                width="330" 
-                height="190" 
+              <img
+                src="img/content/thumbnails/training-02.jpg"
+                srcSet="img/content/thumbnails/training-02@2x.jpg 2x"
+                width="330"
+                height="190"
                 alt=""
               />
             </picture>
           </div>
           <p className="thumbnail-training__price">Бесплатно</p>
           <h3 className="thumbnail-training__title">crossfit</h3>
-            <div className="thumbnail-training__info">
-              <ul className="thumbnail-training__hashtags-list">
-                <ThumbnailTrainingHashtagsItem />
-                <ThumbnailTrainingHashtagsItem />
-              </ul>
+          <div className="thumbnail-training__info">
+            <ul className="thumbnail-training__hashtags-list">
+              <ThumbnailTrainingHashtagsItem />
+              <ThumbnailTrainingHashtagsItem />
+            </ul>
             <div className="thumbnail-training__rate">
               <svg width="16" height="16" aria-hidden="true">
                 <use xlinkHref="#icon-star"></use>
@@ -48,4 +48,3 @@ function TrainingCatalogItem(): JSX.Element {
   );
 }
 export default React.memo(TrainingCatalogItem);
-  

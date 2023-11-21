@@ -1,5 +1,5 @@
-import React from "react";
-import SpecialForYouItem from "./items/special-for-you-item/special-for-you-item";
+import React from 'react';
+import SpecialForYouItem from './items/special-for-you-item/special-for-you-item';
 
 function SpecialForYou(): JSX.Element {
   return (
@@ -25,11 +25,10 @@ function SpecialForYou(): JSX.Element {
             <SpecialForYouItem />
             <SpecialForYouItem />
             <SpecialForYouItem />
-        </ul>
+          </ul>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
   );
 }
 export default React.memo(SpecialForYou);
-  

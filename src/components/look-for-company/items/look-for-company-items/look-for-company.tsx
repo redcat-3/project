@@ -3,15 +3,15 @@ const LookForCompanyItem = (): JSX.Element => (
     <div className="thumbnail-user thumbnail-user--role-user thumbnail-user--dark">
       <div className="thumbnail-user__image">
         <picture>
-          <source 
-            type="image/webp" 
+          <source
+            type="image/webp"
             srcSet="img/content/thumbnails/user-04.webp, img/content/thumbnails/user-04@2x.webp 2x"
           />
-          <img 
-            src="img/content/thumbnails/user-04.jpg" 
-            srcSet="img/content/thumbnails/user-04@2x.jpg 2x" 
-            width="82" 
-            height="82" 
+          <img
+            src="img/content/thumbnails/user-04.jpg"
+            srcSet="img/content/thumbnails/user-04@2x.jpg 2x"
+            width="82"
+            height="82"
             alt=""
           />
         </picture>
@@ -35,5 +35,4 @@ const LookForCompanyItem = (): JSX.Element => (
     </div>
   </li>
 );
-        
-  export default LookForCompanyItem;
+export default LookForCompanyItem;

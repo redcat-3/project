@@ -1,7 +1,7 @@
-import Header from "../../components/header/header";
-import PersonalAccountCoachList from "../../components/personal-account-coach-list/personal-account-coach-list";
-import PersonalAccountCoachNav from "../../components/personal-account-coach-nav/personal-account-coach-nav";
-import UserInfoEdit from "../../components/user-info-edit/user-info-edit";
+import Header from '../../components/header/header';
+import PersonalAccountCoachList from '../../components/personal-account-coach-list/personal-account-coach-list';
+import PersonalAccountCoachNav from '../../components/personal-account-coach-nav/personal-account-coach-nav';
+import UserInfoEdit from '../../components/user-info-edit/user-info-edit';
 
 function PersonalAccountCoach(): JSX.Element {
   return (
@@ -48,9 +48,4 @@ function PersonalAccountCoach(): JSX.Element {
     </div>
   );
 }
-
 export default PersonalAccountCoach;
-
-
-
-

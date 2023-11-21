@@ -1,5 +1,5 @@
-import BackgroundLogo from "../../components/background-logo/background-logo";
-import PopupSignUp from "../../components/popup-sign-up/popup-sign-up";
+import BackgroundLogo from '../../components/background-logo/background-logo';
+import PopupSignUp from '../../components/popup-sign-up/popup-sign-up';
 
 function SignUp(): JSX.Element {
   return (
@@ -11,5 +11,4 @@ function SignUp(): JSX.Element {
     </div>
   );
 }
-
 export default SignUp;

@@ -1,5 +1,5 @@
-import React from "react";
-import ThumbnailTrainingHashtagsItem from "../../../../components/thumbnail-training-hashtags-item/thumbnail-training-hashtags-item";
+import React from 'react';
+import ThumbnailTrainingHashtagsItem from '../../../../components/thumbnail-training-hashtags-item/thumbnail-training-hashtags-item';
 
 function UserCardCoachTrainingItem(): JSX.Element {
   return (
@@ -8,15 +8,15 @@ function UserCardCoachTrainingItem(): JSX.Element {
         <div className="thumbnail-training__inner">
           <div className="thumbnail-training__image">
             <picture>
-              <source 
-                type="image/webp" 
+              <source
+                type="image/webp"
                 srcSet="img/content/user-card-coach/training-1.webp, img/content/user-card-coach/training-1@2x.webp 2x"
               />
-              <img 
-                src="img/content/user-card-coach/training-1.jpg" 
-                srcSet="img/content/user-card-coach/training-1@2x.jpg 2x" 
-                width="330" 
-                height="190" 
+              <img
+                src="img/content/user-card-coach/training-1.jpg"
+                srcSet="img/content/user-card-coach/training-1@2x.jpg 2x"
+                width="330"
+                height="190"
                 alt=""
               />
             </picture>

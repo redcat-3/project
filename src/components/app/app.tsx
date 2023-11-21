@@ -9,7 +9,6 @@ import CreateTraning from '../../pages/create-training/create-training';
 import FriendsList from '../../pages/friends-list/friends-list';
 import MyOrders from '../../pages/my-orders/my-orders';
 import MyPurchases from '../../pages/my-purchases/my-purchases';
-import MyTraning from '../../pages/my-trainings/my-trainings';
 import MyTranings from '../../pages/my-trainings/my-trainings';
 import PersonalAccountCoach from '../../pages/personal-account-coach/personal-account-coach';
 import PersonalAccountUser from '../../pages/personal-account-user/personal-account-user';
@@ -41,9 +40,9 @@ function App(): JSX.Element {
             key={AppRoute.Intro}
           />
           <Route
-            path={AppRoute.SighIn}
+            path={AppRoute.SignIn}
             element={<SignIn/>}
-            key={AppRoute.SighIn}
+            key={AppRoute.SignIn}
           />
           <Route
             path={AppRoute.CreateTraining}
@@ -89,7 +88,7 @@ function App(): JSX.Element {
             path={AppRoute.QuestionnaireUser}
             element={<QuestionnaireUser/>}
             key={AppRoute.QuestionnaireUser}
-          />   
+          />
           <Route
             path={AppRoute.SignUp}
             element={<SignUp/>}
@@ -109,27 +108,27 @@ function App(): JSX.Element {
             path={AppRoute.TrainingCatalog}
             element={<TrainingCatalog/>}
             key={AppRoute.TrainingCatalog}
-          /> 
+          />
           <Route
             path={AppRoute.TrainingDiary}
             element={<TrainingDiary/>}
             key={AppRoute.TrainingDiary}
-          />  
+          />
           <Route
             path={AppRoute.UserCardCoach}
             element={<UserCardCoach/>}
             key={AppRoute.UserCardCoach}
-          />  
+          />
           <Route
             path={AppRoute.UserCardUser}
             element={<UserCardUser/>}
             key={AppRoute.UserCardUser}
-          />    
+          />
           <Route
             path={AppRoute.UsersCatalog}
             element={<UserCatalog/>}
             key={AppRoute.UsersCatalog}
-          />                                                  
+          />
         </Routes>
       </ScrollToTop>
     </HelmetProvider>

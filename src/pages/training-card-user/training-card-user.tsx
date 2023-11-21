@@ -1,7 +1,5 @@
-import Header from "../../components/header/header";
-import ReviewsSideBarItem from "../../components/reviews-side-bar-item/reviews-side-bar-item";
-import { TabIndex } from "../../constant";
-
+import Header from '../../components/header/header';
+import ReviewsSideBarItem from '../../components/reviews-side-bar-item/reviews-side-bar-item';
 
 function TrainingCardUser(): JSX.Element {
   return (
@@ -34,20 +32,23 @@ function TrainingCardUser(): JSX.Element {
                     <div className="training-info__coach">
                       <div className="training-info__photo">
                         <picture>
-                          <source 
-                            type="image/webp" 
+                          <source
+                            type="image/webp"
                             srcSet="img/content/avatars/coaches//photo-1.webp, img/content/avatars/coaches//photo-1@2x.webp 2x"
                           />
-                          <img 
-                            src="img/content/avatars/coaches//photo-1.png" 
-                            srcSet="img/content/avatars/coaches//photo-1@2x.png 2x" 
-                            width="64" 
-                            height="64" 
+                          <img
+                            src="img/content/avatars/coaches//photo-1.png"
+                            srcSet="img/content/avatars/coaches//photo-1@2x.png 2x"
+                            width="64"
+                            height="64"
                             alt="Изображение тренера"
                           />
                         </picture>
                       </div>
-                      <div className="training-info__coach-info"><span className="training-info__label">Тренер</span><span className="training-info__name">Валерия</span></div>
+                      <div className="training-info__coach-info">
+                        <span className="training-info__label">Тренер</span>
+                        <span className="training-info__name">Валерия</span>
+                      </div>
                     </div>
                   </div>
                   <div className="training-info__main-content">
@@ -55,23 +56,28 @@ function TrainingCardUser(): JSX.Element {
                       <div className="training-info__form-wrapper">
                         <div className="training-info__info-wrapper">
                           <div className="training-info__input training-info__input--training">
-                            <label><span className="training-info__label">Название тренировки</span>
+                            <label>
+                              <span className="training-info__label">Название тренировки</span>
                               <input type="text" name="training" value="energy" disabled />
                             </label>
                             <div className="training-info__error">Обязательное поле</div>
                           </div>
                           <div className="training-info__textarea">
-                            <label><span className="training-info__label">Описание тренировки</span>
+                            <label>
+                              <span className="training-info__label">Описание тренировки</span>
                               <textarea name="description" disabled>Упражнения укрепляют мышечный корсет, делают суставы более гибкими, улучшают осанку и&nbsp;координацию.</textarea>
                             </label>
                           </div>
                         </div>
                         <div className="training-info__rating-wrapper">
                           <div className="training-info__input training-info__input--rating">
-                            <label><span className="training-info__label">Рейтинг</span><span className="training-info__rating-icon">
+                            <label>
+                              <span className="training-info__label">Рейтинг</span>
+                              <span className="training-info__rating-icon">
                                 <svg width="18" height="18" aria-hidden="true">
                                   <use xlinkHref="#icon-star"></use>
-                                </svg></span>
+                                </svg>
+                              </span>
                               <input type="number" name="rating" value="4" disabled />
                             </label>
                           </div>
@@ -92,7 +98,8 @@ function TrainingCardUser(): JSX.Element {
                         </div>
                         <div className="training-info__price-wrapper">
                           <div className="training-info__input training-info__input--price">
-                            <label><span className="training-info__label">Стоимость</span>
+                            <label>
+                              <span className="training-info__label">Стоимость</span>
                               <input type="text" name="price" value="800 ₽" disabled />
                             </label>
                             <div className="training-info__error">Введите число</div>
@@ -108,15 +115,15 @@ function TrainingCardUser(): JSX.Element {
                   <div className="training-video__video">
                     <div className="training-video__thumbnail">
                       <picture>
-                        <source 
-                          type="image/webp" 
+                        <source
+                          type="image/webp"
                           srcSet="img/content/training-video/video-thumbnail.webp, img/content/training-video/video-thumbnail@2x.webp 2x"
                         />
-                        <img 
-                          src="img/content/training-video/video-thumbnail.png" 
-                          srcSet="img/content/training-video/video-thumbnail@2x.png 2x" 
-                          width="922" 
-                          height="566" 
+                        <img
+                          src="img/content/training-video/video-thumbnail.png"
+                          srcSet="img/content/training-video/video-thumbnail@2x.png 2x"
+                          width="922"
+                          height="566"
                           alt="Обложка видео"
                         />
                       </picture>
@@ -140,9 +147,4 @@ function TrainingCardUser(): JSX.Element {
     </div>
   );
 }
-
 export default TrainingCardUser;
-
-
-
-

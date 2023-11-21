@@ -1,5 +1,5 @@
-import BackgroundLogo from "../../components/background-logo/background-logo";
-import PopupQuestionnaireCoach from "../../components/popup-questionnaire-coach/popup-questionnaire-coach";
+import BackgroundLogo from '../../components/background-logo/background-logo';
+import PopupQuestionnaireCoach from '../../components/popup-questionnaire-coach/popup-questionnaire-coach';
 
 function QuestionnaireCoach(): JSX.Element {
   return (
@@ -11,5 +11,4 @@ function QuestionnaireCoach(): JSX.Element {
     </div>
   );
 }
-
 export default QuestionnaireCoach;

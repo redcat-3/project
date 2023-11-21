@@ -1,5 +1,5 @@
-import React from "react";
-import LookForCompanyItem from "./items/look-for-company-items/look-for-company";
+import React from 'react';
+import LookForCompanyItem from './items/look-for-company-items/look-for-company';
 
 function LookForCompany(): JSX.Element {
   return (
@@ -37,4 +37,3 @@ function LookForCompany(): JSX.Element {
   );
 }
 export default React.memo(LookForCompany);
-  

@@ -5,5 +5,4 @@ const HeaderLogo = (): JSX.Element => (
     </svg>
   </span>
 );
-    
-export default HeaderLogo;  
+export default HeaderLogo;

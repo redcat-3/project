@@ -1,5 +1,5 @@
-import Header from "../../components/header/header";
-import UserCardGallaryItem from "./items/user-card-gallary-item/user-card-gallary-item";
+import Header from '../../components/header/header';
+import UserCardGallaryItem from './items/user-card-gallary-item/user-card-gallary-item';
 
 function UserCardCoach(): JSX.Element {
   return (
@@ -23,11 +23,16 @@ function UserCardCoach(): JSX.Element {
                         <h2 className="user-card__title">Катерина</h2>
                       </div>
                       <div className="user-card__label">
-                        <a href=""><svg className="user-card-coach__icon-location" width="12" height="14" aria-hidden="true">
-                          <use xlinkHref="#icon-location"></use>
-                        </svg><span>Невский проспект</span></a>
+                        <a href="">
+                          <svg className="user-card-coach__icon-location" width="12" height="14" aria-hidden="true">
+                            <use xlinkHref="#icon-location"></use>
+                          </svg>
+                          <span>Невский проспект</span>
+                        </a>
                       </div>
-                      <div className="user-card__status"><span>Готов к тренировке</span></div>
+                      <div className="user-card__status">
+                        <span>Готов к тренировке</span>
+                      </div>
                       <div className="user-card__text">
                         <p>Привет! Я&nbsp;Катерина и&nbsp;мне 27 лет. Обожаю спорт и&nbsp;все, что с&nbsp;ним связанно. Регулярно хожу на&nbsp;тренировки по&nbsp;кроссфиту, также занимаюсь йогой, рястяжкой и&nbsp;пилатесом.</p>
                         <p>Занимаюсь как с&nbsp;тренером индивидуально, так и&nbsp;на&nbsp;групповых занятиях. Люблю соревнования и&nbsp;челленджи, так что присоединяйтесь, давайте объединяться и&nbsp;заниматься вместе!&#41;</p>
@@ -64,9 +69,4 @@ function UserCardCoach(): JSX.Element {
     </div>
   );
 }
-
 export default UserCardCoach;
-
-
-
-

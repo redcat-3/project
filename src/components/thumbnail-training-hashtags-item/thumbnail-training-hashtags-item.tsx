@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 function ThumbnailTrainingHashtagsItem(): JSX.Element {
   return (
@@ -8,4 +8,3 @@ function ThumbnailTrainingHashtagsItem(): JSX.Element {
   );
 }
 export default React.memo(ThumbnailTrainingHashtagsItem);
-  

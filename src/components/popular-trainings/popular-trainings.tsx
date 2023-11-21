@@ -1,5 +1,5 @@
-import React from "react";
-import TraningsItem from "../trainings-item/trainings-item";
+import React from 'react';
+import TraningsItem from '../trainings-item/trainings-item';
 
 function PopularTranings(): JSX.Element {
   return (
@@ -40,4 +40,3 @@ function PopularTranings(): JSX.Element {
   );
 }
 export default React.memo(PopularTranings);
-  

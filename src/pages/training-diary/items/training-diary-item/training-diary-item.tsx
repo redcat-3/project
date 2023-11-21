@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 function TrainingDiaryItem(): JSX.Element {
   return (
@@ -11,4 +11,3 @@ function TrainingDiaryItem(): JSX.Element {
   );
 }
 export default React.memo(TrainingDiaryItem);
-  

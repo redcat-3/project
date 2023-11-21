@@ -1,6 +1,6 @@
-import GymCatalogForm from "../../components/gym-catalog-form/gym-catalog-form";
-import Header from "../../components/header/header";
-import TrainingCatalogItem from "../../components/training-catalog-item/training-catalog-item";
+import GymCatalogForm from '../../components/gym-catalog-form/gym-catalog-form';
+import Header from '../../components/header/header';
+import TrainingCatalogItem from '../../components/training-catalog-item/training-catalog-item';
 
 function TrainingCatalog(): JSX.Element {
   return (
@@ -35,9 +35,4 @@ function TrainingCatalog(): JSX.Element {
     </div>
   );
 }
-
 export default TrainingCatalog;
-
-
-
-

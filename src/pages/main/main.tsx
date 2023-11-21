@@ -1,8 +1,8 @@
-import Header from "../../components/header/header";
-import LookForCompany from "../../components/look-for-company/look-for-company";
-import PopularTrainings from "../../components/popular-trainings/popular-trainings";
-import SpecialForYou from "../../components/special-for-you/special-for-you";
-import SpecialOffers from "../../components/special-offers/special-offers";
+import Header from '../../components/header/header';
+import LookForCompany from '../../components/look-for-company/look-for-company';
+import PopularTrainings from '../../components/popular-trainings/popular-trainings';
+import SpecialForYou from '../../components/special-for-you/special-for-you';
+import SpecialOffers from '../../components/special-offers/special-offers';
 
 function Main(): JSX.Element {
   return (
@@ -18,9 +18,4 @@ function Main(): JSX.Element {
     </div>
   );
 }
-
 export default Main;
-
-
-
-
