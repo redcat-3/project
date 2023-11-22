@@ -41,7 +41,7 @@ const getRandomNumber = (min, max) => {
 
 const getRandomArray = (array) => {
   const number = getRandomNumber(0, (array.length - 1));
-  const randomArray = [0];
+  const randomArray = [];
   let element = getRandomArrayElement(array);
   for (let i = 0; i < number; i++) {
     while (randomArray.includes(element)) {
@@ -89,6 +89,11 @@ function sortByReleaseDate(filmA, filmB) {
   return weight ?? dayjs(filmA.filmInfo.release.date).diff(dayjs(filmB.filmInfo.release.date));
 }
 
+export function randomDate(start, end) {
+  const date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
+  return date.toISOString();
+}
+
 export {
   getReleaseDate,
   getFilmYear,
@@ -101,4 +106,5 @@ export {
   updateItem,
   getItemById,
   sortByReleaseDate,
-  getRandomBoolean};
+  getRandomBoolean,
+  randomDate};

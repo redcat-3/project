@@ -2,15 +2,14 @@ import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import { CountCaloriesToSpend, NameLength, TabIndex, WorkoutDescriptionLength } from '../../constant';
 import { ChangeEventHandler, FormEvent, useState } from 'react';
-import { Workout, WorkoutTimes, WorkoutType, WorkoutTypes } from '../../types/workout-data';
+import { WorkoutTimes, WorkoutType, WorkoutTypes } from '../../types/workout-data';
 import { UserGender, UserLevel, UserLevels, UserTime } from '../../types/user-data';
 
-type CreateTraningFormProps = { workoutId: number };
+const hostUrl = 'localhost:3007/upload';
 
-function CreateTraning({workoutId}: CreateTraningFormProps): JSX.Element {
+function CreateTraning(): JSX.Element {
   const [isDisabled, setIsDisabled] = useState(true);
   const [formData, setFormData] = useState({
-    workoutId,
     name: '',
     background: 'image.jpg',
     level: '' as UserLevel,
@@ -24,12 +23,23 @@ function CreateTraning({workoutId}: CreateTraningFormProps): JSX.Element {
     special: false,
   });
 
-  const handleCaloriesChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+  const handleCaloriesChange: ChangeEventHandler<HTMLInputElement> = (event): void => {
     setFormData({...formData, caloriesToSpend: +event.target.value});
     if(CountCaloriesToSpend.Min <= formData.caloriesToSpend || CountCaloriesToSpend.Max >= formData.caloriesToSpend) {
       setIsDisabled(false);
     } else {
       setIsDisabled(true);
+    }
+  };
+
+  const handleFileChange: ChangeEventHandler<HTMLInputElement> = (event): void => {
+    if(event.target.files) {
+      setFormData({... formData, video: event.target.files[0].name});
+      setIsDisabled(true);
+      return;
+    } else {
+      setIsDisabled(false);
+      return;
     }
   };
 
@@ -60,12 +70,13 @@ function CreateTraning({workoutId}: CreateTraningFormProps): JSX.Element {
     }
   };
 
-  const onSendWorkout = (data: typeof formData) => {
+  const onSendWorkout = () => {
     if(formData.type) {
-      
+      console.log(formData);
     } if(formData.caloriesToSpend === 0) {
-
+      console.log(formData);
     } else {
+      console.log(formData);
     }
   };
   
@@ -87,7 +98,7 @@ function CreateTraning({workoutId}: CreateTraningFormProps): JSX.Element {
                   method="get"
                   onSubmit={(evt: FormEvent<HTMLFormElement>) => {
                     evt.preventDefault();
-                    onSendWorkout(formData);
+                    onSendWorkout();
                   }}>
                   <div className="create-training">
                     <div className="create-training__wrapper">
@@ -148,7 +159,7 @@ function CreateTraning({workoutId}: CreateTraningFormProps): JSX.Element {
                             </button>
                             <ul className="custom-select__list" role="listbox">
                               {WorkoutTimes.map((item) => (
-                                <li>{item}</li>
+                                <li key={item}>{item}</li>
                               ))}
                             </ul>
                           </div>
@@ -187,33 +198,36 @@ function CreateTraning({workoutId}: CreateTraningFormProps): JSX.Element {
                             <div className="custom-toggle-radio create-training__radio">
                               <div className="custom-toggle-radio__block">
                                 <label>
-                                  <input 
+                                  <input
                                     onChange={() => setFormData({...formData, gender: UserGender.Male})}
                                     value={formData.gender}
-                                    type="radio" 
-                                    name="gender" />
+                                    type="radio"
+                                    name="gender"
+                                  />
                                   <span className="custom-toggle-radio__icon"></span>
                                   <span className="custom-toggle-radio__label">Мужчинам</span>
                                 </label>
                               </div>
                               <div className="custom-toggle-radio__block">
                                 <label>
-                                  <input 
+                                  <input
                                     onChange={() => setFormData({...formData, gender: UserGender.Female})}
                                     value={formData.gender}
-                                    type="radio" 
-                                    name="gender" checked />
+                                    type="radio"
+                                    name="gender" checked
+                                  />
                                   <span className="custom-toggle-radio__icon"></span>
                                   <span className="custom-toggle-radio__label">Женщинам</span>
                                 </label>
                               </div>
                               <div className="custom-toggle-radio__block">
                                 <label>
-                                  <input 
+                                  <input
                                     onChange={() => setFormData({...formData, gender: UserGender.Indifferent})}
                                     value={formData.gender}
-                                    type="radio" 
-                                    name="gender" />
+                                    type="radio"
+                                    name="gender"
+                                  />
                                   <span className="custom-toggle-radio__icon"></span>
                                   <span className="custom-toggle-radio__label">Всем</span>
                                 </label>
@@ -226,11 +240,13 @@ function CreateTraning({workoutId}: CreateTraningFormProps): JSX.Element {
                         <h2 className="create-training__legend">Описание тренировки</h2>
                         <div className="custom-textarea create-training__textarea">
                           <label>
-                            <textarea 
+                            <textarea
                               onChange={handleTextChange}
                               value={formData.description}
-                              name="description" 
-                              placeholder=" "></textarea>
+                              name="description"
+                              placeholder=" "
+                            >
+                            </textarea>
                           </label>
                         </div>
                       </div>
@@ -243,14 +259,23 @@ function CreateTraning({workoutId}: CreateTraningFormProps): JSX.Element {
                                 <use xlinkHref="#icon-import-video"></use>
                               </svg>
                             </span>
-                            <input type="file" name="import" tabIndex={TabIndex.indexMinus1} accept=".mov, .avi, .mp4" />
+                            <input
+                              onChange={handleFileChange}
+                              type="file"
+                              name="import"
+                              tabIndex={TabIndex.indexMinus1}
+                              accept=".mov, .avi, .mp4"
+                            />
                           </label>
                         </div>
                       </div>
                     </div>
-                    <button className="btn create-training__button" 
+                    <button className="btn create-training__button"
                       type="submit"
-                      disabled={isDisabled && true}>Опубликовать</button>
+                      disabled={isDisabled && true}
+                    >
+                      Опубликовать
+                    </button>
                   </div>
                 </form>
               </div>

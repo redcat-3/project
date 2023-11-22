@@ -2,12 +2,12 @@ export enum UserGender {
   Male = 'male',
   Female = 'female',
   Indifferent = 'indifferent',
-};
+}
 
 export enum UserRole {
   User = 'user',
   Coach = 'coach',
-};
+}
 
 export enum UserLocation {
   Pion = 'Пионерская',
@@ -15,13 +15,13 @@ export enum UserLocation {
   Udel = 'Удельная',
   Star = 'Звёздная',
   Sport = 'Спортивная',
-};
+}
 
 export enum UserLevel {
   Beginner = 'beginner',
   Ethusiast = 'ethusiast',
   Pro = 'pro'
-};
+}
 
 export enum UserTime {
   One = '10-30',
@@ -33,7 +33,7 @@ export enum UserTime {
 export type LoggedUser = {
   email: string;
   accessToken: string;
-};
+}
 
 export type User = UserUser | UserCoach;
 
@@ -42,7 +42,7 @@ export type UserUser = {
   email: string;
   name: string;
   avatar: string;
-  createdAt: string;
+  createdDate: string;
   gender: UserGender;
   dateBirth: string;
   role: UserRole;
@@ -62,7 +62,7 @@ export type UserCoach = {
   email: string;
   name: string;
   avatar: string;
-  createdAt: string;
+  createdDate: string;
   gender: UserGender;
   dateBirth: string;
   role: UserRole;
@@ -74,7 +74,7 @@ export type UserCoach = {
   certificate: string;
   merit: string;
   personalTraining: boolean;
-};
+}
 
 export const UserLevels = [
   'новичок',

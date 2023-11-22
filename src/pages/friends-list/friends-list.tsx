@@ -1,5 +1,12 @@
 import FriendsListItem from '../../components/friends-list-item/friends-list-item';
 import Header from '../../components/header/header';
+import { createUsers } from '../../mocks/users';
+
+const arr = [0];
+for (let i = 1; i <= 20; i++) {
+	arr.push(i);
+}
+const users = createUsers(arr);
 
 function CreateTraning(): JSX.Element {
   return (
@@ -18,9 +25,9 @@ function CreateTraning(): JSX.Element {
                 <h1 className="friends-list__title">Мои друзья</h1>
               </div>
               <ul className="friends-list__list">
-                <FriendsListItem />
-                <FriendsListItem />
-                <FriendsListItem />
+                {users.map((item) => (
+                  <FriendsListItem />
+                ))}
               </ul>
               <div className="show-more friends-list__show-more">
                 <button className="btn show-more__button show-more__button--more" type="button">Показать еще</button>
