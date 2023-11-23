@@ -5,8 +5,6 @@ import { ChangeEventHandler, FormEvent, useState } from 'react';
 import { WorkoutTimes, WorkoutType, WorkoutTypes } from '../../types/workout-data';
 import { UserGender, UserLevel, UserLevels, UserTime } from '../../types/user-data';
 
-const hostUrl = 'localhost:3007/upload';
-
 function CreateTraning(): JSX.Element {
   const [isDisabled, setIsDisabled] = useState(true);
   const [formData, setFormData] = useState({
@@ -34,7 +32,7 @@ function CreateTraning(): JSX.Element {
 
   const handleFileChange: ChangeEventHandler<HTMLInputElement> = (event): void => {
     if(event.target.files) {
-      setFormData({... formData, video: event.target.files[0].name});
+      setFormData({...formData, video: event.target.files[0].name});
       setIsDisabled(true);
       return;
     } else {

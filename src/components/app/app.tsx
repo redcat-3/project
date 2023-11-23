@@ -24,7 +24,6 @@ import UserCardUser from '../../pages/user-card-user/user-card-user';
 import UserCatalog from '../../pages/users-catalog/users-catalog';
 
 function App(): JSX.Element {
-
   return (
     <HelmetProvider>
       <ScrollToTop>
@@ -134,5 +133,4 @@ function App(): JSX.Element {
     </HelmetProvider>
   );
 }
-
 export default App;

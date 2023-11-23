@@ -20,7 +20,7 @@ function getRandomArrayElement(items) {
   return items[Math.floor(Math.random() * items.length)];
 }
 
-export function getRandomBoolean() {
+function getRandomBoolean() {
   const BOOLEANS = ['true', 'false'];
   return Boolean(getRandomItem<string>(BOOLEANS));
 }
@@ -89,7 +89,7 @@ function sortByReleaseDate(filmA, filmB) {
   return weight ?? dayjs(filmA.filmInfo.release.date).diff(dayjs(filmB.filmInfo.release.date));
 }
 
-export function randomDate(start, end) {
+function randomDate(start, end) {
   const date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
   return date.toISOString();
 }

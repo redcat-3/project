@@ -1,14 +1,34 @@
 import FriendsListItem from '../../components/friends-list-item/friends-list-item';
 import Header from '../../components/header/header';
-import { createUsers } from '../../mocks/users';
+import { AppRoute, DEFAULT_LIMIT } from '../../constant';
+import { useAppDispatch } from '../../hooks';
+import { createUserUsers, generateUserCoach } from '../../mocks/users';
+import { redirectToRoute } from '../../store/action';
+import { UserRole } from '../../types/user-data';
 
 const arr = [0];
 for (let i = 1; i <= 20; i++) {
 	arr.push(i);
 }
-const users = createUsers(arr);
+const users = createUserUsers(arr);
+const coach = generateUserCoach(1);
+
 
 function CreateTraning(): JSX.Element {
+  const dispatch = useAppDispatch();
+  let renderedUsersCount = DEFAULT_LIMIT;
+  let renderedUsers = users.slice(0, renderedUsersCount);
+  const isMore = renderedUsersCount < users.length;
+  if(coach.role !== UserRole.Coach) {
+    dispatch(redirectToRoute(AppRoute.Main));
+  };
+  const handleMoreClick = () => {
+    renderedUsersCount = renderedUsersCount + DEFAULT_LIMIT;
+    renderedUsers = users.slice(0, renderedUsersCount);
+  };
+  const handleTopClick = () => {
+    dispatch(redirectToRoute(AppRoute.Main));
+  }
   return (
     <div className="wrapper">
       <Header />
@@ -25,13 +45,31 @@ function CreateTraning(): JSX.Element {
                 <h1 className="friends-list__title">Мои друзья</h1>
               </div>
               <ul className="friends-list__list">
-                {users.map((item) => (
-                  <FriendsListItem />
+                {renderedUsers.map((item) => (
+                  <FriendsListItem
+                    id={item.id}
+                    name={item.name}
+                    location={item.location}
+                    avatar={item.avatar}
+                    trainingReady={item.trainingReady}
+                    typeOfTrain={item.typeOfTrain}
+                    request={0}
+                  />
                 ))}
               </ul>
               <div className="show-more friends-list__show-more">
-                <button className="btn show-more__button show-more__button--more" type="button">Показать еще</button>
-                <button className="btn show-more__button show-more__button--to-top" type="button">Вернуться в начало</button>
+                {isMore && 
+                  <button
+                    className="btn show-more__button show-more__button--more"
+                    type="button"
+                    onClick={handleMoreClick}
+                  >Показать еще</button>
+                }
+                <button 
+                  className="btn show-more__button show-more__button--to-top"
+                  type="button"
+                  onClick={handleTopClick}
+                >Вернуться в начало</button>
               </div>
             </div>
           </div>

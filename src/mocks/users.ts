@@ -1,6 +1,6 @@
-import { getRandomArrayElement, getRandomNumber, getRandomArray, getRandomBoolean, randomDate } from './utils.js';
-import { User, UserGender, UserLevel, UserLocation, UserRole, UserTime } from '../types/user-data.js';
-import { CountCaloriesToReset, CountCaloriesToSpend } from '../constant.js';
+import { getRandomArrayElement, getRandomNumber, getRandomArray, getRandomBoolean, randomDate } from './utils';
+import { User, UserCoach, UserGender, UserLevel, UserLocation, UserRole, UserTime, UserUser } from '../types/user-data';
+import { CountCaloriesToReset, CountCaloriesToSpend } from '../constant';
 
 const NAMES = [
     'Angelina',
@@ -75,51 +75,97 @@ const MERITS = [
     'Прими звонок и превратись в зомби. Рассказ о зомбировании через средства связи.'
 ]
 
+const generateUserCoach = ( number: number): UserCoach => {
+  const user = {
+    id: `user${number}@pochta.local`,
+    email: `user${number}@pochta.local`,
+    name: getRandomArrayElement(NAMES),
+    avatar: getRandomArrayElement(AVATARS),
+    gender: getRandomArrayElement(GENDERS) as unknown as UserGender,
+    dateBirth: randomDate(new Date(2012, 0, 1), new Date()),
+    createdDate: randomDate(new Date(2012, 0, 1), new Date()),
+    role: UserRole.User,
+    description: getRandomArrayElement(DESCRIPTIONS),
+    location: getRandomArrayElement(LOCATIONS) as unknown as UserLocation,
+    image: getRandomArrayElement(AVATARS),
+    level: getRandomArrayElement(LEVELS) as unknown as UserLevel,
+    typeOfTrain: getRandomArray(TYPES_OF_TRAIN),
+    certificate: getRandomArrayElement(CERTIFICATE),
+    merit: getRandomArrayElement(MERITS),
+    personalTraining: getRandomBoolean()
+    }
+  return user;
+};
+
+const generateUserUser = ( number: number): UserUser => {
+  const user = {
+    id: `user${number}@pochta.local`,
+    email: `user${number}@pochta.local`,
+    name: getRandomArrayElement(NAMES),
+    avatar: getRandomArrayElement(AVATARS),
+    gender: getRandomArrayElement(GENDERS) as unknown as UserGender,
+    dateBirth: randomDate(new Date(2012, 0, 1), new Date()),
+    createdDate: randomDate(new Date(2012, 0, 1), new Date()),
+    role: UserRole.User,
+    description: getRandomArrayElement(DESCRIPTIONS),
+    location: getRandomArrayElement(LOCATIONS) as unknown as UserLocation,
+    image: getRandomArrayElement(AVATARS),
+    level: getRandomArrayElement(LEVELS) as unknown as UserLevel,
+    typeOfTrain: getRandomArray(TYPES_OF_TRAIN),
+    timeOfTrain: getRandomArrayElement(TIMES_OF_TRAIN) as unknown as UserTime,
+    caloriesToReset: getRandomNumber(CountCaloriesToReset.Min, CountCaloriesToReset.Max),
+    caloriesToSpend: getRandomNumber(CountCaloriesToSpend.Min, CountCaloriesToSpend.Max),
+    trainingReady: getRandomBoolean()
+    }
+  return user;
+};
+
 const generateUser = ( number: number): User => {
-    const role = getRandomArrayElement(ROLES) as unknown as UserRole;
-    const user = {
-      id: `user${number}@pochta.local`,
-      email: `user${number}@pochta.local`,
-      name: getRandomArrayElement(NAMES),
-      avatar: getRandomArrayElement(AVATARS),
-      gender: getRandomArrayElement(GENDERS) as unknown as UserGender,
-      dateBirth: randomDate(new Date(2012, 0, 1), new Date()),
-      createdDate: randomDate(new Date(2012, 0, 1), new Date()),
-      role,
-      description: getRandomArrayElement(DESCRIPTIONS),
-      location: getRandomArrayElement(LOCATIONS) as unknown as UserLocation,
-      image: getRandomArrayElement(AVATARS),
-      level: getRandomArrayElement(LEVELS) as unknown as UserLevel,
-      typeOfTrain: getRandomArray(TYPES_OF_TRAIN),
-    }
-    if (role === UserRole.User) {
-      const userUser = {
-        ... user,
-        timeOfTrain: getRandomArrayElement(TIMES_OF_TRAIN) as unknown as UserTime,
-        caloriesToReset: getRandomNumber(CountCaloriesToReset.Min, CountCaloriesToReset.Max),
-        caloriesToSpend: getRandomNumber(CountCaloriesToSpend.Min, CountCaloriesToSpend.Max),
-        trainingReady: getRandomBoolean()
-      }
-      return userUser;
-    } else if (role === UserRole.Coach) {
-      const userCoach = {
-        ... user,
-        certificate: getRandomArrayElement(CERTIFICATE),
-        merit: getRandomArrayElement(MERITS),
-        personalTraining: getRandomBoolean()
-      }
-      return userCoach;
-    }
+  const role = getRandomArrayElement(ROLES) as unknown as UserRole;
+  const user = {
+    id: `user${number}@pochta.local`,
+    email: `user${number}@pochta.local`,
+    name: getRandomArrayElement(NAMES),
+    avatar: getRandomArrayElement(AVATARS),
+    gender: getRandomArrayElement(GENDERS) as unknown as UserGender,
+    dateBirth: randomDate(new Date(2012, 0, 1), new Date()),
+    createdDate: randomDate(new Date(2012, 0, 1), new Date()),
+    role,
+    description: getRandomArrayElement(DESCRIPTIONS),
+    location: getRandomArrayElement(LOCATIONS) as unknown as UserLocation,
+    image: getRandomArrayElement(AVATARS),
+    level: getRandomArrayElement(LEVELS) as unknown as UserLevel,
+    typeOfTrain: getRandomArray(TYPES_OF_TRAIN),
+  }
+  if (role === UserRole.User) {
     const userUser = {
-        ... user,
-        timeOfTrain: getRandomArrayElement(TIMES_OF_TRAIN) as unknown as UserTime,
-        caloriesToReset: getRandomNumber(CountCaloriesToReset.Min, CountCaloriesToReset.Max),
-        caloriesToSpend: getRandomNumber(CountCaloriesToSpend.Min, CountCaloriesToSpend.Max),
-        trainingReady: getRandomBoolean()
-      }
+      ... user,
+      timeOfTrain: getRandomArrayElement(TIMES_OF_TRAIN) as unknown as UserTime,
+      caloriesToReset: getRandomNumber(CountCaloriesToReset.Min, CountCaloriesToReset.Max),
+      caloriesToSpend: getRandomNumber(CountCaloriesToSpend.Min, CountCaloriesToSpend.Max),
+      trainingReady: getRandomBoolean()
+    }
     return userUser;
-  };
+  } else if (role === UserRole.Coach) {
+    const userCoach = {
+      ... user,
+      certificate: getRandomArrayElement(CERTIFICATE),
+      merit: getRandomArrayElement(MERITS),
+      personalTraining: getRandomBoolean()
+    }
+    return userCoach;
+  }
+  const userUser = {
+      ... user,
+      timeOfTrain: getRandomArrayElement(TIMES_OF_TRAIN) as unknown as UserTime,
+      caloriesToReset: getRandomNumber(CountCaloriesToReset.Min, CountCaloriesToReset.Max),
+      caloriesToSpend: getRandomNumber(CountCaloriesToSpend.Min, CountCaloriesToSpend.Max),
+      trainingReady: getRandomBoolean()
+    }
+  return userUser;
+};
 
 const createUsers = (ids: number[]) => ids.map((id) => generateUser(id));
+const createUserUsers = (ids: number[]) => ids.map((id) => generateUserUser(id));
 
-export { generateUser, createUsers };
+export { generateUser, createUsers, generateUserUser, createUserUsers, generateUserCoach };
