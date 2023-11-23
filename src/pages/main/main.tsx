@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import LookForCompany from '../../components/look-for-company/look-for-company';
 import PopularTrainings from '../../components/popular-trainings/popular-trainings';
@@ -7,6 +8,9 @@ import SpecialOffers from '../../components/special-offers/special-offers';
 function Main(): JSX.Element {
   return (
     <div className="wrapper">
+      <Helmet>
+        <title>FitFriends. Главная</title>
+      </Helmet>
       <Header />
       <main>
         <h1 className="visually-hidden">FitFriends — Время находить тренировки, спортзалы и друзей спортсменов</h1>

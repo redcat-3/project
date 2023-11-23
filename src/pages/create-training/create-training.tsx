@@ -3,7 +3,7 @@ import Header from '../../components/header/header';
 import { CountCaloriesToSpend, NameLength, TabIndex, WorkoutDescriptionLength } from '../../constant';
 import { ChangeEventHandler, FormEvent, useState } from 'react';
 import { WorkoutTimes, WorkoutType, WorkoutTypes } from '../../types/workout-data';
-import { UserGender, UserLevel, UserLevels, UserTime } from '../../types/user-data';
+import { UserGender, UserLevel, LEVELS, UserTime } from '../../types/user-data';
 
 function CreateTraning(): JSX.Element {
   const [isDisabled, setIsDisabled] = useState(true);
@@ -69,13 +69,7 @@ function CreateTraning(): JSX.Element {
   };
 
   const onSendWorkout = () => {
-    if(formData.type) {
-      console.log(formData);
-    } if(formData.caloriesToSpend === 0) {
-      console.log(formData);
-    } else {
-      console.log(formData);
-    }
+
   };
   
   return (
@@ -185,7 +179,7 @@ function CreateTraning(): JSX.Element {
                               </span>
                             </button>
                             <ul className="custom-select__list" role="listbox">
-                              {UserLevels.map((item) => (
+                              {LEVELS.map((item) => (
                                 <li>{item}</li>
                               ))}
                             </ul>
@@ -201,6 +195,7 @@ function CreateTraning(): JSX.Element {
                                     value={formData.gender}
                                     type="radio"
                                     name="gender"
+                                    checked={formData.gender === UserGender.Male ? true : false} 
                                   />
                                   <span className="custom-toggle-radio__icon"></span>
                                   <span className="custom-toggle-radio__label">Мужчинам</span>
@@ -212,7 +207,8 @@ function CreateTraning(): JSX.Element {
                                     onChange={() => setFormData({...formData, gender: UserGender.Female})}
                                     value={formData.gender}
                                     type="radio"
-                                    name="gender" checked
+                                    name="gender"
+                                    checked={formData.gender === UserGender.Female ? true : false}
                                   />
                                   <span className="custom-toggle-radio__icon"></span>
                                   <span className="custom-toggle-radio__label">Женщинам</span>
@@ -225,6 +221,7 @@ function CreateTraning(): JSX.Element {
                                     value={formData.gender}
                                     type="radio"
                                     name="gender"
+                                    checked={formData.gender === UserGender.Indifferent ? true : false} 
                                   />
                                   <span className="custom-toggle-radio__icon"></span>
                                   <span className="custom-toggle-radio__label">Всем</span>

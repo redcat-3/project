@@ -1,6 +1,8 @@
 export const BACKEND_URL = 'http://localhost:4000';
 export const REQUEST_TIMEOUT = 5000;
 export const DEFAULT_LIMIT = 6;
+export const EMAIL_REGEXP = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
+export const MAX_AVATAR_SIZE = 2200000;
 
 export enum AppRoute {
   SignIn = '/login',

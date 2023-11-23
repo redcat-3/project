@@ -10,11 +10,11 @@ const NAMES = [
     'Dima',
 ]
 const AVATARS = [
-    'C:/img/content/avatars/users/photo-1.png',
-    'C:/img/content/avatars/users/photo-2.png',
-    'C:/img/content/avatars/users/photo-3.png',
-    'C:/img/content/avatars/users/photo-4.png',
-    'C:/img/content/avatars/users/photo-5.png',
+    'img/content/avatars/users/photo-1',
+    'img/content/avatars/users/photo-2',
+    'img/content/avatars/users/photo-3',
+    'img/content/avatars/users/photo-4',
+    'img/content/avatars/users/photo-5',
 ]
 const GENDERS = [
     'male',

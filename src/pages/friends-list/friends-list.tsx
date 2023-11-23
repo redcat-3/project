@@ -1,10 +1,11 @@
 import FriendsListItem from '../../components/friends-list-item/friends-list-item';
 import Header from '../../components/header/header';
 import { AppRoute, DEFAULT_LIMIT } from '../../constant';
-import { useAppDispatch } from '../../hooks';
 import { createUserUsers, generateUserCoach } from '../../mocks/users';
 import { redirectToRoute } from '../../store/action';
 import { UserRole } from '../../types/user-data';
+import { useAppDispatch } from '../../hooks';
+import { Helmet } from 'react-helmet-async';
 
 const arr = [0];
 for (let i = 1; i <= 20; i++) {
@@ -13,8 +14,7 @@ for (let i = 1; i <= 20; i++) {
 const users = createUserUsers(arr);
 const coach = generateUserCoach(1);
 
-
-function CreateTraning(): JSX.Element {
+function FriendsList(): JSX.Element {
   const dispatch = useAppDispatch();
   let renderedUsersCount = DEFAULT_LIMIT;
   let renderedUsers = users.slice(0, renderedUsersCount);
@@ -31,6 +31,9 @@ function CreateTraning(): JSX.Element {
   }
   return (
     <div className="wrapper">
+      <Helmet>
+        <title>FitFriends. Список друзей</title>
+      </Helmet>
       <Header />
       <main>
         <section className="friends-list">
@@ -46,7 +49,7 @@ function CreateTraning(): JSX.Element {
               </div>
               <ul className="friends-list__list">
                 {renderedUsers.map((item) => (
-                  <FriendsListItem
+                  <FriendsListItem key={item.id}
                     id={item.id}
                     name={item.name}
                     location={item.location}
@@ -78,4 +81,4 @@ function CreateTraning(): JSX.Element {
     </div>
   );
 }
-export default CreateTraning;
+export default FriendsList;

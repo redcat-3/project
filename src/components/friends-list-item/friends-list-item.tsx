@@ -33,11 +33,11 @@ function FriendsListItem({id, name, location, avatar, trainingReady, typeOfTrain
                 <picture>
                   <source
                     type="image/webp"
-                    srcSet="img/content/thumbnails/friend-14.webp, img/content/thumbnails/friend-14@2x.webp 2x"
+                    srcSet={`${avatar}.webp, ${avatar}@2x.webp 2x,`}
                   />
                   <img
-                    src={avatar}
-                    srcSet="img/content/thumbnails/friend-14@2x.jpg 2x"
+                    src={`${avatar}.png`}
+                    srcSet={`${avatar}@2x.jpg 2x`}
                     width="78"
                     height="78"
                     alt=""

@@ -76,8 +76,16 @@ export type UserCoach = {
   personalTraining: boolean;
 }
 
-export const UserLevels = [
+export const LEVELS = [
   'новичок',
   'любитель',
   'профессионал'
+] as const;
+
+export const LOCATIONS = [
+  'Пионерская',
+  'Петроградская',
+  'Удельная',
+  'Звёздная',
+  'Спортивная',
 ] as const;

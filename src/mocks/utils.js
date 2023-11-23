@@ -22,7 +22,7 @@ function getRandomArrayElement(items) {
 
 function getRandomBoolean() {
   const BOOLEANS = ['true', 'false'];
-  return Boolean(getRandomItem<string>(BOOLEANS));
+  return Boolean(getRandomArrayElement(BOOLEANS));
 }
 
 const getRandomNumber = (min, max) => {
