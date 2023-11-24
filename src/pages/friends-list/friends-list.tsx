@@ -55,8 +55,8 @@ function FriendsList(): JSX.Element {
                     location={item.location}
                     avatar={item.avatar}
                     trainingReady={item.trainingReady}
-                    typeOfTrain={item.typeOfTrain}
-                    request={0}
+                    typeOfTrain={item.typeOfTrain.slice(3)}
+                    request={false}
                   />
                 ))}
               </ul>

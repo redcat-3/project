@@ -1,29 +1,26 @@
-import { ChangeEventHandler, FormEvent, MouseEventHandler, useState } from "react";
+import { ChangeEventHandler, FormEvent, useState } from "react";
 import { LOCATIONS, UserGender, UserRole } from "../../types/user-data";
-import { EMAIL_REGEXP, MAX_AVATAR_SIZE, UserNameLength, UserPasswordLength } from "../../constant";
+import { AppRoute, EMAIL_REGEXP, ErrorMessage, MAX_AVATAR_SIZE, UserNameLength, UserPasswordLength } from "../../constant";
+import { useAppDispatch } from "../../hooks";
+import { redirectToRoute } from "../../store/action";
 
 function PopupSignUp(): JSX.Element {
-  const errorTemp = {
-    name: false,
-    email: false,
-    avatar: false,
-    gender: false,
-    dateBirth: false,
-    location: false,
-    role: false,
-    password: false,
-  };
-  let message = '';
-  const [error, setError] = useState(errorTemp);
-  const [isDisabled, setIsDisabled] = useState(true);
+  const dispatch = useAppDispatch();
+  const [nameError, setNameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [fileError, setFileError] = useState(false);
+  const [formError, setFormError] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   const [isLocationOpened, setIsLocationOpened] = useState(false);
+  const [isAvatarLoad, setIsAvatarLoad] = useState(false);
   const [agreement, setAgreement] = useState(false);
   const [currentGender, setCurrentGender] = useState(UserGender.Male);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     avatar: '',
-    gender: '' as unknown as UserGender,
+    gender: UserGender.Male,
     dateBirth: '',
     location: '',
     role: '' as unknown as UserRole,
@@ -34,11 +31,12 @@ function PopupSignUp(): JSX.Element {
     if(event.target.files) {
       if(event.target.files[0].size > MAX_AVATAR_SIZE) {
         setIsDisabled(true);
-        message = 'Максимальный размер изображения 1 мегабайт';
-        setError({...error, avatar: true});
+        setFileError(true);
+        setIsAvatarLoad(false);
       }
-      setFormData({...formData, avatar: event.target.files[0].name});
-      message = '';
+      setFormData({...formData, avatar: URL.createObjectURL(event.target.files[0])});
+      setFileError(false);
+      setIsAvatarLoad(true);
       setIsDisabled(false);
       return;
     }
@@ -47,27 +45,23 @@ function PopupSignUp(): JSX.Element {
 
   const handleNameChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     setFormData({...formData, name: event.target.value});
-    if(UserNameLength.Min <= event.target.value.length || UserNameLength.Max >= event.target.value.length) {
-      setIsDisabled(false);
-      setError({...error, name: false});
-      message = '';
-    } else {
+    if(event.target.value.length <= UserNameLength.Min || UserNameLength.Max <= event.target.value.length) {
       setIsDisabled(true);
-      setError({...error, name: true});
-      message = `Mинимальная длина ${UserNameLength.Min} символ; максимальная длина ${UserNameLength.Max} символов`
+      setNameError(true);
+    } else {
+      setNameError(false);
+      setIsDisabled(false);
     }
   };
 
   const handleEmailChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     setFormData({...formData, email: event.target.value});
     if(EMAIL_REGEXP.test(event.target.value)) {
+      setEmailError(false);
       setIsDisabled(false);
-      setError({...error, email: false});
-      message = '';
     } else {
       setIsDisabled(true);
-      setError({...error, email: true});
-      message = 'Неверный формат электронной почты'
+      setEmailError(true);
     }
   };
 
@@ -77,19 +71,35 @@ function PopupSignUp(): JSX.Element {
 
   const handlePasswordChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     setFormData({...formData, password: event.target.value});
-    if(UserPasswordLength.Min <= event.target.value.length || UserPasswordLength.Max >= event.target.value.length) {
-      setIsDisabled(false);
-      setError({...error, password: false});
-      message = '';
-    } else {
+    if(event.target.value.length <= UserPasswordLength.Min || UserPasswordLength.Max <= event.target.value.length) {
       setIsDisabled(true);
-      setError({...error, password: true});
-      message = `Mинимальная длина ${UserPasswordLength.Min} символ; максимальная длина ${UserPasswordLength.Max} символов`
+      setPasswordError(true);
+    } else {
+      setPasswordError(false);
+      setIsDisabled(false);
     }
   };
 
-  const onSendWorkout = () => {
-
+  const onSendForm = () => {
+    if (
+      formData.avatar !== '' &&
+      formData.dateBirth !== '' &&
+      formData.email !== '' &&
+      formData.gender !== '' as UserGender &&
+      formData.location !== '' &&
+      formData.name !== '' &&
+      formData.password !== '' &&
+      agreement
+    ) {
+      setFormError(false);
+      if(formData.role === UserRole.Coach) {
+        dispatch(redirectToRoute(AppRoute.QuestionnaireCoach))
+      } else if(formData.role === UserRole.User) {
+        dispatch(redirectToRoute(AppRoute.QuestionnaireUser))
+      }
+    } else {
+      setFormError(true);
+    }
   };
   return (
     <div className="popup-form popup-form--sign-up">
@@ -103,7 +113,7 @@ function PopupSignUp(): JSX.Element {
               method="get"
               onSubmit={(evt: FormEvent<HTMLFormElement>) => {
                 evt.preventDefault();
-                onSendWorkout();
+                onSendForm();
               }}
             >
               <div className="sign-up">
@@ -116,11 +126,20 @@ function PopupSignUp(): JSX.Element {
                         type="file"
                         accept="image/png, image/jpeg"
                       />
-                      <span className="input-load-avatar__btn">
+                      {isAvatarLoad && <span className="input-load-avatar__avatar">
+                        <img
+                          src={formData.avatar}
+                          width="98"
+                          height="98"
+                          alt="user photo"
+                        ></img>
+                      </span>}
+                      {!isAvatarLoad && <span className="input-load-avatar__btn">
                         <svg width="20" height="20" aria-hidden="true">
                           <use xlinkHref="#icon-import"></use>
                         </svg>
-                      </span>
+                      </span>}
+                      {fileError && <span className="custom-input__error">{ErrorMessage.File}</span>}
                     </label>
                   </div>
                   <div className="sign-up__description">
@@ -136,12 +155,11 @@ function PopupSignUp(): JSX.Element {
                         <input
                           onChange={handleNameChange}
                           value={formData.name}
-                          className="visually-hidden"
                           type="text"
                           name="name"
                         />
                       </span>
-                      {error.name && <span className="custom-input__error">{message}</span>}
+                      {nameError && <span className="custom-input__error">{ErrorMessage.Name}</span>}
                     </label>
                   </div>
                   <div className="custom-input">
@@ -155,7 +173,7 @@ function PopupSignUp(): JSX.Element {
                           name="email"
                         />
                       </span>
-                      {error.email && <span className="custom-input__error">{message}</span>}
+                      {emailError && <span className="custom-input__error">{ErrorMessage.Email}</span>}
                     </label>
                   </div>
                   <div className="custom-input">
@@ -218,7 +236,7 @@ function PopupSignUp(): JSX.Element {
                           autoComplete="off"
                         />
                       </span>
-                      {error.password && <span className="custom-input__error">{message}</span>}
+                      {passwordError && <span className="custom-input__error">{ErrorMessage.Password}</span>}
                     </label>
                   </div>
                   <div className="sign-up__radio"><span className="sign-up__label">Пол</span>
@@ -321,7 +339,11 @@ function PopupSignUp(): JSX.Element {
                       value="user-agreement"
                       name="user-agreement"
                       checked={agreement}
-                      onClick={() => setAgreement(!agreement)}
+                      onClick={() => {
+                        setAgreement(!agreement);
+                        setIsDisabled(agreement);
+                        setFormError(agreement);
+                      }}
                     />
                     <span className="sign-up__checkbox-icon">
                       <svg width="9" height="6" aria-hidden="true">
@@ -331,7 +353,12 @@ function PopupSignUp(): JSX.Element {
                     <span className="sign-up__checkbox-label">Я соглашаюсь с <span>политикой конфиденциальности</span> компании</span>
                   </label>
                 </div>
-                <button className="btn sign-up__button" type="submit">Продолжить</button>
+                <button
+                  className="btn sign-up__button"
+                  type="submit"
+                  disabled={isDisabled}
+                >Продолжить</button>
+                {formError && <span className="custom-input__error">{ErrorMessage.Form}</span>}
               </div>
             </form>
           </div>

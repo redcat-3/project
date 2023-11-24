@@ -9,10 +9,11 @@ type FriendsListItemProps = {
   avatar: string,
   trainingReady: boolean,
   typeOfTrain: string[],
-  request: number,
+  request: boolean,
+  requestId?: number
 };
 
-function FriendsListItem({id, name, location, avatar, trainingReady, typeOfTrain, request}: FriendsListItemProps): JSX.Element {
+function FriendsListItem({id, name, location, avatar, trainingReady, typeOfTrain, request, requestId}: FriendsListItemProps): JSX.Element {
   const setReadyStatus = (ready: boolean): string => {
     if(ready) {
       return 'thumbnail-friend__ready-status thumbnail-friend__ready-status--is-ready';
@@ -21,7 +22,9 @@ function FriendsListItem({id, name, location, avatar, trainingReady, typeOfTrain
     }
   };
   const handleRequestClick = () => {
-    console.log(request);
+    if(requestId) {
+      
+    }
   };
   return (
     <Link to={`/user-card-user/${id}/`}>

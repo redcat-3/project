@@ -111,7 +111,7 @@ const generateUserUser = ( number: number): UserUser => {
     location: getRandomArrayElement(LOCATIONS) as unknown as UserLocation,
     image: getRandomArrayElement(AVATARS),
     level: getRandomArrayElement(LEVELS) as unknown as UserLevel,
-    typeOfTrain: getRandomArray(TYPES_OF_TRAIN),
+    typeOfTrain: getRandomArray(TYPES_OF_TRAIN).slice(0,3),
     timeOfTrain: getRandomArrayElement(TIMES_OF_TRAIN) as unknown as UserTime,
     caloriesToReset: getRandomNumber(CountCaloriesToReset.Min, CountCaloriesToReset.Max),
     caloriesToSpend: getRandomNumber(CountCaloriesToSpend.Min, CountCaloriesToSpend.Max),

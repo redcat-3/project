@@ -3,13 +3,14 @@ export const REQUEST_TIMEOUT = 5000;
 export const DEFAULT_LIMIT = 6;
 export const EMAIL_REGEXP = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
 export const MAX_AVATAR_SIZE = 2200000;
+export const MAX_TYPES_COUNT = 3;
 
 export enum AppRoute {
   SignIn = '/login',
   Logout = '/logout',
   Main = '/',
   Intro = '/intro',
-  CreateTraining ='/create-training/:id',
+  CreateTraining ='/create-training',
   FriendsList = '/friends-list/:id',
   MyOrders = '/my-orders/:id',
   MyPurchases = '/my-purchases/:id',
@@ -96,3 +97,13 @@ export const NameLength = {
   Min: 1,
   Max: 15,
 };
+
+export const ErrorMessage = {
+  Name: `Mинимальная длина ${UserNameLength.Min} символ, максимальная длина ${UserNameLength.Max} символов`,
+  File: 'Максимальный размер изображения 1 мегабайт',
+  Email: 'Неверный формат электронной почты',
+  Password: `Mинимальная длина ${UserPasswordLength.Min} символов, максимальная длина ${UserPasswordLength.Max} символов`,
+  Form: 'Необходимо заполнить все поля',
+  TypesCount: `Одновременно может быть выбрано не больше ${MAX_TYPES_COUNT} типов тренировок`,
+  CaloriesToReset: `Минимальное значение ${CountCaloriesToReset.Min}, максимально значение ${CountCaloriesToReset.Max}, только целые числа.`
+} as const

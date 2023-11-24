@@ -26,7 +26,7 @@ export type Workout = {
   rating: number;
 };
 
-export const WorkoutTypes = [
+export const WORKOUT_TYPES = [
   'йога',
   'бег',
   'бокс',
@@ -36,7 +36,7 @@ export const WorkoutTypes = [
   'пилатес',
 ] as const;
 
-export const WorkoutTimes = [
+export const WORKOUT_TIMES = [
   '10-30',
   '30-50',
   '50-80',

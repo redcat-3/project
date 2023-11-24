@@ -40,7 +40,7 @@ const getRandomNumber = (min, max) => {
 };
 
 const getRandomArray = (array) => {
-  const number = getRandomNumber(0, (array.length - 1));
+  const number = getRandomNumber(1, (array.length - 1));
   const randomArray = [];
   let element = getRandomArrayElement(array);
   for (let i = 0; i < number; i++) {

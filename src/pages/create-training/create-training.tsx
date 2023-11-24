@@ -2,11 +2,15 @@ import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import { CountCaloriesToSpend, NameLength, TabIndex, WorkoutDescriptionLength } from '../../constant';
 import { ChangeEventHandler, FormEvent, useState } from 'react';
-import { WorkoutTimes, WorkoutType, WorkoutTypes } from '../../types/workout-data';
+import { WORKOUT_TIMES, WORKOUT_TYPES, WorkoutType } from '../../types/workout-data';
 import { UserGender, UserLevel, LEVELS, UserTime } from '../../types/user-data';
+import { levelToRussian, levelToValue, typeToRussian, workoutTypeToValue } from '../../utils';
 
 function CreateTraning(): JSX.Element {
   const [isDisabled, setIsDisabled] = useState(true);
+  const [isTypeOpened, setIsTypeOpened] = useState(false);
+  const [isTimeOpened, setIsTimeOpened] = useState(false);
+  const [isLevelOpened, setIsLevelOpened] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     background: 'image.jpg',
@@ -111,9 +115,15 @@ function CreateTraning(): JSX.Element {
                       <div className="create-training__block">
                         <h2 className="create-training__legend">Характеристики тренировки</h2>
                         <div className="create-training__info">
-                          <div className="custom-select custom-select--not-selected"><span className="custom-select__label">Выберите тип тренировки</span>
-                            <button className="custom-select__button" type="button" aria-label="Выберите одну из опций">
-                              <span className="custom-select__text"></span>
+                          <div className={`custom-select ${isTypeOpened ? 'is-open' : 'custom-select--not-selected'} not-empty`}>
+                            <span className="custom-select__label" style={{opacity: 1}}>Выберите тип тренировки</span>
+                            <button
+                              className="custom-select__button"
+                              type="button"
+                              aria-label="Выберите одну из опций"
+                              onClick={() => setIsTypeOpened(true)}
+                            >
+                              <span className="custom-select__text">{typeToRussian(formData.type)}</span>
                               <span className="custom-select__icon">
                                 <svg width="15" height="6" aria-hidden="true">
                                   <use xlinkHref="#arrow-down"></use>
@@ -121,8 +131,21 @@ function CreateTraning(): JSX.Element {
                               </span>
                             </button>
                             <ul className="custom-select__list" role="listbox">
-                              {WorkoutTypes.map((item) => (
-                                <li>{item}</li>
+                            {WORKOUT_TYPES.map((el) =>
+                              (
+                                <li
+                                  key={el}
+                                  role="option"
+                                  tabIndex={0}
+                                  className="custom-select__item"
+                                  aria-selected={formData.type === workoutTypeToValue(el)}
+                                  onClick={() => {
+                                    setFormData({...formData, type: workoutTypeToValue(el) as WorkoutType});
+                                    setIsTypeOpened(false);
+                                  }}
+                                >
+                                  {el}
+                                </li>
                               ))}
                             </ul>
                           </div>
@@ -139,10 +162,15 @@ function CreateTraning(): JSX.Element {
                               </span>
                             </label>
                           </div>
-                          <div className="custom-select custom-select--not-selected">
-                            <span className="custom-select__label">Сколько времени потратим</span>
-                            <button className="custom-select__button" type="button" aria-label="Выберите одну из опций">
-                              <span className="custom-select__text"></span>
+                          <div className={`custom-select ${isTimeOpened ? 'is-open' : 'custom-select--not-selected'} not-empty`}>
+                            <span className="custom-select__label" style={{opacity: 1}}>Сколько времени потратим</span>
+                            <button
+                              className="custom-select__button"
+                              type="button"
+                              aria-label="Выберите одну из опций"
+                              onClick={() => setIsTimeOpened(true)}
+                            >
+                              <span className="custom-select__text">{`${formData.timeOfTraining} мин`}</span>
                               <span className="custom-select__icon">
                                 <svg width="15" height="6" aria-hidden="true">
                                   <use xlinkHref="#arrow-down"></use>
@@ -150,8 +178,21 @@ function CreateTraning(): JSX.Element {
                               </span>
                             </button>
                             <ul className="custom-select__list" role="listbox">
-                              {WorkoutTimes.map((item) => (
-                                <li key={item}>{item}</li>
+                            {WORKOUT_TIMES.map((el) =>
+                              (
+                                <li
+                                  key={el}
+                                  role="option"
+                                  tabIndex={0}
+                                  className="custom-select__item"
+                                  aria-selected={formData.timeOfTraining === el}
+                                  onClick={() => {
+                                    setFormData({...formData, timeOfTraining: el as UserTime});
+                                    setIsTimeOpened(false);
+                                  }}
+                                >
+                                  {`${el} мин`}
+                                </li>
                               ))}
                             </ul>
                           </div>
@@ -168,10 +209,15 @@ function CreateTraning(): JSX.Element {
                               </span>
                             </label>
                           </div>
-                          <div className="custom-select custom-select--not-selected">
-                            <span className="custom-select__label">Выберите уровень тренировки</span>
-                            <button className="custom-select__button" type="button" aria-label="Выберите одну из опций">
-                              <span className="custom-select__text"></span>
+                          <div className={`custom-select ${isLevelOpened ? 'is-open' : 'custom-select--not-selected'} not-empty`}>
+                            <span className="custom-select__label" style={{opacity: 1}}>Выберите уровень тренировки</span>
+                            <button
+                              className="custom-select__button"
+                              type="button"
+                              aria-label="Выберите одну из опций"
+                              onClick={() => setIsLevelOpened(true)}
+                            >
+                              <span className="custom-select__text">{levelToRussian(formData.level)}</span>
                               <span className="custom-select__icon">
                                 <svg width="15" height="6" aria-hidden="true">
                                   <use xlinkHref="#arrow-down"></use>
@@ -179,8 +225,21 @@ function CreateTraning(): JSX.Element {
                               </span>
                             </button>
                             <ul className="custom-select__list" role="listbox">
-                              {LEVELS.map((item) => (
-                                <li>{item}</li>
+                            {LEVELS.map((el) =>
+                              (
+                                <li
+                                  key={el}
+                                  role="option"
+                                  tabIndex={0}
+                                  className="custom-select__item"
+                                  aria-selected={formData.level === levelToValue(el)}
+                                  onClick={() => {
+                                    setFormData({...formData, level: levelToValue(el)});
+                                    setIsLevelOpened(false);
+                                  }}
+                                >
+                                  {el}
+                                </li>
                               ))}
                             </ul>
                           </div>
