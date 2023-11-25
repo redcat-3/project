@@ -1,12 +1,22 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
-import { CountCaloriesToSpend, NameLength, TabIndex, WorkoutDescriptionLength } from '../../constant';
+import { AppRoute, CountCaloriesToSpend, ErrorMessage, NameLength, TabIndex, WorkoutDescriptionLength } from '../../constant';
 import { ChangeEventHandler, FormEvent, useState } from 'react';
 import { WORKOUT_TIMES, WORKOUT_TYPES, WorkoutType } from '../../types/workout-data';
 import { UserGender, UserLevel, LEVELS, UserTime } from '../../types/user-data';
 import { levelToRussian, levelToValue, typeToRussian, workoutTypeToValue } from '../../utils';
+import { redirectToRoute } from '../../store/action';
+import { useAppDispatch } from '../../hooks';
+
+const id = `user${1}@pochta.local`;
 
 function CreateTraning(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const [formError, setFormError] = useState(false);
+  const [nameError, setNameError] = useState(false);
+  const [priceError, setPriceError] = useState(false);
+  const [caloriesError, setCaloriesError] = useState(false);
+  const [descriptionError, setDescriptionError] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const [isTypeOpened, setIsTypeOpened] = useState(false);
   const [isTimeOpened, setIsTimeOpened] = useState(false);
@@ -17,8 +27,8 @@ function CreateTraning(): JSX.Element {
     level: '' as UserLevel,
     type: '' as WorkoutType,
     timeOfTraining: '' as UserTime,
-    price: 0,
-    caloriesToSpend: 0,
+    price: '',
+    caloriesToSpend: '',
     description: '',
     gender: '' as UserGender,
     video: '',
@@ -26,54 +36,76 @@ function CreateTraning(): JSX.Element {
   });
 
   const handleCaloriesChange: ChangeEventHandler<HTMLInputElement> = (event): void => {
-    setFormData({...formData, caloriesToSpend: +event.target.value});
-    if(CountCaloriesToSpend.Min <= formData.caloriesToSpend || CountCaloriesToSpend.Max >= formData.caloriesToSpend) {
-      setIsDisabled(false);
-    } else {
+    setFormData({...formData, caloriesToSpend: event.target.value});
+    if(+event.target.value < CountCaloriesToSpend.Min || +event.target.value > CountCaloriesToSpend.Max) {
       setIsDisabled(true);
+      setCaloriesError(true);
+    } else {
+      setIsDisabled(false);
+      setCaloriesError(false);
     }
   };
 
-  const handleFileChange: ChangeEventHandler<HTMLInputElement> = (event): void => {
+  const handleFileChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     if(event.target.files) {
       setFormData({...formData, video: event.target.files[0].name});
-      setIsDisabled(true);
-      return;
-    } else {
       setIsDisabled(false);
-      return;
+    } else {
+      setIsDisabled(true);
     }
   };
 
   const handlePriceChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-    setFormData({...formData, price: +event.target.value});
-    if(0 <= formData.price) {
+    setFormData({...formData, price: event.target.value});
+    if(+event.target.value >= 0) {
       setIsDisabled(false);
-    } else {
+      setPriceError(false);
+    } else if (+event.target.value < 0){
       setIsDisabled(true);
+      setPriceError(true);
     }
   };
 
   const handleTextChange: ChangeEventHandler<HTMLTextAreaElement> = (event) => {
     setFormData({...formData, description: event.target.value});
-    if(WorkoutDescriptionLength.Min <= event.target.value.length || WorkoutDescriptionLength.Max >= event.target.value.length) {
-      setIsDisabled(false);
-    } else {
+    if(event.target.value.length < WorkoutDescriptionLength.Min || event.target.value.length > WorkoutDescriptionLength.Max) {
       setIsDisabled(true);
+      setDescriptionError(true);
+    } else {
+      setIsDisabled(false);
+      setDescriptionError(false);
     }
   };
 
   const handleNameChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     setFormData({...formData, name: event.target.value});
-    if(NameLength.Min <= event.target.value.length || NameLength.Max >= event.target.value.length) {
-      setIsDisabled(false);
-    } else {
+    if(event.target.value.length <= NameLength.Min || NameLength.Max <= event.target.value.length) {
       setIsDisabled(true);
+      setNameError(true);
+    } else {
+      setIsDisabled(false);
+      setNameError(false);
     }
   };
 
   const onSendWorkout = () => {
-
+    if (
+      formData.name !== '' &&
+      formData.level !== '' as UserLevel &&
+      formData.type !== '' as WorkoutType &&
+      formData.timeOfTraining !== '' as UserTime &&
+      formData.price !== '' &&
+      formData.name !== '' &&
+      formData.caloriesToSpend !== '' &&
+      formData.description !== '' &&
+      formData.gender !== '' as UserGender &&
+      formData.video !== ''
+    ) {
+      setFormError(false);
+      dispatch(redirectToRoute(`/my-trainings/${id}` as AppRoute))
+    } else {
+      setFormError(true);
+    }
   };
   
   return (
@@ -109,6 +141,7 @@ function CreateTraning(): JSX.Element {
                                 type="text" 
                                 name="training-name" />
                             </span>
+                            {nameError && <span className="custom-input__error">{ErrorMessage.Title}</span>}
                           </label>
                         </div>
                       </div>
@@ -160,6 +193,7 @@ function CreateTraning(): JSX.Element {
                                   name="calories" />
                                 <span className="custom-input__text">ккал</span>
                               </span>
+                              {caloriesError && <span className="custom-input__error">{ErrorMessage.CaloriesToSpend}</span>}
                             </label>
                           </div>
                           <div className={`custom-select ${isTimeOpened ? 'is-open' : 'custom-select--not-selected'} not-empty`}>
@@ -170,7 +204,7 @@ function CreateTraning(): JSX.Element {
                               aria-label="Выберите одну из опций"
                               onClick={() => setIsTimeOpened(true)}
                             >
-                              <span className="custom-select__text">{`${formData.timeOfTraining} мин`}</span>
+                              <span className="custom-select__text">{formData.timeOfTraining.length <= 1  ? '' : `${formData.timeOfTraining} мин`}</span>
                               <span className="custom-select__icon">
                                 <svg width="15" height="6" aria-hidden="true">
                                   <use xlinkHref="#arrow-down"></use>
@@ -207,6 +241,7 @@ function CreateTraning(): JSX.Element {
                                   name="price" />
                                 <span className="custom-input__text">₽</span>
                               </span>
+                              {priceError && <span className="custom-input__error">{ErrorMessage.Price}</span>}
                             </label>
                           </div>
                           <div className={`custom-select ${isLevelOpened ? 'is-open' : 'custom-select--not-selected'} not-empty`}>
@@ -301,6 +336,7 @@ function CreateTraning(): JSX.Element {
                               placeholder=" "
                             >
                             </textarea>
+                            {descriptionError && <span className="custom-input__error">{ErrorMessage.Description}</span>}
                           </label>
                         </div>
                       </div>
@@ -330,6 +366,7 @@ function CreateTraning(): JSX.Element {
                     >
                       Опубликовать
                     </button>
+                    {formError && <span className="custom-input__error">{ErrorMessage.Form}</span>}
                   </div>
                 </form>
               </div>

@@ -4,19 +4,19 @@ export const DEFAULT_LIMIT = 6;
 export const EMAIL_REGEXP = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
 export const MAX_AVATAR_SIZE = 2200000;
 export const MAX_TYPES_COUNT = 3;
+export const NOTIFICATION_DATE_FORMAT = 'DD MMMM, HH:mm';
 
 export enum AppRoute {
   SignIn = '/login',
   Logout = '/logout',
-  Main = '/',
-  Intro = '/intro',
+  Main = '/main/',
+  Intro = '/',
   CreateTraining ='/create-training',
   FriendsList = '/friends-list/:id',
   MyOrders = '/my-orders/:id',
   MyPurchases = '/my-purchases/:id',
   MyTrainings = '/my-trainings/:id',
-  PersonalAccountCoach = '/personal-account-coach/:id',
-  PersonalAccountUser = '/personal-account-user/:id',
+  PersonalAccount = '/personal-account/:id',
   QuestionnaireCoach = '/questionnaire-coach',
   QuestionnaireUser = '/questionnaire-user',
   SignUp = '/registr',
@@ -100,10 +100,14 @@ export const NameLength = {
 
 export const ErrorMessage = {
   Name: `Mинимальная длина ${UserNameLength.Min} символ, максимальная длина ${UserNameLength.Max} символов`,
+  Title: `Mинимальная длина ${NameLength.Min} символ, максимальная длина ${NameLength.Max} символов`,
   File: 'Максимальный размер изображения 1 мегабайт',
   Email: 'Неверный формат электронной почты',
   Password: `Mинимальная длина ${UserPasswordLength.Min} символов, максимальная длина ${UserPasswordLength.Max} символов`,
+  Description: `Mинимальная длина ${WorkoutDescriptionLength.Min} символов, максимальная длина ${WorkoutDescriptionLength.Max} символов`,
+  Price: 'Цена должна быть больше или равна 0',
   Form: 'Необходимо заполнить все поля',
   TypesCount: `Одновременно может быть выбрано не больше ${MAX_TYPES_COUNT} типов тренировок`,
-  CaloriesToReset: `Минимальное значение ${CountCaloriesToReset.Min}, максимально значение ${CountCaloriesToReset.Max}, только целые числа.`
+  CaloriesToReset: `Минимальное значение ${CountCaloriesToReset.Min}, максимально значение ${CountCaloriesToReset.Max}, только целые числа.`,
+  CaloriesToSpend: `Минимальное значение ${CountCaloriesToSpend.Min}, максимально значение ${CountCaloriesToSpend.Max}, только целые числа.`
 } as const

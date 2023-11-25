@@ -12,16 +12,13 @@ for (let i = 1; i <= 20; i++) {
 	arr.push(i);
 }
 const users = createUserUsers(arr);
-const coach = generateUserCoach(1);
+const coach = generateUserCoach(2);
 
 function FriendsList(): JSX.Element {
   const dispatch = useAppDispatch();
   let renderedUsersCount = DEFAULT_LIMIT;
   let renderedUsers = users.slice(0, renderedUsersCount);
   const isMore = renderedUsersCount < users.length;
-  if(coach.role !== UserRole.Coach) {
-    dispatch(redirectToRoute(AppRoute.Main));
-  };
   const handleMoreClick = () => {
     renderedUsersCount = renderedUsersCount + DEFAULT_LIMIT;
     renderedUsers = users.slice(0, renderedUsersCount);

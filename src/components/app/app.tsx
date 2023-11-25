@@ -69,14 +69,9 @@ function App(): JSX.Element {
             key={AppRoute.MyTrainings}
           />
           <Route
-            path={AppRoute.PersonalAccountCoach}
+            path={AppRoute.PersonalAccount}
             element={<PersonalAccountCoach/>}
-            key={AppRoute.PersonalAccountCoach}
-          />
-          <Route
-            path={AppRoute.PersonalAccountUser}
-            element={<PersonalAccountUser/>}
-            key={AppRoute.PersonalAccountUser}
+            key={AppRoute.PersonalAccount}
           />
           <Route
             path={AppRoute.QuestionnaireCoach}

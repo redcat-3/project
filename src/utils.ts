@@ -1,5 +1,7 @@
-import { UserLevel } from "./types/user-data";
+import dayjs from "dayjs";
+import { UserGender, UserLevel } from "./types/user-data";
 import { WorkoutType } from "./types/workout-data";
+import { NOTIFICATION_DATE_FORMAT } from "./constant";
 
 export function workoutTypeToValue (type: string): string {
   switch (type) {
@@ -56,19 +58,19 @@ export function levelToValue (level: string): UserLevel {
 export function levelToRussian (level: UserLevel): string {
   switch (level) {
     case UserLevel.Beginner:
-    default:
       return 'новичок';
     case UserLevel.Ethusiast:
       return 'любитель';
     case UserLevel.Pro:
       return 'профессионал';
+    default:
+      return '';
   }
 }
 
 export function typeToRussian (type: WorkoutType): string {
   switch (type) {
     case WorkoutType.Yoga:
-    default:
       return 'йога';
     case WorkoutType.Aerobics:
       return 'аэробика';
@@ -82,5 +84,19 @@ export function typeToRussian (type: WorkoutType): string {
       return 'бег';
     case WorkoutType.Stretching:
       return 'стрейчинг';
+    default:
+      return '';
   }
+}
+
+export function createNotificationMessage (name: string, gender: string): string {
+  if(gender === UserGender.Female) {
+    return `${name} пригласила вас на&nbsp;тренировку`;
+  } else {
+    return `${name} пригласил вас на&nbsp;тренировку`;
+  }
+}
+
+export function getNotificationDate(date: string) {
+  return date ? dayjs(date).format(NOTIFICATION_DATE_FORMAT) : '';
 }
