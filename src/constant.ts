@@ -41,6 +41,7 @@ export enum APIRoute {
 export enum NameSpace {
   Workout = 'workout',
   Workouts = 'workouts',
+  Reaction ='reaction',
   User = 'user',
   Orders = 'orders',
   Notifications = 'notifications',

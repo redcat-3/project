@@ -1,24 +1,19 @@
 import { NavLink } from "react-router-dom";
 import Notification from "../notification/notification";
-import { createNotifications } from "../../../../mocks/notification";
-import { useState } from "react";
 import { AppRoute } from "../../../../constant";
+import { useAppDispatch, useAppSelector } from "../../../../hooks";
+import { getNotifications } from "../../../../store/reaction-process/selectors";
+import { setNotifications } from "../../../../store/reaction-process/reaction-process";
 
 type MainNavProps = {
   id: string,
 };
 
 function MainNav ({id}: MainNavProps): JSX.Element {
-  const [notifications, setNotifications] = useState(createNotifications(5));
+  const dispatch = useAppDispatch();
+  const notifications = useAppSelector(getNotifications);
   const OnNotificationClick = (notificationId: number) => {
-    const notificationsNew = notifications;
-    if(notificationId) {
-      const index = notificationsNew.findIndex(item => item.notificationId === notificationId);
-      if (index !== -1) {
-        notificationsNew.splice(index, 1);
-      }
-    }
-    setNotifications(notificationsNew);
+    dispatch(setNotifications(notificationId));
   }
   return (
     <nav className="main-nav">
@@ -50,7 +45,7 @@ function MainNav ({id}: MainNavProps): JSX.Element {
             </svg>
           </NavLink>
         </li>
-        <li className="main-nav__item main-nav__item--notifications">
+        <li className={notifications.length === 0 ? "main-nav__item main-nav__item--notifications" : "main-nav__item main-nav__item--notifications is-notifications"}>
           <div
             className="main-nav__link"
             aria-label="Уведомления"

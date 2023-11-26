@@ -164,7 +164,8 @@ const generateUser = ( number: number): User => {
     }
   return userUser;
 };
-
+export const user = generateUserUser(22);
+export const coach = generateUserCoach(33);
 const createUsers = (ids: number[]) => ids.map((id) => generateUser(id));
 const createUserUsers = (ids: number[]) => ids.map((id) => generateUserUser(id));
 const arr = [0];

@@ -12,3 +12,11 @@ export type Request = {
   updatedDate: Date;
   status: RequestStatus;
 }
+
+export type Notification = {
+  notificationId: number;
+  userId: string;
+  createdDate: string;
+  text: string;
+  isActive: boolean;
+}

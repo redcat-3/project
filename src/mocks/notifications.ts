@@ -1,12 +1,5 @@
 import { randomDate } from "./utils";
-
-export type Notification = {
-  notificationId: number;
-  userId: string;
-  createdDate: string;
-  text: string;
-  isActive: boolean;
-}
+import { Notification } from "../types/reaction";
 
 export const generateNotification = ( number: number): Notification => {
   const notification = {
@@ -20,7 +13,7 @@ export const generateNotification = ( number: number): Notification => {
 }
 
 export function createNotifications (count: number) {
-  const arr = [0];
+  const arr = [1];
   for (let i = 1; i <= count; i++) {
 	arr.push(i);
   }

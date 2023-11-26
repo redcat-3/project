@@ -1,27 +1,29 @@
 import FriendsListItem from '../../components/friends-list-item/friends-list-item';
 import Header from '../../components/header/header';
 import { AppRoute, DEFAULT_LIMIT } from '../../constant';
-import { createUserUsers, createUsers, generateUserCoach } from '../../mocks/users';
 import { redirectToRoute } from '../../store/action';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { Helmet } from 'react-helmet-async';
 import { RequestStatus } from '../../types/reaction';
-import { createRequests } from '../../mocks/request';
-import { getUsers, getUsersCount, getUsersDataLoadingStatus } from '../../store/user-process/selectors';
+import { createRequests } from '../../mocks/requests';
+import { getUser, getUsers, getUsersCount, getUsersDataLoadingStatus } from '../../store/user-process/selectors';
 import { useState } from 'react';
 import { usersInc } from '../../store/user-process/user-process';
+import { useNavigate } from 'react-router-dom';
 
-const coach = generateUserCoach(2);
 const usersWithRequest = createRequests(4);
 
 function FriendsList(): JSX.Element {
+  let navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isUsersDataLoading = useAppSelector(getUsersDataLoadingStatus);
   const users = useAppSelector(getUsers);
+  const user = useAppSelector(getUser);
   const usersCount = useAppSelector(getUsersCount);
   let renderedUsersCount = users.length + usersWithRequest.length;
-  if((renderedUsersCount%DEFAULT_LIMIT) > 0 && renderedUsersCount > DEFAULT_LIMIT) {
-    const del = DEFAULT_LIMIT - renderedUsersCount%DEFAULT_LIMIT;
+  const div = renderedUsersCount%(DEFAULT_LIMIT/2);
+  if(div > 0 && renderedUsersCount > DEFAULT_LIMIT) {
+    const del = DEFAULT_LIMIT/2 - div;
     dispatch(usersInc(del));
     renderedUsersCount = users.length + usersWithRequest.length;
   }
@@ -39,6 +41,9 @@ function FriendsList(): JSX.Element {
   const handleRequestClick = (requestId: number, status: RequestStatus) => {
     console.log(`Update request ${requestId} to status ${status}`);
   }
+  const goBack = () => {
+    navigate(-1);
+  };
   if(isUsersDataLoading) {
     return <div className="wrapper">
     <Helmet>
@@ -50,7 +55,7 @@ function FriendsList(): JSX.Element {
         <div className="container">
           <div className="friends-list__wrapper">
             <div className="friends-list__title-wrapper">
-              <h1 className="friends-list__title">Loading ...</h1>
+              <h1 className="friends-list__title">Список друзей загружается ...</h1>
             </div>
           </div>
         </div>
@@ -68,10 +73,15 @@ function FriendsList(): JSX.Element {
         <section className="friends-list">
           <div className="container">
             <div className="friends-list__wrapper">
-              <button className="btn-flat friends-list__back" type="button">
+              <button
+                className="btn-flat friends-list__back"
+                type="button"
+                onClick={goBack}
+              >
                 <svg width="14" height="10" aria-hidden="true">
                   <use xlinkHref="#arrow-left"></use>
-                </svg><span>Назад</span>
+                </svg>
+                <span>Назад</span>
               </button>
               <div className="friends-list__title-wrapper">
                 <h1 className="friends-list__title">Мои друзья</h1>
@@ -88,7 +98,7 @@ function FriendsList(): JSX.Element {
                     request={item.request}
                     requestId={item.requestId}
                     userRole={item.role}
-                    role={coach.role}
+                    role={user.role}
                     handleRequestClick={handleRequestClick}
                   />
                 ))}
@@ -102,7 +112,7 @@ function FriendsList(): JSX.Element {
                     typeOfTrain={item.typeOfTrain}
                     request={false}
                     userRole={item.role}
-                    role={coach.role}
+                    role={user.role}
                     handleRequestClick={handleRequestClick}
                   />
                 ))}
