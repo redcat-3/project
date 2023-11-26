@@ -73,7 +73,7 @@ export type UserCoach = {
   typeOfTrain: string[];
   certificate: string;
   merit: string;
-  personalTraining: boolean;
+  trainingReady: boolean;
 }
 
 export const LEVELS = [

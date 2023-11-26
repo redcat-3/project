@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Notification from "../notification/notification";
 import { createNotifications } from "../../../../mocks/notification";
 import { useState } from "react";
@@ -51,11 +51,14 @@ function MainNav ({id}: MainNavProps): JSX.Element {
           </NavLink>
         </li>
         <li className="main-nav__item main-nav__item--notifications">
-          <NavLink to="#" className="main-nav__link" aria-label="Уведомления">
+          <div
+            className="main-nav__link"
+            aria-label="Уведомления"
+          >
             <svg width="14" height="18" aria-hidden="true">
               <use xlinkHref="#icon-notification"></use>
             </svg>
-          </NavLink>
+          </div>
           <div className="main-nav__dropdown">
             <p className="main-nav__label">Оповещения</p>
             <ul className="main-nav__sublist">

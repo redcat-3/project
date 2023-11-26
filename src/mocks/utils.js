@@ -17,11 +17,11 @@ function getCommentDate(date) {
 }
 
 function getRandomArrayElement(items) {
-  return items[Math.floor(Math.random() * items.length)];
+  return items[getRandomNumber(0, items.length-1)];
 }
 
 function getRandomBoolean() {
-  const BOOLEANS = ['true', 'false'];
+  const BOOLEANS = [0, 1];
   return Boolean(getRandomArrayElement(BOOLEANS));
 }
 

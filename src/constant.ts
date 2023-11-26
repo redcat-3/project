@@ -5,11 +5,12 @@ export const EMAIL_REGEXP = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2
 export const MAX_AVATAR_SIZE = 2200000;
 export const MAX_TYPES_COUNT = 3;
 export const NOTIFICATION_DATE_FORMAT = 'DD MMMM, HH:mm';
+export const TIME_OUT_DELAY = 500;
 
 export enum AppRoute {
   SignIn = '/login',
   Logout = '/logout',
-  Main = '/main/',
+  Main = '/main',
   Intro = '/',
   CreateTraining ='/create-training',
   FriendsList = '/friends-list/:id',

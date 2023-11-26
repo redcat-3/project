@@ -2,50 +2,50 @@ import { getRandomArrayElement, getRandomNumber, getRandomArray, getRandomBoolea
 import { User, UserCoach, UserGender, UserLevel, UserLocation, UserRole, UserTime, UserUser } from '../types/user-data';
 import { CountCaloriesToReset, CountCaloriesToSpend } from '../constant';
 
-const NAMES = [
+export const NAMES = [
     'Angelina',
     'Angel',
     'Dina',
     'Tom',
     'Dima',
 ]
-const AVATARS = [
-    'img/content/avatars/users/photo-1',
-    'img/content/avatars/users/photo-2',
-    'img/content/avatars/users/photo-3',
-    'img/content/avatars/users/photo-4',
-    'img/content/avatars/users/photo-5',
+export const AVATARS = [
+    '/img/content/avatars/users/photo-1',
+    '/img/content/avatars/users/photo-2',
+    '/img/content/avatars/users/photo-3',
+    '/img/content/avatars/users/photo-4',
+    '/img/content/avatars/users/photo-5',
 ]
-const GENDERS = [
+export const GENDERS = [
     'male',
     'female',
     'indifferent',
 ]
-const ROLES = [
+export const ROLES = [
     'user',
     'coach'
 ]
-const DESCRIPTIONS = [
+export const DESCRIPTIONS = [
     'Страшный рассказ о драконе. Колдовство, предательство и необыкновенный мир фэнтези.',
     'История про вампиров из маленького городка. Коварство, нестандартный сюжет и необыкновенные приключения священника.',
     'Идти или остановиться? Вопрос без правильного ответа. Рассказ о долгой и смертельной прогулке.',
     'Как похудеть и не сойти с ума? А как вернуть вес обратно? Необычная история противостояния.',
     'Прими звонок и превратись в зомби. Рассказ о зомбировании через средства связи.'
 ]
-const LOCATIONS = [
+export const LOCATIONS = [
     'Пионерская',
     'Петроградская',
     'Удельная',
     'Звёздная',
     'Спортивная'
 ]
-const LEVELS = [
+export const LEVELS = [
     'новичок',
     'любитель',
     'профессионал'
 ];
 
-const TYPES_OF_TRAIN = [
+export const TYPES_OF_TRAIN = [
     'йога', 
     'бег', 
     'бокс', 
@@ -61,11 +61,11 @@ const TIMES_OF_TRAIN = [
     '80-100',
 ]
 const CERTIFICATE = [
-    'C:/img/content/certificates-and-diplomas/certificate-1.jpg',
-    'C:/img/content/certificates-and-diplomas/certificate-2.jpg',
-    'C:/img/content/certificates-and-diplomas/certificate-3.jpg',
-    'C:/img/content/certificates-and-diplomas/certificate-4.jpg',
-    'C:/img/content/certificates-and-diplomas/certificate-5.jpg'
+    '/img/content/certificates-and-diplomas/certificate-1.jpg',
+    '/img/content/certificates-and-diplomas/certificate-2.jpg',
+    '/img/content/certificates-and-diplomas/certificate-3.jpg',
+    '/img/content/certificates-and-diplomas/certificate-4.jpg',
+    '/img/content/certificates-and-diplomas/certificate-5.jpg'
 ]
 const MERITS = [
     'Страшный рассказ о драконе. Колдовство, предательство и необыкновенный мир фэнтези.',
@@ -84,15 +84,15 @@ const generateUserCoach = ( number: number): UserCoach => {
     gender: getRandomArrayElement(GENDERS) as unknown as UserGender,
     dateBirth: randomDate(new Date(2012, 0, 1), new Date()),
     createdDate: randomDate(new Date(2012, 0, 1), new Date()),
-    role: UserRole.User,
+    role: UserRole.Coach,
     description: getRandomArrayElement(DESCRIPTIONS),
     location: getRandomArrayElement(LOCATIONS) as unknown as UserLocation,
     image: getRandomArrayElement(AVATARS),
     level: getRandomArrayElement(LEVELS) as unknown as UserLevel,
-    typeOfTrain: getRandomArray(TYPES_OF_TRAIN),
+    typeOfTrain: getRandomArray(TYPES_OF_TRAIN).slice(0, 3),
     certificate: getRandomArrayElement(CERTIFICATE),
     merit: getRandomArrayElement(MERITS),
-    personalTraining: getRandomBoolean()
+    trainingReady: getRandomBoolean()
     }
   return user;
 };
@@ -111,7 +111,7 @@ const generateUserUser = ( number: number): UserUser => {
     location: getRandomArrayElement(LOCATIONS) as unknown as UserLocation,
     image: getRandomArrayElement(AVATARS),
     level: getRandomArrayElement(LEVELS) as unknown as UserLevel,
-    typeOfTrain: getRandomArray(TYPES_OF_TRAIN).slice(0,3),
+    typeOfTrain: getRandomArray(TYPES_OF_TRAIN).slice(0, 3),
     timeOfTrain: getRandomArrayElement(TIMES_OF_TRAIN) as unknown as UserTime,
     caloriesToReset: getRandomNumber(CountCaloriesToReset.Min, CountCaloriesToReset.Max),
     caloriesToSpend: getRandomNumber(CountCaloriesToSpend.Min, CountCaloriesToSpend.Max),
@@ -135,7 +135,7 @@ const generateUser = ( number: number): User => {
     location: getRandomArrayElement(LOCATIONS) as unknown as UserLocation,
     image: getRandomArrayElement(AVATARS),
     level: getRandomArrayElement(LEVELS) as unknown as UserLevel,
-    typeOfTrain: getRandomArray(TYPES_OF_TRAIN),
+    typeOfTrain: getRandomArray(TYPES_OF_TRAIN).slice(0, 3),
   }
   if (role === UserRole.User) {
     const userUser = {
@@ -151,7 +151,7 @@ const generateUser = ( number: number): User => {
       ... user,
       certificate: getRandomArrayElement(CERTIFICATE),
       merit: getRandomArrayElement(MERITS),
-      personalTraining: getRandomBoolean()
+      trainingReady: getRandomBoolean()
     }
     return userCoach;
   }
@@ -167,5 +167,18 @@ const generateUser = ( number: number): User => {
 
 const createUsers = (ids: number[]) => ids.map((id) => generateUser(id));
 const createUserUsers = (ids: number[]) => ids.map((id) => generateUserUser(id));
+const arr = [0];
+for (let i = 6; i <= 11; i++) {
+	arr.push(i);
+}
+export const users = createUsers(arr);
+
+export function createNextUsers (count: number) {
+  const arr = [0];
+    for (let i = 1; i < count; i++) {
+      arr.push(i);
+    }
+  return arr.map((id) => generateUser(id));
+}
 
 export { generateUser, createUsers, generateUserUser, createUserUsers, generateUserCoach };

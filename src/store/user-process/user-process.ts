@@ -1,17 +1,28 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { NameSpace, AuthorizationStatus } from '../../constant';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { NameSpace, AuthorizationStatus, DEFAULT_LIMIT } from '../../constant';
 import { UserProcess } from '../../types/state';
 import { checkAuthAction, loginAction, logoutAction } from '../api-actions';
+import { createNextUsers, users } from '../../mocks/users';
+
+const COUNT_OF_USERS = 20;
 
 const initialState: UserProcess = {
   authorizationStatus: AuthorizationStatus.Unknown,
   authorizationError: false,
+  users: users,
+  usersCount: COUNT_OF_USERS,
+  isUsersDataLoading: false,
 };
 
 export const userProcess = createSlice({
   name: NameSpace.User,
   initialState,
-  reducers: {},
+  reducers: {
+    usersInc: (state, action: PayloadAction<number>) => {
+      const renderedUsersCount = Math.min(state.usersCount - state.users.length, action.payload);
+      state.users = state.users.concat(createNextUsers(renderedUsersCount));
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(checkAuthAction.fulfilled, (state) => {
@@ -33,3 +44,4 @@ export const userProcess = createSlice({
       });
   }
 });
+export const { usersInc } = userProcess.actions;
