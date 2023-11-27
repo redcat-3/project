@@ -3,15 +3,15 @@ import Header from '../../components/header/header';
 import { AppRoute, CountCaloriesToSpend, ErrorMessage, NameLength, TabIndex, WorkoutDescriptionLength } from '../../constant';
 import { ChangeEventHandler, FormEvent, useState } from 'react';
 import { WORKOUT_TIMES, WORKOUT_TYPES, WorkoutType } from '../../types/workout-data';
-import { UserGender, UserLevel, LEVELS, UserTime } from '../../types/user-data';
+import { UserGender, UserLevel, LEVELS, UserTime, UserRole } from '../../types/user-data';
 import { levelToRussian, levelToValue, typeToRussian, workoutTypeToValue } from '../../utils';
 import { redirectToRoute } from '../../store/action';
-import { useAppDispatch } from '../../hooks';
-
-const id = `user${1}@pochta.local`;
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getUser } from '../../store/user-process/selectors';
 
 function CreateTraning(): JSX.Element {
   const dispatch = useAppDispatch();
+  const user = useAppSelector(getUser);
   const [formError, setFormError] = useState(false);
   const [nameError, setNameError] = useState(false);
   const [priceError, setPriceError] = useState(false);
@@ -34,6 +34,10 @@ function CreateTraning(): JSX.Element {
     video: '',
     special: false,
   });
+
+  if(user.role === UserRole.User){
+    dispatch(redirectToRoute(AppRoute.Main));
+  };
 
   const handleCaloriesChange: ChangeEventHandler<HTMLInputElement> = (event): void => {
     setFormData({...formData, caloriesToSpend: event.target.value});
@@ -102,7 +106,7 @@ function CreateTraning(): JSX.Element {
       formData.video !== ''
     ) {
       setFormError(false);
-      dispatch(redirectToRoute(`/my-trainings/${id}` as AppRoute))
+      dispatch(redirectToRoute(`/my-trainings/${user.id}` as AppRoute))
     } else {
       setFormError(true);
     }
