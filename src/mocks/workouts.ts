@@ -1,32 +1,38 @@
 import {getRandomArrayElement, getRandomNumber, getRandomArray, getSubArrayFromArray, getRandomBoolean} from './utils.js';
 
 const NAMES = [
-  'Angelina',
-  'Angel',
-  'Dina',
-  'Tom',
-  'Dima',
+  'Аэробика',
+  'Бег',
+  'Йога',
+  'Бокс',
+  'Пилатес',
 ];
 
 const AVATARS = [
-    '/img/content/avatars/users/photo-1.png',
-    '/img/content/avatars/users/photo-2.png',
-    '/img/content/avatars/users/photo-3.png',
-    '/img/content/avatars/users/photo-4.png',
-    '/img/content/avatars/users/photo-5.png',
+    'img/content/avatars/users/photo-1.png',
+    'img/content/avatars/users/photo-2.png',
+    'img/content/avatars/users/photo-3.png',
+    'img/content/avatars/users/photo-4.png',
+    'img/content/avatars/users/photo-5.png',
 ];
 
 const PREVIEWS = [
-    '/img/content/thumbnails/training-1/preview-01.jpg',
-    '/img/content/thumbnails/training-1/preview-02.jpg',
-    '/img/content/thumbnails/training-1/preview-03.jpg',
+    'img/content/thumbnails/preview-01',
+    'img/content/thumbnails/preview-02',
+    'img/content/thumbnails/preview-03',
 ];
 
 const BACKS = [
-    '/img/content/training-1',
-    '/img/content/training-2',
-    '/img/content/training-3',
-    '/img/content/training-4',
+    'img/content/training-1',
+    'img/content/training-2',
+    'img/content/training-3',
+    'img/content/training-4',
+];
+
+const PROMOS = [
+  'img/content/promo-1',
+  'img/content/promo-2',
+  'img/content/promo-3',
 ];
 
 const GENDERS = [
@@ -83,7 +89,7 @@ const createWorkout = (id: number) => {
   const workout = {
     workoutId: id,
     name: getRandomArrayElement(NAMES),
-    background: getRandomArrayElement(BACKS),
+    background: getRandomArrayElement(PREVIEWS),
     level: getRandomArrayElement(LEVELS),
     type: getRandomArrayElement(TYPES_OF_TRAIN),
     timeOfTraining: getRandomArrayElement(TIMES_OF_TRAIN),
@@ -93,7 +99,7 @@ const createWorkout = (id: number) => {
     gender: getRandomArrayElement(GENDERS),
     video: '/video1.mov',
     special: getRandomBoolean(),
-    rating: 0
+    rating: getRandomNumber(1, 5),
   };
   return workout;
 };
@@ -109,8 +115,8 @@ export function createWorkouts (count: number) {
 
 const createSpecial= (id: number) => {
     const workout = {
-      id: id,
-      title: getRandomArrayElement(NAMES),
+      workoutId: id,
+      name: getRandomArrayElement(NAMES),
       background: getRandomArrayElement(PREVIEWS),
       level: getRandomArrayElement(LEVELS),
       type: getRandomArrayElement(TYPES_OF_TRAIN),
@@ -132,6 +138,28 @@ const createSpecial= (id: number) => {
         arr.push(i);
       }
     return arr.map((id) => createSpecial(id));
+  }
+  
+  const createPromo= (id: number) => {
+    const price = getRandomNumber(0, 1000);
+    const workout = {
+      workoutId: id,
+      name: getRandomArrayElement(NAMES),
+      background: getRandomArrayElement(PROMOS),
+      price,
+      oldPrice: price*1.5,
+      description: getRandomArrayElement(DESCRIPTIONS),
+      special: true,
+    };
+    return workout;
+  };
+  
+  export function createPromos (count: number) {
+    const arr = [];
+      for (let i = 1; i <= count + 1; i++) {
+        arr.push(i);
+      }
+    return arr.map((id) => createPromo(id));
   } 
 
 export {createWorkout};
