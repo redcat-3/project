@@ -1,16 +1,97 @@
-import React from 'react';
+import React, { ChangeEventHandler, FormEvent, useState } from 'react';
+import { GENDERS, LEVELS, LOCATIONS, UserGender, UserLevel, UserTime } from '../../types/user-data';
+import { WORKOUT_TYPES } from '../../types/workout-data';
+import { AppRoute, ErrorMessage, MAX_TYPES_COUNT, UserDescriptionLength, UserNameLength } from '../../constant';
+import { useAppDispatch } from '../../hooks';
+import { redirectToRoute } from '../../store/action';
+import { genderToRussian, levelToRussian, levelToValue, workoutTypeToName, workoutTypeToValue } from '../../utils';
 
-function UserInfoEdit(): JSX.Element {
+type UserInfoEditProps = {
+  id: string;
+  avatar: string;
+  name:string;
+  description: string;
+  location: string;
+  typeOfTrain: string[];
+  trainingReady: boolean;
+  level: UserLevel;
+  gender: UserGender;
+};
+
+function UserInfoEdit({id, avatar, name, description, trainingReady, location, typeOfTrain, level, gender}: UserInfoEditProps): JSX.Element {
+  const dispatch = useAppDispatch();
+  const [isLocationOpened, setIsLocationOpened] = useState(false);
+  const [isGenderOpened, setIsGenderOpened] = useState(false);
+  const [isLevelOpened, setIsLevelOpened] = useState(false);
+  const [formError, setFormError] = useState(false);
+  const [nameError, setNameError] = useState(false);
+  const [descriptionError, setDescriptionError] = useState(false);
+  const [typesCountError, setTypesCountError] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [formData, setFormData] = useState({
+    name,
+    avatar,
+    level,
+    typeOfTrain,
+    location,
+    description,
+    gender,
+    trainingReady,
+  });
+
+  const handleNameChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    setFormData({...formData, name: event.target.value});
+    if(event.target.value.length <= UserNameLength.Min || UserNameLength.Max <= event.target.value.length) {
+      setIsDisabled(true);
+      setNameError(true);
+    } else {
+      setIsDisabled(false);
+      setNameError(false);
+    }
+  };
+
+  const onSendWorkout = () => {
+    if (
+      formData.name !== '' &&
+      formData.level !== '' as UserLevel &&
+      formData.typeOfTrain.length === 0 &&
+      formData.name !== '' &&
+      formData.description !== '' &&
+      formData.gender !== '' as UserGender
+    ) {
+      setFormError(false);
+      dispatch(redirectToRoute(`/personal-account/${id}` as AppRoute))
+    } else {
+      setFormError(true);
+    }
+  };
+
+  const handleTextChange: ChangeEventHandler<HTMLTextAreaElement> = (event) => {
+    setFormData({...formData, description: event.target.value});
+    if(event.target.value.length < UserDescriptionLength.Min || event.target.value.length > UserDescriptionLength.Max) {
+      setIsDisabled(true);
+      setDescriptionError(true);
+    } else {
+      setIsDisabled(false);
+      setDescriptionError(false);
+    }
+  };
+
   return (
     <section className="user-info-edit">
       <div className="user-info-edit__header">
         <div className="input-load-avatar">
           <label>
-            <input className="visually-hidden" type="file" name="user-photo-1" accept="image/png, image/jpeg" />
+            <input
+              className="visually-hidden"
+              type="file"
+              name="user-photo-1"
+              accept="image/png, image/jpeg"
+            />
             <span className="input-load-avatar__avatar">
               <img
-                src="img/content/user-photo-1.png"
-                srcSet="img/content/user-photo-1@2x.png 2x"
+                src={`${formData.avatar}.png`}
+                srcSet={`${formData.avatar}@2x.png 2x`}
                 width="98"
                 height="98"
                 alt="user photo"
@@ -31,7 +112,15 @@ function UserInfoEdit(): JSX.Element {
           </button>
         </div>
       </div>
-      <form className="user-info-edit__form" action="#" method="post">
+      <form
+        className="user-info-edit__form"
+        action="#"
+        method="post"
+        onSubmit={(evt: FormEvent<HTMLFormElement>) => {
+          evt.preventDefault();
+          onSendWorkout();
+        }}
+      >
         <button className="btn-flat btn-flat--underlined user-info-edit__save-button" type="submit" aria-label="Сохранить">
           <svg width="12" height="12" aria-hidden="true">
             <use xlinkHref="#icon-edit"></use>
@@ -44,22 +133,39 @@ function UserInfoEdit(): JSX.Element {
             <label>
               <span className="custom-input__label">Имя</span>
               <span className="custom-input__wrapper">
-                <input type="text" name="name" value="Валерия" />
+                <input
+                  type="text"
+                  name="name"
+                  onChange={handleNameChange}
+                  value={formData.name}
+                />
               </span>
+              {nameError && <span className="custom-input__error">{ErrorMessage.Title}</span>}
             </label>
           </div>
           <div className="custom-textarea user-info-edit__textarea">
             <label>
               <span className="custom-textarea__label">Описание</span>
-              <textarea name="description" placeholder=" ">Персональный тренер и инструктор групповых программ с опытом  более 4х лет. Специализация: коррекция фигуры и осанки, снижение веса, восстановление после травм, пилатес.</textarea>
+              <textarea
+                name="description"
+                placeholder=""
+                onChange={handleTextChange}
+                value={formData.description}
+              >{formData.description}</textarea>
             </label>
+            {descriptionError && <span className="custom-input__error">{ErrorMessage.Description}</span>}
           </div>
         </div>
         <div className="user-info-edit__section user-info-edit__section--status">
           <h2 className="user-info-edit__title user-info-edit__title--status">Статус</h2>
           <div className="custom-toggle custom-toggle--switch user-info-edit__toggle">
             <label>
-              <input type="checkbox" name="ready-for-training" checked />
+              <input
+                type="checkbox"
+                name="ready-for-training"
+                checked={formData.trainingReady}
+                onChange={() => setFormData({...formData, trainingReady: !formData.trainingReady})}
+              />
               <span className="custom-toggle__icon">
                 <svg width="9" height="6" aria-hidden="true">
                   <use xlinkHref="#arrow-check"></use>
@@ -72,53 +178,55 @@ function UserInfoEdit(): JSX.Element {
         <div className="user-info-edit__section">
           <h2 className="user-info-edit__title user-info-edit__title--specialization">Специализация</h2>
           <div className="specialization-checkbox user-info-edit__specialization">
-            <div className="btn-checkbox">
-              <label>
-                <input className="visually-hidden" type="checkbox" name="specialization" value="yoga" checked /><span className="btn-checkbox__btn">Йога</span>
-              </label>
-            </div>
-            <div className="btn-checkbox">
-              <label>
-                <input className="visually-hidden" type="checkbox" name="specialization" value="running" /><span className="btn-checkbox__btn">Бег</span>
-              </label>
-            </div>
-            <div className="btn-checkbox">
-              <label>
-                <input className="visually-hidden" type="checkbox" name="specialization" value="aerobics" checked /><span className="btn-checkbox__btn">Аэробика</span>
-              </label>
-            </div>
-            <div className="btn-checkbox">
-              <label>
-                <input className="visually-hidden" type="checkbox" name="specialization" value="boxing" /><span className="btn-checkbox__btn">Бокс</span>
-              </label>
-            </div>
-            <div className="btn-checkbox">
-              <label>
-                <input className="visually-hidden" type="checkbox" name="specialization" value="power" /><span className="btn-checkbox__btn">Силовые</span>
-              </label>
-            </div>
-            <div className="btn-checkbox">
-              <label>
-                <input className="visually-hidden" type="checkbox" name="specialization" value="pilates" checked /><span className="btn-checkbox__btn">Пилатес</span>
-              </label>
-            </div>
-            <div className="btn-checkbox">
-              <label>
-                <input className="visually-hidden" type="checkbox" name="specialization" value="stretching" checked /><span className="btn-checkbox__btn">Стрейчинг</span>
-              </label>
-            </div>
-            <div className="btn-checkbox">
-              <label>
-                <input className="visually-hidden" type="checkbox" name="specialization" value="crossfit" /><span className="btn-checkbox__btn">Кроссфит</span>
-              </label>
-            </div>
+            {WORKOUT_TYPES.map((el) => 
+              (
+                <div
+                  key={el}
+                  className="btn-checkbox"
+                >
+                  <label>
+                    <input
+                      className="visually-hidden"
+                      type="checkbox"
+                      name="specialization"
+                      value={el}
+                      onChange={() => {
+                        const currentType: string = el;
+                        const types = formData.typeOfTrain.slice();
+                        const index = types.indexOf(currentType);
+                        if(index !== -1) {
+                          types.splice(index, 1);
+                          if(types.length <= MAX_TYPES_COUNT) {
+                            setTypesCountError(false);
+                          }
+                        } else if(types.length < MAX_TYPES_COUNT) {
+                          types.push(currentType);
+                          setTypesCountError(false);
+                        } else {
+                          setTypesCountError(true);
+                        }
+                        setFormData({...formData, typeOfTrain: types});
+                      }}
+                      checked={formData.typeOfTrain.includes(el)}
+                    />
+                      <span className="btn-checkbox__btn">{workoutTypeToValue(el)}</span>
+                  </label>
+                </div>
+              )
+            )}
+            {typesCountError && <span className="custom-input__error">{ErrorMessage.TypesCount}</span>}
           </div>
         </div>
-        <div className="custom-select user-info-edit__select">
-          <span className="custom-select__label">Локация</span>
+        <div className={`custom-select user-info-edit__select ${isLocationOpened ? 'is-open' : 'custom-select--not-selected'} not-empty`}>
+          <span className="custom-select__label" style={{opacity: 1}}>Локация</span>
           <div className="custom-select__placeholder">ст. м. Адмиралтейская</div>
-          <button className="custom-select__button" type="button" aria-label="Выберите одну из опций">
-            <span className="custom-select__text"></span>
+          <button
+            className="custom-select__button"
+            type="button"
+            aria-label="Выберите одну из опций"
+            onClick={() => setIsLocationOpened(true)}
+          >
+            <span className="custom-select__text">ст. м. {formData.location}</span>
             <span className="custom-select__icon">
               <svg width="15" height="6" aria-hidden="true">
                 <use xlinkHref="#arrow-down"></use>
@@ -126,13 +234,35 @@ function UserInfoEdit(): JSX.Element {
             </span>
           </button>
           <ul className="custom-select__list" role="listbox">
+            {LOCATIONS.map((el) =>
+              (
+                <li
+                  key={el}
+                  role="option"
+                  tabIndex={0}
+                  className="custom-select__item"
+                  aria-selected={formData.location === el}
+                  onClick={() => {
+                    setFormData({...formData, location: el});
+                    setIsLocationOpened(false);
+                  }}
+                >
+                  {el}
+                </li>
+              )
+            )}
           </ul>
         </div>
-        <div className="custom-select user-info-edit__select">
-          <span className="custom-select__label">Пол</span>
-          <div className="custom-select__placeholder">Женский</div>
-          <button className="custom-select__button" type="button" aria-label="Выберите одну из опций">
-            <span className="custom-select__text"></span>
+        <div className={`custom-select user-info-edit__select ${isGenderOpened ? 'is-open' : 'custom-select--not-selected'} not-empty`}>
+          <span className="custom-select__label" style={{opacity: 1}}>Пол</span>
+          <div className="custom-select__placeholder">{formData.gender}</div>
+          <button
+            className="custom-select__button"
+            type="button"
+            aria-label="Выберите одну из опций"
+            onClick={() => setIsGenderOpened(true)}
+          >
+            <span className="custom-select__text">{genderToRussian(formData.gender)}</span>
             <span className="custom-select__icon">
               <svg width="15" height="6" aria-hidden="true">
                 <use xlinkHref="#arrow-down"></use>
@@ -140,13 +270,35 @@ function UserInfoEdit(): JSX.Element {
             </span>
           </button>
           <ul className="custom-select__list" role="listbox">
+            {GENDERS.map((el) =>
+              (
+                <li
+                  key={el}
+                  role="option"
+                  tabIndex={0}
+                  className="custom-select__item"
+                  aria-selected={formData.gender === el}
+                  onClick={() => {
+                    setFormData({...formData, gender: el as UserGender});
+                    setIsGenderOpened(false);
+                  }}
+                >
+                  {genderToRussian(el)}
+                </li>
+              )
+            )}
           </ul>
         </div>
-        <div className="custom-select user-info-edit__select">
-          <span className="custom-select__label">Уровень</span>
-          <div className="custom-select__placeholder">Профессионал</div>
-          <button className="custom-select__button" type="button" aria-label="Выберите одну из опций">
-            <span className="custom-select__text"></span>
+        <div className={`custom-select user-info-edit__select ${isLevelOpened ? 'is-open' : 'custom-select--not-selected'} not-empty`}>
+          <span className="custom-select__label" style={{opacity: 1}}>Уровень</span>
+          <div className="custom-select__placeholder">{levelToRussian(formData.level)}</div>
+          <button
+            className="custom-select__button"
+            type="button"
+            aria-label="Выберите одну из опций"
+            onClick={() => setIsLevelOpened(true)}
+          >
+            <span className="custom-select__text">{levelToRussian(formData.level)}</span>
             <span className="custom-select__icon">
               <svg width="15" height="6" aria-hidden="true">
                 <use xlinkHref="#arrow-down"></use>
@@ -154,6 +306,22 @@ function UserInfoEdit(): JSX.Element {
             </span>
           </button>
           <ul className="custom-select__list" role="listbox">
+          {LEVELS.map((el) =>
+            (
+              <li
+                key={el}
+                role="option"
+                tabIndex={0}
+                className="custom-select__item"
+                aria-selected={formData.level === levelToValue(el)}
+                onClick={() => {
+                  setFormData({...formData, level: levelToValue(el)});
+                  setIsLevelOpened(false);
+                }}
+              >
+                {el}
+              </li>
+            ))}
           </ul>
         </div>
       </form>

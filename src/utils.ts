@@ -5,40 +5,40 @@ import { NOTIFICATION_DATE_FORMAT } from "./constant";
 
 export function workoutTypeToValue (type: string): string {
   switch (type) {
-    case 'йога':
+    case 'yoga':
     default:
-      return 'yoga';
-    case 'бег':
-      return 'running';
-    case 'бокс':
-      return 'boxing';
-    case 'стрейчинг':
-      return 'stretching';
-    case 'кроссфит':
-      return 'crossfit';
-    case 'аэробика':
-      return 'aerobics';
-    case 'пилатес':
-      return 'pilates';
+      return 'йога';
+    case 'running':
+      return 'бег';
+    case 'boxing':
+      return 'бокс';
+    case 'stretching':
+      return 'стрейчинг';
+    case 'crossfit':
+      return 'кроссфит';
+    case 'aerobics':
+      return 'аэробика';
+    case 'pilates':
+      return 'пилатес';
   }
 }
 
 export function workoutTypeToName (type: string): string {
   switch (type) {
-    case 'йога':
+    case 'yoga':
     default:
       return 'Йога';
-    case 'бег':
+    case 'running':
       return 'Бег';
-    case 'бокс':
+    case 'boxing':
       return 'Бокс';
-    case 'стрейчинг':
+    case 'stretching':
       return 'Стрейчинг';
-    case 'кроссфит':
+    case 'crossfit':
       return 'Кроссфит';
-    case 'аэробика':
+    case 'aerobics':
       return 'Аэробика';
-    case 'пилатес':
+    case 'pilates':
       return 'Пилатес';
   }
 }
@@ -58,11 +58,11 @@ export function levelToValue (level: string): UserLevel {
 export function levelToRussian (level: UserLevel): string {
   switch (level) {
     case UserLevel.Beginner:
-      return 'новичок';
+      return 'Новичок';
     case UserLevel.Ethusiast:
-      return 'любитель';
+      return 'Любитель';
     case UserLevel.Pro:
-      return 'профессионал';
+      return 'Профессионал';
     default:
       return '';
   }
@@ -84,6 +84,19 @@ export function typeToRussian (type: WorkoutType): string {
       return 'бег';
     case WorkoutType.Stretching:
       return 'стрейчинг';
+    default:
+      return '';
+  }
+}
+
+export function genderToRussian (gender: string): string {
+  switch (gender) {
+    case UserGender.Female:
+      return 'Женский';
+    case UserGender.Male:
+      return 'Мужской';
+    case UserGender.Indifferent:
+      return 'Не важно';
     default:
       return '';
   }

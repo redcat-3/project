@@ -40,19 +40,19 @@ export const LOCATIONS = [
     'Спортивная'
 ]
 export const LEVELS = [
-    'новичок',
-    'любитель',
-    'профессионал'
+    'beginner',
+    'ethusiast',
+    'pro'
 ];
 
 export const TYPES_OF_TRAIN = [
-    'йога', 
-    'бег', 
-    'бокс', 
-    'стрейчинг', 
-    'кроссфит', 
-    'аэробика', 
-    'пилатес'
+  'yoga',
+  'running',
+  'boxing',
+  'stretching',
+  'crossfit',
+  'aerobics',
+  'pilates',
 ]
 const TIMES_OF_TRAIN = [
     '10-30',
@@ -61,11 +61,11 @@ const TIMES_OF_TRAIN = [
     '80-100',
 ]
 const CERTIFICATE = [
-    '/img/content/certificates-and-diplomas/certificate-1.jpg',
-    '/img/content/certificates-and-diplomas/certificate-2.jpg',
-    '/img/content/certificates-and-diplomas/certificate-3.jpg',
-    '/img/content/certificates-and-diplomas/certificate-4.jpg',
-    '/img/content/certificates-and-diplomas/certificate-5.jpg'
+    'img/content/certificates-and-diplomas/certificate-1.jpg',
+    'img/content/certificates-and-diplomas/certificate-2.jpg',
+    'img/content/certificates-and-diplomas/certificate-3.jpg',
+    'img/content/certificates-and-diplomas/certificate-4.jpg',
+    'img/content/certificates-and-diplomas/certificate-5.jpg'
 ]
 const MERITS = [
     'Страшный рассказ о драконе. Колдовство, предательство и необыкновенный мир фэнтези.',

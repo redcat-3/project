@@ -1,7 +1,7 @@
 import React, { TouchEventHandler, useEffect, useState } from 'react';
 import { createSpecials } from '../../mocks/workouts';
 import './css/style.css';
-import SpecialForYouSlide from './items/special-for-you-item/special-for-you-slide';
+import SpecialForYouSlide from './items/special-for-you-slide/special-for-you-slide';
 
 function SpecialForYou(): JSX.Element {
   const [items, setItems] = useState(createSpecials(5));

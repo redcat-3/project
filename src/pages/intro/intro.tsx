@@ -4,6 +4,7 @@ import { UserRole } from "../../types/user-data";
 import { AppRoute } from "../../constant";
 import { useAppDispatch } from "../../hooks";
 import { redirectToRoute } from "../../store/action";
+import { Helmet } from "react-helmet-async";
 
 function Intro (): JSX.Element {
   const dispatch = useAppDispatch();
@@ -12,6 +13,9 @@ function Intro (): JSX.Element {
   }
   return (
     <div className="wrapper">
+      <Helmet>
+        <title>FitFriends</title>
+      </Helmet>
       <main>
         <div className="intro">
           <div className="intro__background">

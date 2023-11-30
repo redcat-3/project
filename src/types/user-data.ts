@@ -89,3 +89,9 @@ export const LOCATIONS = [
   'Звёздная',
   'Спортивная',
 ] as const;
+
+export const GENDERS = [
+  'male',
+  'female',
+  'indifferent',
+] as const;

@@ -53,6 +53,7 @@ function PopularTranings(): JSX.Element {
 
     setTouchPosition(0);
   };
+  
   const handleClick = () => {
     dispatch(redirectToRoute(AppRoute.TrainingCatalog));
   }

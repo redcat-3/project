@@ -27,13 +27,13 @@ export type Workout = {
 };
 
 export const WORKOUT_TYPES = [
-  'йога',
-  'бег',
-  'бокс',
-  'стрейчинг',
-  'кроссфит',
-  'аэробика',
-  'пилатес',
+  'yoga',
+  'running',
+  'boxing',
+  'stretching',
+  'crossfit',
+  'aerobics',
+  'pilates',
 ] as const;
 
 export const WORKOUT_TIMES = [

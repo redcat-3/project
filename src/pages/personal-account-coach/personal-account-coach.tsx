@@ -2,8 +2,11 @@ import Header from '../../components/header/header';
 import PersonalAccountCoachList from '../../components/personal-account-coach-list/personal-account-coach-list';
 import PersonalAccountCoachNav from '../../components/personal-account-coach-nav/personal-account-coach-nav';
 import UserInfoEdit from '../../components/user-info-edit/user-info-edit';
+import { useAppSelector } from '../../hooks';
+import { getUser } from '../../store/user-process/selectors';
 
 function PersonalAccountCoach(): JSX.Element {
+  const user = useAppSelector(getUser);
   return (
     <div className="wrapper">
       <Header />
@@ -12,7 +15,16 @@ function PersonalAccountCoach(): JSX.Element {
           <div className="container">
             <div className="inner-page__wrapper">
               <h1 className="visually-hidden">Личный кабинет</h1>
-              <UserInfoEdit />
+              <UserInfoEdit
+                id={user.id}
+                avatar={user.avatar}
+                name={user.name}
+                description={user.description}
+                location={user.location}
+                typeOfTrain={user.typeOfTrain}
+                trainingReady={user.trainingReady}
+                level={user.level}
+                gender={user.gender}/>
               <div className="inner-page__content">
                 <div className="personal-account-coach">
                   <PersonalAccountCoachNav />
