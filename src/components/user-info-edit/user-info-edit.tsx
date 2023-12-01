@@ -27,7 +27,7 @@ function UserInfoEdit({id, avatar, name, description, trainingReady, location, t
   const [nameError, setNameError] = useState(false);
   const [descriptionError, setDescriptionError] = useState(false);
   const [typesCountError, setTypesCountError] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(true);
+  const [isEdit, setIsEdit] = useState(true);
   const [formData, setFormData] = useState({
     name,
     avatar,
@@ -42,23 +42,16 @@ function UserInfoEdit({id, avatar, name, description, trainingReady, location, t
   const handleNameChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     setFormData({...formData, name: event.target.value});
     if(event.target.value.length <= UserNameLength.Min || UserNameLength.Max <= event.target.value.length) {
-      setIsDisabled(true);
       setNameError(true);
+      setFormError(true);
     } else {
-      setIsDisabled(false);
       setNameError(false);
+      setFormError(false);
     }
   };
 
-  const onSendWorkout = () => {
-    if (
-      formData.name !== '' &&
-      formData.level !== '' as UserLevel &&
-      formData.typeOfTrain.length === 0 &&
-      formData.name !== '' &&
-      formData.description !== '' &&
-      formData.gender !== '' as UserGender
-    ) {
+  const onSend = () => {
+    if (!formError) {
       setFormError(false);
       dispatch(redirectToRoute(`/personal-account/${id}` as AppRoute))
     } else {
@@ -69,11 +62,21 @@ function UserInfoEdit({id, avatar, name, description, trainingReady, location, t
   const handleTextChange: ChangeEventHandler<HTMLTextAreaElement> = (event) => {
     setFormData({...formData, description: event.target.value});
     if(event.target.value.length < UserDescriptionLength.Min || event.target.value.length > UserDescriptionLength.Max) {
-      setIsDisabled(true);
       setDescriptionError(true);
+      setFormError(true);
     } else {
-      setIsDisabled(false);
       setDescriptionError(false);
+      setFormError(false);
+    }
+  };
+
+  const handleAvatarChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    if(event.target.files) {
+      const filePhoto = event.target.files[0];
+      setFormData({...formData, avatar: URL.createObjectURL(filePhoto)});
+      setFormError(false);
+    } else {
+      setFormError(true);
     }
   };
 
@@ -87,29 +90,48 @@ function UserInfoEdit({id, avatar, name, description, trainingReady, location, t
               type="file"
               name="user-photo-1"
               accept="image/png, image/jpeg"
+              disabled={isEdit}
+              onChange={handleAvatarChange}
             />
             <span className="input-load-avatar__avatar">
-              <img
-                src={`${formData.avatar}.png`}
-                srcSet={`${formData.avatar}@2x.png 2x`}
-                width="98"
-                height="98"
-                alt="user photo"
-              />
+              { formData.avatar === '' && 
+                <span className="input-load-avatar__btn" style={{width: 98, height: 98}}>
+                  <svg width="20" height="20" aria-hidden="true">
+                    <use xlinkHref="#icon-import"></use>
+                  </svg>
+                </span>}
+              { formData.avatar !== '' && 
+                <img
+                  src={`${formData.avatar}.png`}
+                  srcSet={`${formData.avatar}@2x.png 2x`}
+                  width="98"
+                  height="98"
+                  alt="user photo"
+                />}
             </span>
           </label>
         </div>
         <div className="user-info-edit__controls">
-          <button className="user-info-edit__control-btn" aria-label="обновить">
-            <svg width="16" height="16" aria-hidden="true">
-              <use xlinkHref="#icon-change"></use>
-            </svg>
-          </button>
-          <button className="user-info-edit__control-btn" aria-label="удалить">
-            <svg width="14" height="16" aria-hidden="true">
-              <use xlinkHref="#icon-trash"></use>
-            </svg>
-          </button>
+          {isEdit === false && <React.Fragment>
+            <button
+              className="user-info-edit__control-btn"
+              aria-label="обновить"
+              onClick={() => console.log(formData.avatar)}
+            >
+              <svg width="16" height="16" aria-hidden="true">
+                <use xlinkHref="#icon-change"></use>
+              </svg>
+            </button>
+            <button
+              className="user-info-edit__control-btn"
+              aria-label="удалить"
+              onClick={() => setFormData({...formData, avatar: ''})}
+            >
+              <svg width="14" height="16" aria-hidden="true">
+                <use xlinkHref="#icon-trash"></use>
+              </svg>
+            </button>
+          </React.Fragment>}
         </div>
       </div>
       <form
@@ -118,14 +140,25 @@ function UserInfoEdit({id, avatar, name, description, trainingReady, location, t
         method="post"
         onSubmit={(evt: FormEvent<HTMLFormElement>) => {
           evt.preventDefault();
-          onSendWorkout();
+          onSend();
         }}
       >
-        <button className="btn-flat btn-flat--underlined user-info-edit__save-button" type="submit" aria-label="Сохранить">
+        <button
+          className={isEdit ? "btn-flat btn-flat--underlined user-info__edit-button" : "btn-flat btn-flat--underlined user-info-edit__save-button"}
+          type={isEdit ? "button" : "submit"}
+          aria-label={isEdit ? "Редактировать" : "Сохранить"}
+          disabled={formError}
+          onClick={() => {
+            if(isEdit === false) {
+              onSend();
+            }
+            setIsEdit(false);
+          }}
+        >
           <svg width="12" height="12" aria-hidden="true">
             <use xlinkHref="#icon-edit"></use>
           </svg>
-          <span>Сохранить</span>
+          <span>{isEdit ? "Редактировать" : "Сохранить"}</span>
         </button>
         <div className="user-info-edit__section">
           <h2 className="user-info-edit__title">Обо мне</h2>
@@ -138,6 +171,8 @@ function UserInfoEdit({id, avatar, name, description, trainingReady, location, t
                   name="name"
                   onChange={handleNameChange}
                   value={formData.name}
+                  disabled={isEdit}
+                  style={{opacity: 1, backgroundColor: 'transparent'}}
                 />
               </span>
               {nameError && <span className="custom-input__error">{ErrorMessage.Title}</span>}
@@ -151,6 +186,8 @@ function UserInfoEdit({id, avatar, name, description, trainingReady, location, t
                 placeholder=""
                 onChange={handleTextChange}
                 value={formData.description}
+                disabled={isEdit}
+                style={{opacity: 1, backgroundColor: 'transparent'}}
               >{formData.description}</textarea>
             </label>
             {descriptionError && <span className="custom-input__error">{ErrorMessage.Description}</span>}
@@ -165,6 +202,7 @@ function UserInfoEdit({id, avatar, name, description, trainingReady, location, t
                 name="ready-for-training"
                 checked={formData.trainingReady}
                 onChange={() => setFormData({...formData, trainingReady: !formData.trainingReady})}
+                disabled={isEdit}
               />
               <span className="custom-toggle__icon">
                 <svg width="9" height="6" aria-hidden="true">
@@ -190,6 +228,7 @@ function UserInfoEdit({id, avatar, name, description, trainingReady, location, t
                       type="checkbox"
                       name="specialization"
                       value={el}
+                      disabled={isEdit}
                       onChange={() => {
                         const currentType: string = el;
                         const types = formData.typeOfTrain.slice();
@@ -224,6 +263,7 @@ function UserInfoEdit({id, avatar, name, description, trainingReady, location, t
             className="custom-select__button"
             type="button"
             aria-label="Выберите одну из опций"
+            disabled={isEdit}
             onClick={() => setIsLocationOpened(true)}
           >
             <span className="custom-select__text">ст. м. {formData.location}</span>
@@ -260,6 +300,7 @@ function UserInfoEdit({id, avatar, name, description, trainingReady, location, t
             className="custom-select__button"
             type="button"
             aria-label="Выберите одну из опций"
+            disabled={isEdit}
             onClick={() => setIsGenderOpened(true)}
           >
             <span className="custom-select__text">{genderToRussian(formData.gender)}</span>
@@ -296,6 +337,7 @@ function UserInfoEdit({id, avatar, name, description, trainingReady, location, t
             className="custom-select__button"
             type="button"
             aria-label="Выберите одну из опций"
+            disabled={isEdit}
             onClick={() => setIsLevelOpened(true)}
           >
             <span className="custom-select__text">{levelToRussian(formData.level)}</span>

@@ -52,7 +52,8 @@ function CreateTraning(): JSX.Element {
 
   const handleFileChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     if(event.target.files) {
-      setFormData({...formData, video: event.target.files[0].name});
+      const fileVideo = event.target.files[0];
+      setFormData({...formData, video: URL.createObjectURL(fileVideo)});
       setIsDisabled(false);
     } else {
       setIsDisabled(true);
@@ -175,13 +176,13 @@ function CreateTraning(): JSX.Element {
                                   role="option"
                                   tabIndex={0}
                                   className="custom-select__item"
-                                  aria-selected={formData.type === workoutTypeToValue(el)}
+                                  aria-selected={formData.type === el}
                                   onClick={() => {
-                                    setFormData({...formData, type: workoutTypeToValue(el) as WorkoutType});
+                                    setFormData({...formData, type: el as WorkoutType});
                                     setIsTypeOpened(false);
                                   }}
                                 >
-                                  {el}
+                                  {workoutTypeToValue(el)}
                                 </li>
                               ))}
                             </ul>

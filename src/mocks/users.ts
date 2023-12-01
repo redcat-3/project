@@ -90,7 +90,7 @@ const generateUserCoach = ( number: number): UserCoach => {
     image: getRandomArrayElement(AVATARS),
     level: getRandomArrayElement(LEVELS) as unknown as UserLevel,
     typeOfTrain: getRandomArray(TYPES_OF_TRAIN).slice(0, 3),
-    certificate: getRandomArrayElement(CERTIFICATE),
+    certificate: getRandomArray(CERTIFICATE),
     merit: getRandomArrayElement(MERITS),
     trainingReady: getRandomBoolean()
     }
@@ -143,15 +143,20 @@ const generateUser = ( number: number): User => {
       timeOfTrain: getRandomArrayElement(TIMES_OF_TRAIN) as unknown as UserTime,
       caloriesToReset: getRandomNumber(CountCaloriesToReset.Min, CountCaloriesToReset.Max),
       caloriesToSpend: getRandomNumber(CountCaloriesToSpend.Min, CountCaloriesToSpend.Max),
-      trainingReady: getRandomBoolean()
+      trainingReady: getRandomBoolean(),
+      certificate: [],
+      merit: ''
     }
     return userUser;
   } else if (role === UserRole.Coach) {
     const userCoach = {
       ... user,
-      certificate: getRandomArrayElement(CERTIFICATE),
+      certificate: getRandomArray(CERTIFICATE),
       merit: getRandomArrayElement(MERITS),
-      trainingReady: getRandomBoolean()
+      trainingReady: getRandomBoolean(),
+      timeOfTrain: '' as unknown as UserTime,
+      caloriesToReset: 0,
+      caloriesToSpend: 0,
     }
     return userCoach;
   }
@@ -160,7 +165,9 @@ const generateUser = ( number: number): User => {
       timeOfTrain: getRandomArrayElement(TIMES_OF_TRAIN) as unknown as UserTime,
       caloriesToReset: getRandomNumber(CountCaloriesToReset.Min, CountCaloriesToReset.Max),
       caloriesToSpend: getRandomNumber(CountCaloriesToSpend.Min, CountCaloriesToSpend.Max),
-      trainingReady: getRandomBoolean()
+      trainingReady: getRandomBoolean(),
+      certificate: getRandomArrayElement(CERTIFICATE),
+      merit: getRandomArrayElement(MERITS),
     }
   return userUser;
 };

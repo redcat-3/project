@@ -10,8 +10,6 @@ import FriendsList from '../../pages/friends-list/friends-list';
 import MyOrders from '../../pages/my-orders/my-orders';
 import MyPurchases from '../../pages/my-purchases/my-purchases';
 import MyTranings from '../../pages/my-trainings/my-trainings';
-import PersonalAccountCoach from '../../pages/personal-account-coach/personal-account-coach';
-import PersonalAccountUser from '../../pages/personal-account-user/personal-account-user';
 import QuestionnaireCoach from '../../pages/questionnaire-coach/questionnaire-coach';
 import QuestionnaireUser from '../../pages/questionnaire-user/questionnaire-user';
 import SignUp from '../../pages/sign-up/sign-up';
@@ -22,6 +20,7 @@ import TrainingDiary from '../../pages/training-diary/training-diary';
 import UserCardCoach from '../../pages/user-card-coach/user-card-coach';
 import UserCardUser from '../../pages/user-card-user/user-card-user';
 import UserCatalog from '../../pages/users-catalog/users-catalog';
+import PersonalAccount from '../../pages/personal-account/personal-account';
 
 function App(): JSX.Element {
   return (
@@ -70,7 +69,7 @@ function App(): JSX.Element {
           />
           <Route
             path={AppRoute.PersonalAccount}
-            element={<PersonalAccountCoach/>}
+            element={<PersonalAccount/>}
             key={AppRoute.PersonalAccount}
           />
           <Route

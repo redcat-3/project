@@ -35,7 +35,7 @@ export type LoggedUser = {
   accessToken: string;
 }
 
-export type User = UserUser | UserCoach;
+export type User = UserUser & UserCoach;
 
 export type UserUser = {
   id: string;
@@ -71,7 +71,7 @@ export type UserCoach = {
   image?: string;
   level: UserLevel;
   typeOfTrain: string[];
-  certificate: string;
+  certificate: string[];
   merit: string;
   trainingReady: boolean;
 }

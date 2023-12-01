@@ -2,7 +2,8 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { NameSpace, AuthorizationStatus, DEFAULT_LIMIT } from '../../constant';
 import { UserProcess } from '../../types/state';
 import { checkAuthAction, loginAction, logoutAction } from '../api-actions';
-import { createNextUsers, user, users } from '../../mocks/users';
+import { coach, createNextUsers, user, users } from '../../mocks/users';
+import { UserTime } from '../../types/user-data';
 
 const COUNT_OF_USERS = 20;
 
@@ -10,7 +11,7 @@ const initialState: UserProcess = {
   authorizationStatus: AuthorizationStatus.Unknown,
   authorizationError: false,
   users,
-  user: user,
+  user: {...coach, timeOfTrain: '' as UserTime, caloriesToReset: 0, caloriesToSpend: 0},
   usersCount: COUNT_OF_USERS,
   isUsersDataLoading: false,
 };
