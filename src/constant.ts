@@ -1,11 +1,18 @@
 export const BACKEND_URL = 'http://localhost:4000';
 export const REQUEST_TIMEOUT = 5000;
 export const DEFAULT_LIMIT = 6;
+export const DEFAULT_LIMIT_ORDERS = 4;
 export const EMAIL_REGEXP = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
 export const MAX_AVATAR_SIZE = 2200000;
 export const MAX_TYPES_COUNT = 3;
 export const NOTIFICATION_DATE_FORMAT = 'DD MMMM, HH:mm';
 export const TIME_OUT_DELAY = 500;
+
+export const RangeValue = {
+  Min: 0,
+  Max: 5000,
+  Step: 10
+};
 
 export enum AppRoute {
   SignIn = '/login',
@@ -99,6 +106,12 @@ export const NameLength = {
   Min: 1,
   Max: 15,
 };
+
+export const Message = {
+  Empty: 'Скоро тут будет интересно',
+} as const
+
+export const DEFAULT_IMG = '/img/content/thumbnails/nearest-gym-01'
 
 export const ErrorMessage = {
   Name: `Mинимальная длина ${UserNameLength.Min} символ, максимальная длина ${UserNameLength.Max} символов`,

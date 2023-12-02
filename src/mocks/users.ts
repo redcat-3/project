@@ -61,11 +61,11 @@ const TIMES_OF_TRAIN = [
     '80-100',
 ]
 const CERTIFICATE = [
-    'img/content/certificates-and-diplomas/certificate-1.jpg',
-    'img/content/certificates-and-diplomas/certificate-2.jpg',
-    'img/content/certificates-and-diplomas/certificate-3.jpg',
-    'img/content/certificates-and-diplomas/certificate-4.jpg',
-    'img/content/certificates-and-diplomas/certificate-5.jpg'
+  '/img/content/certificates-and-diplomas/certificate-1',
+  '/img/content/certificates-and-diplomas/certificate-2',
+  '/img/content/certificates-and-diplomas/certificate-3',
+  '/img/content/certificates-and-diplomas/certificate-4',
+  '/img/content/certificates-and-diplomas/certificate-5',
 ]
 const MERITS = [
     'Страшный рассказ о драконе. Колдовство, предательство и необыкновенный мир фэнтези.',

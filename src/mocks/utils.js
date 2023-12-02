@@ -94,6 +94,12 @@ function randomDate(start, end) {
   return date.toISOString();
 }
 
+
+function randomDateDate(start, end) {
+  const date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
+  return date;
+}
+
 export {
   getReleaseDate,
   getFilmYear,
@@ -107,4 +113,6 @@ export {
   getItemById,
   sortByReleaseDate,
   getRandomBoolean,
-  randomDate};
+  randomDate,
+  randomDateDate
+};

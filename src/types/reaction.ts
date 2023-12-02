@@ -19,4 +19,18 @@ export type Notification = {
   createdDate: string;
   text: string;
   isActive: boolean;
+};
+
+export type Order = {
+  orderId?: number;
+  workoutId: number;
+  userId: string;
+  count: number;
+  createdDate: Date;
+}
+
+export type OrderToCoach = {
+  workoutId: number;
+  orderPrice: number;
+  countWorkout: number;
 }

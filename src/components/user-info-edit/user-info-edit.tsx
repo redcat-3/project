@@ -1,5 +1,5 @@
 import React, { ChangeEventHandler, FormEvent, useState } from 'react';
-import { GENDERS, LEVELS, LOCATIONS, UserGender, UserLevel, UserTime } from '../../types/user-data';
+import { GENDERS, LEVELS, LOCATIONS, UserGender, UserLevel, UserRole, UserTime } from '../../types/user-data';
 import { WORKOUT_TYPES } from '../../types/workout-data';
 import { AppRoute, ErrorMessage, MAX_TYPES_COUNT, UserDescriptionLength, UserNameLength } from '../../constant';
 import { useAppDispatch } from '../../hooks';
@@ -16,9 +16,10 @@ type UserInfoEditProps = {
   trainingReady: boolean;
   level: UserLevel;
   gender: UserGender;
+  role: UserRole;
 };
 
-function UserInfoEdit({id, avatar, name, description, trainingReady, location, typeOfTrain, level, gender}: UserInfoEditProps): JSX.Element {
+function UserInfoEdit({id, avatar, name, description, trainingReady, location, typeOfTrain, level, gender, role}: UserInfoEditProps): JSX.Element {
   const dispatch = useAppDispatch();
   const [isLocationOpened, setIsLocationOpened] = useState(false);
   const [isGenderOpened, setIsGenderOpened] = useState(false);
@@ -209,7 +210,7 @@ function UserInfoEdit({id, avatar, name, description, trainingReady, location, t
                   <use xlinkHref="#arrow-check"></use>
                 </svg>
               </span>
-              <span className="custom-toggle__label">Готов тренировать</span>
+              <span className="custom-toggle__label">{role === UserRole.Coach ? 'Готов тренировать' : 'Готов к тренировке'}</span>
             </label>
           </div>
         </div>

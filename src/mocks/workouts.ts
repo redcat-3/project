@@ -23,10 +23,10 @@ const PREVIEWS = [
 ];
 
 const BACKS = [
-    'img/content/training-1',
-    'img/content/training-2',
-    'img/content/training-3',
-    'img/content/training-4',
+    '/img/content/training-1',
+    '/img/content/training-2',
+    '/img/content/training-3',
+    '/img/content/training-4',
 ];
 
 const PROMOS = [
@@ -89,7 +89,7 @@ const createWorkout = (id: number) => {
   const workout = {
     workoutId: id,
     name: getRandomArrayElement(NAMES),
-    background: getRandomArrayElement(PREVIEWS),
+    background: getRandomArrayElement(BACKS),
     level: getRandomArrayElement(LEVELS),
     type: getRandomArrayElement(TYPES_OF_TRAIN),
     timeOfTraining: getRandomArrayElement(TIMES_OF_TRAIN),

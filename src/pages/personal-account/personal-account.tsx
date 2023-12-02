@@ -4,7 +4,7 @@ import UserInfoEdit from '../../components/user-info-edit/user-info-edit';
 import { useAppSelector } from '../../hooks';
 import { getUser } from '../../store/user-process/selectors';
 import PersonalAccountCoach from './items/personal-account-coach/personal-account-coach';
-import PersonalAccountUser from '../personal-account-user/personal-account-user';
+import PersonalAccountUser from './items/personal-account-user/personal-account-user';
 import { UserRole } from '../../types/user-data';
 import { useState } from 'react';
 
@@ -19,7 +19,7 @@ function PersonalAccount(): JSX.Element {
   return (
     <div className="wrapper">
       <Helmet>
-        <title>FitFriends. Ваш аккаунт</title>
+        <title>FitFriends. Мой аккаунт</title>
       </Helmet>
       <Header />
       <main>
@@ -36,14 +36,12 @@ function PersonalAccount(): JSX.Element {
                 typeOfTrain={user.typeOfTrain}
                 trainingReady={user.trainingReady}
                 level={user.level}
-                gender={user.gender}/>
+                gender={user.gender}
+                role={user.role}
+              />
               <div className="inner-page__content">
                 { user.role === UserRole.Coach ? 
-                  <PersonalAccountCoach 
-                    id={user.id}
-                    certificate={certificates}
-                    addCertificate={addCertificate}
-                  /> :
+                  <PersonalAccountCoach/> :
                   <PersonalAccountUser/>
                 }
               </div>

@@ -11,7 +11,8 @@ const initialState: UserProcess = {
   authorizationStatus: AuthorizationStatus.Unknown,
   authorizationError: false,
   users,
-  user: {...coach, timeOfTrain: '' as UserTime, caloriesToReset: 0, caloriesToSpend: 0},
+  user: //{...user, merit: '', certificate: []},
+  {...coach, timeOfTrain: '' as UserTime, caloriesToReset: 0, caloriesToSpend: 0},
   usersCount: COUNT_OF_USERS,
   isUsersDataLoading: false,
 };
