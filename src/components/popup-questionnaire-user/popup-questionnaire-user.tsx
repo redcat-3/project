@@ -81,7 +81,7 @@ function PopupQuestionnaireUser(): JSX.Element {
                               value={workoutTypeToValue(item)}
                               onClick={() => {
                                 const currentType: string = workoutTypeToValue(item);
-                                const types = formData.typeOfTrain;
+                                const types = formData.typeOfTrain.slice();
                                 const index = types.indexOf(currentType);
                                 if(index !== -1) {
                                   types.splice(index,1);

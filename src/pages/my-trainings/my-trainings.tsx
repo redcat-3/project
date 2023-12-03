@@ -2,43 +2,70 @@ import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import TraningsItem from '../../components/trainings-item/trainings-item';
 import { useNavigate } from 'react-router-dom';
-import { ChangeEventHandler, useEffect, useState } from 'react';
-import { RangeValue } from '../../constant';
-import './css/style.css';
+import { useState } from 'react';
+import { CountCaloriesToSpend, DEFAULT_LIMIT, RangePriceValue, RangeRatingValue } from '../../constant';
+import MultiRangeSlider from '../../components/multi-range-slider/multi-range-slider';
+import { WORKOUT_TIMES } from '../../types/workout-data';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getWorkouts, getWorkoutsCount } from '../../store/workout-process/selectors';
+import { filterWorkouts, workoutsInc } from '../../store/workout-process/workout-process';
+import { TrainigQuery } from '../../types/query';
+
+const TIMES = [
+  '10 мин - 30 мин',
+  '30 мин - 50 мин',
+  '50 мин - 80 мин',
+  '80 мин - 100 мин'
+] as const;
+
 
 function MyTranings(): JSX.Element {
+  const dispatch = useAppDispatch();
   let navigate = useNavigate();
   const goBack = () => {
     navigate(-1);
   };
-  const min = RangeValue.Min;
-  const max = RangeValue.Max;
-  const step = RangeValue.Step;
-  const [minValue, setMinValue] = useState(min);
-  const [maxValue, setMaxValue] = useState(max);
-  const [value, setValue] = useState({ min: 0, max: 5000 });
-  useEffect(() => {
-    if (value) {
-      setMinValue(value.min);
-      setMaxValue(value.max);
+  const timesAll = WORKOUT_TIMES.slice();
+  const [price, setPrice] = useState({ min: RangePriceValue.Min, max: RangePriceValue.Max });
+  const [caloriesCount, setCaloriesCount] = useState({ min: CountCaloriesToSpend.Min, max: CountCaloriesToSpend.Max });
+  const [rating, setRating] = useState({ min: RangeRatingValue.Min, max: RangeRatingValue.Max });
+  const [times, setTimes] = useState(timesAll);
+  const filterQuery: TrainigQuery = {
+    priceMax: price.max,
+    priceMin: price.min,
+    caloriesMax: caloriesCount.max,
+    caloriesMin: caloriesCount.min,
+    ratingMax: rating.max,
+    ratingMin: rating.min,
+    times,
+  }
+  const workouts = useAppSelector(getWorkouts);
+  const workoutsCount = useAppSelector(getWorkoutsCount);
+  let renderedWorkoutsCount = workouts.length;
+  const [isMore, setIsMore] = useState(renderedWorkoutsCount < workoutsCount);
+  const handleMoreClick = () => {
+    if(workoutsCount > renderedWorkoutsCount) {
+      renderedWorkoutsCount = renderedWorkoutsCount + DEFAULT_LIMIT;
+      dispatch(workoutsInc(DEFAULT_LIMIT));
+      setIsMore(renderedWorkoutsCount < workoutsCount);
     }
-  }, [value]);
-  const handleMinChange: ChangeEventHandler<HTMLInputElement>  = (event) => {
-    event.preventDefault();
-    const value = parseFloat(event.target.value);
-    const newMinVal = Math.min(value, maxValue - step);
-    if (!value) setMinValue(newMinVal);
-    setValue({ min: newMinVal, max: maxValue });
   };
-  const handleMaxChange: ChangeEventHandler<HTMLInputElement>  = (event) => {
-    event.preventDefault();
-    const value = parseFloat(event.target.value);
-    const newMaxVal = Math.max(value, minValue + step);
-    if (!value) setMaxValue(newMaxVal);
-    setValue({ min: minValue, max: newMaxVal });
+  const onChangePrice = ({min, max}: {min: number, max: number}) => {
+    setPrice({ min, max });
+    filterQuery.priceMin = min;
+    filterQuery.priceMax = max;
   };
-  const minPos = ((minValue - min) / (max - min)) * 100;
-  const maxPos = ((maxValue - min) / (max - min)) * 100;
+  const onChangeCaloriesCount = ({min, max}: {min: number, max: number}) => {
+    setCaloriesCount({ min, max });
+    filterQuery.caloriesMin = min;
+    filterQuery.caloriesMax = max;
+  };
+  const onChangeRating = ({min, max}: {min: number, max: number}) => {
+    setRating({ min, max });
+    filterQuery.ratingMin = min;
+    filterQuery.ratingMax = max;
+  };
+  
   return (
     <div className="wrapper">
       <Helmet>
@@ -67,135 +94,71 @@ function MyTranings(): JSX.Element {
                   <form
                     className="my-training-form__form"
                   >
-                    <div className="my-training-form__block my-training-form__block--price container-slider">
+                    <div className="my-training-form__block my-training-form__block--price">
                       <h4 className="my-training-form__block-title">Цена, ₽</h4>
-                      <div className="filter-price">
-                        <div className="filter-price__input-text filter-price__input-text--min">
-                          <input
-                            type="number"
-                            id="text-min"
-                            name="text-min"
-                            value={minValue}
-                            min={min}
-                            max={max}
-                            step={step}
-                            onChange={handleMinChange}
-                          />
-                          <label htmlFor="text-min">от</label>
-                        </div>
-                        <div className="filter-price__input-text filter-price__input-text--max">
-                          <input
-                            type="number"
-                            id="text-max"
-                            name="text-max"
-                            value={maxValue}
-                            min={min}
-                            max={max}
-                            step={step}
-                            onChange={handleMaxChange}
-                          />
-                          <label htmlFor="text-max">до</label>
-                        </div>
-                      </div>
-                      <div className="filter-range">
-                        <div className="filter-range__scale">
-                          <div className="filter-range__bar" style={{ left: `${minPos}%`, right: `${100 - maxPos}%` }}><span className="visually-hidden">Полоса прокрутки</span></div>
-                        </div>
-                        <div className="filter-range__control">
-                          <button className="filter-range__min-toggle" style={{ left: `${minPos}%` }} ><span className="visually-hidden">Минимальное значение</span></button>
-                          <button className="filter-range__max-toggle" style={{ left: `${maxPos}%` }}><span className="visually-hidden">Максимальное значение</span></button>
-                        </div>
-                      </div>
+                      <MultiRangeSlider
+                        withValue={true}
+                        minMax={false}
+                        min={RangePriceValue.Min}
+                        max={RangePriceValue.Max}
+                        onChange={onChangePrice}
+                      ></MultiRangeSlider>
                     </div>
                     <div className="my-training-form__block my-training-form__block--calories">
                       <h4 className="my-training-form__block-title">Калории</h4>
-                      <div className="filter-calories">
-                        <div className="filter-calories__input-text filter-calories__input-text--min">
-                          <input type="number" id="text-min-cal" name="text-min-cal" />
-                          <label htmlFor="text-min-cal">от</label>
-                        </div>
-                        <div className="filter-calories__input-text filter-calories__input-text--max">
-                          <input type="number" id="text-max-cal" name="text-max-cal" />
-                          <label htmlFor="text-max-cal">до</label>
-                        </div>
-                      </div>
-                      <div className="filter-range">
-                        <div className="filter-range__scale">
-                          <div className="filter-range__bar"><span className="visually-hidden">Полоса прокрутки</span></div>
-                        </div>
-                        <div className="filter-range__control">
-                          <button className="filter-range__min-toggle"><span className="visually-hidden">Минимальное значение</span></button>
-                          <button className="filter-range__max-toggle"><span className="visually-hidden">Максимальное значение</span></button>
-                        </div>
-                      </div>
+                      <MultiRangeSlider
+                        withValue={true}
+                        minMax={false}
+                        min={CountCaloriesToSpend.Min}
+                        max={CountCaloriesToSpend.Max}
+                        onChange={onChangeCaloriesCount}
+                      ></MultiRangeSlider>
                     </div>
                     <div className="my-training-form__block my-training-form__block--raiting">
                       <h4 className="my-training-form__block-title">Рейтинг</h4>
-                      <div className="filter-raiting">
-                        <div className="filter-raiting__scale">
-                          <div className="filter-raiting__bar"><span className="visually-hidden">Полоса прокрутки</span></div>
-                        </div>
-                        <div className="filter-raiting__control">
-                          <button className="filter-raiting__min-toggle"><span className="visually-hidden">Минимальное значение</span></button><span>0</span>
-                          <button className="filter-raiting__max-toggle"><span className="visually-hidden">Максимальное значение</span></button><span>5</span>
-                        </div>
-                      </div>
+                      <MultiRangeSlider
+                        withValue={false}
+                        minMax={true}
+                        min={RangeRatingValue.Min}
+                        max={RangeRatingValue.Max}
+                        onChange={onChangeRating}
+                      ></MultiRangeSlider>
                     </div>
                     <div className="my-training-form__block my-training-form__block--duration">
                       <h4 className="my-training-form__block-title">Длительность</h4>
                       <ul className="my-training-form__check-list">
-                        <li className="my-training-form__check-list-item">
-                          <div className="custom-toggle custom-toggle--checkbox">
-                            <label>
-                              <input type="checkbox" value="duration-1" name="duration" />
-                              <span className="custom-toggle__icon">
-                                <svg width="9" height="6" aria-hidden="true">
-                                  <use xlinkHref="#arrow-check"></use>
-                                </svg>
-                              </span>
-                              <span className="custom-toggle__label">10 мин - 30 мин</span>
-                            </label>
-                          </div>
-                        </li>
-                        <li className="my-training-form__check-list-item">
-                          <div className="custom-toggle custom-toggle--checkbox">
-                            <label>
-                              <input type="checkbox" value="duration-1" name="duration" checked />
-                              <span className="custom-toggle__icon">
-                                <svg width="9" height="6" aria-hidden="true">
-                                  <use xlinkHref="#arrow-check"></use>
-                                </svg>
-                              </span>
-                              <span className="custom-toggle__label">30 мин - 50 мин</span>
-                            </label>
-                          </div>
-                        </li>
-                        <li className="my-training-form__check-list-item">
-                          <div className="custom-toggle custom-toggle--checkbox">
-                            <label>
-                              <input type="checkbox" value="duration-1" name="duration" />
-                              <span className="custom-toggle__icon">
-                                <svg width="9" height="6" aria-hidden="true">
-                                  <use xlinkHref="#arrow-check"></use>
-                                </svg>
-                              </span>
-                              <span className="custom-toggle__label">50 мин - 80 мин</span>
-                            </label>
-                          </div>
-                        </li>
-                        <li className="my-training-form__check-list-item">
-                          <div className="custom-toggle custom-toggle--checkbox">
-                            <label>
-                              <input type="checkbox" value="duration-1" name="duration" />
-                              <span className="custom-toggle__icon">
-                                <svg width="9" height="6" aria-hidden="true">
-                                  <use xlinkHref="#arrow-check"></use>
-                                </svg>
-                              </span>
-                              <span className="custom-toggle__label">80 мин - 100 мин</span>
-                            </label>
-                          </div>
-                        </li>
+                        {WORKOUT_TIMES.map((item, index) => (
+                          <li className="my-training-form__check-list-item" key={index}>                          
+                            <div className="custom-toggle custom-toggle--checkbox">
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  value={item}
+                                  name="duration"
+                                  onClick={() => {
+                                    const timesNew = times.slice();
+                                    const index = timesNew.indexOf(item);
+                                    if(index !== -1) {
+                                      timesNew.splice(index,1);
+                                    } else {
+                                      timesNew.push(item);
+                                    }
+                                    setTimes(timesNew);
+                                    filterQuery.times = timesNew;
+                                    dispatch(filterWorkouts(filterQuery));
+                                  }}
+                                  checked={times.includes(item)}
+                                />
+                                <span className="custom-toggle__icon">
+                                  <svg width="9" height="6" aria-hidden="true">
+                                    <use xlinkHref="#arrow-check"></use>
+                                  </svg>
+                                </span>
+                                <span className="custom-toggle__label">{TIMES[index]}</span>
+                              </label>
+                            </div>
+                          </li>
+                        ))}
                       </ul>
                     </div>
                   </form>
@@ -204,15 +167,20 @@ function MyTranings(): JSX.Element {
               <div className="inner-page__content">
                 <div className="my-trainings">
                   <ul className="my-trainings__list">
-                    <TraningsItem />
-                    <TraningsItem />
-                    <TraningsItem />
-                    <TraningsItem />
-                    <TraningsItem />
-                    <TraningsItem />
+                    {workouts.map((item, index) => (
+                      <TraningsItem key={index}
+                        workout={item}
+                      />
+                    ))}
                   </ul>
                   <div className="show-more my-trainings__show-more">
-                    <button className="btn show-more__button show-more__button--more" type="button">Показать еще</button>
+                    {isMore && <button
+                      className="btn show-more__button show-more__button--more"
+                      type="button"
+                      onClick={handleMoreClick}
+                    >Показать еще
+                    </button>
+                    }
                     <button className="btn show-more__button show-more__button--to-top" type="button">Вернуться в начало</button>
                   </div>
                 </div>

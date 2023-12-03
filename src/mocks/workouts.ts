@@ -105,13 +105,14 @@ const createWorkout = (id: number) => {
 };
 
 export function createWorkouts (count: number) {
-  const arr = [1];
-    for (let i = 1; i <= count; i++) {
+  const arr: number[] = [];
+    for (let i = 0; i < count; i++) {
       arr.push(i);
     }
   return arr.map((id) => createWorkout(id));
 }
 
+export const workouts = createWorkouts(6);
 
 const createSpecial= (id: number) => {
     const workout = {

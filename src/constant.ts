@@ -8,12 +8,6 @@ export const MAX_TYPES_COUNT = 3;
 export const NOTIFICATION_DATE_FORMAT = 'DD MMMM, HH:mm';
 export const TIME_OUT_DELAY = 500;
 
-export const RangeValue = {
-  Min: 0,
-  Max: 5000,
-  Step: 10
-};
-
 export enum AppRoute {
   SignIn = '/login',
   Logout = '/logout',
@@ -105,6 +99,16 @@ export const WorkoutDescriptionLength = {
 export const NameLength = {
   Min: 1,
   Max: 15,
+};
+
+export const RangePriceValue = {
+  Min: 0,
+  Max: 5000,
+};
+
+export const RangeRatingValue = {
+  Min: 0,
+  Max: 5,
 };
 
 export const Message = {

@@ -63,6 +63,7 @@ function PopularTranings(): JSX.Element {
         className="container slider"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
+        style={{ width: "100%", height: "100%"}}
       >
         <div className="popular-trainings__wrapper">
           <div className="popular-trainings__title-wrapper">

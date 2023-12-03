@@ -18,6 +18,7 @@ export type WorkoutProcess = {
   workouts: Workout[];
   isWorkoutsDataLoading: boolean;
   workoutsCount: number;
+  filteredWorkouts: Workout[];
 }
 
 
