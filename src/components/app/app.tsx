@@ -13,14 +13,13 @@ import MyTranings from '../../pages/my-trainings/my-trainings';
 import QuestionnaireCoach from '../../pages/questionnaire-coach/questionnaire-coach';
 import QuestionnaireUser from '../../pages/questionnaire-user/questionnaire-user';
 import SignUp from '../../pages/sign-up/sign-up';
-import TrainingCardCoach from '../../pages/training-card-coach/training-card-coach';
-import TrainingCardUser from '../../pages/training-card-user/training-card-user';
 import TrainingCatalog from '../../pages/training-catalog/training-catalog';
 import TrainingDiary from '../../pages/training-diary/training-diary';
 import UserCardCoach from '../../pages/user-card-coach/user-card-coach';
 import UserCardUser from '../../pages/user-card-user/user-card-user';
 import UserCatalog from '../../pages/users-catalog/users-catalog';
 import PersonalAccount from '../../pages/personal-account/personal-account';
+import TrainingCard from '../../pages/training-card/training-card';
 
 function App(): JSX.Element {
   return (
@@ -88,14 +87,9 @@ function App(): JSX.Element {
             key={AppRoute.SignUp}
           />
           <Route
-            path={AppRoute.TrainingCardCoach}
-            element={<TrainingCardCoach/>}
-            key={AppRoute.TrainingCardCoach}
-          />
-          <Route
-            path={AppRoute.TrainingCardUser}
-            element={<TrainingCardUser/>}
-            key={AppRoute.TrainingCardUser}
+            path={AppRoute.TrainingCard}
+            element={<TrainingCard/>}
+            key={AppRoute.TrainingCard}
           />
           <Route
             path={AppRoute.TrainingCatalog}

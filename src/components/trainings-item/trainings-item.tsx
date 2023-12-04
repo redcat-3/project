@@ -27,7 +27,7 @@ function TraningsItem ({workout}: TraningsItemProps): JSX.Element {
             </picture>
           </div>
           <p className="thumbnail-training__price">
-            <span className="thumbnail-training__price-value">{workout.price}</span>
+            <span className="thumbnail-training__price-value">{workout.price === 0 ? "Бесплатно" : workout.price}</span>
             <span>₽</span>
           </p>
           <h3 className="thumbnail-training__title">{workout.name}</h3>
@@ -51,8 +51,8 @@ function TraningsItem ({workout}: TraningsItemProps): JSX.Element {
             <p className="thumbnail-training__text">{workout.description}</p>
           </div>
           <div className="thumbnail-training__button-wrapper">
-            <Link to={`/training-card-coach/${workout.workoutId}`} className="btn btn--small thumbnail-training__button-catalog">Подробнее</Link>
-            <Link to={`/training-card-coach/feedbacks/${workout.workoutId}`} className="btn btn--small btn--outlined thumbnail-training__button-catalog">Отзывы</Link>
+            <Link to={`/training-card/${workout.workoutId}`} className="btn btn--small thumbnail-training__button-catalog">Подробнее</Link>
+            <Link to={`/training-card/feedbacks/${workout.workoutId}`} className="btn btn--small btn--outlined thumbnail-training__button-catalog">Отзывы</Link>
           </div>
         </div>
       </div>

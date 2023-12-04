@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { UserGender, UserLevel } from "./types/user-data";
+import { UserGender, UserLevel, UserLocation } from "./types/user-data";
 import { WorkoutType } from "./types/workout-data";
 import { NOTIFICATION_DATE_FORMAT } from "./constant";
 
@@ -99,6 +99,22 @@ export function genderToRussian (gender: string): string {
       return 'Не важно';
     default:
       return '';
+  }
+}
+
+export function locationToEnum (location: string): UserLocation {
+  switch (location) {
+    case 'Пионерская':
+      return UserLocation.Pion;
+    case 'Петроградская':
+    default:
+      return UserLocation.Petr;
+    case 'Удельная':
+      return UserLocation.Udel;
+    case 'Звёздная':
+      return UserLocation.Star;
+    case 'Спортивная':
+      return UserLocation.Sport;
   }
 }
 

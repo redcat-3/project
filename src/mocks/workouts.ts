@@ -97,7 +97,7 @@ const createWorkout = (id: number) => {
     caloriesToSpend: getRandomNumber(1000, 5000),
     description: getRandomArrayElement(DESCRIPTIONS),
     gender: getRandomArrayElement(GENDERS),
-    video: '/video1.mov',
+    video: '/img/content/training-video/video-thumbnail',
     special: getRandomBoolean(),
     rating: getRandomNumber(1, 5),
   };

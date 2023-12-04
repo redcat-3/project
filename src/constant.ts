@@ -7,6 +7,8 @@ export const MAX_AVATAR_SIZE = 2200000;
 export const MAX_TYPES_COUNT = 3;
 export const NOTIFICATION_DATE_FORMAT = 'DD MMMM, HH:mm';
 export const TIME_OUT_DELAY = 500;
+export const USER_CATALOG_CHECKBOX_LIMIT = 5;
+export const DEFAULT_NOT_FOUND_MESSAGE = 'К сожалению ничего не нашлось';
 
 export enum AppRoute {
   SignIn = '/login',
@@ -22,8 +24,7 @@ export enum AppRoute {
   QuestionnaireCoach = '/questionnaire-coach',
   QuestionnaireUser = '/questionnaire-user',
   SignUp = '/registr',
-  TrainingCardCoach = '/training-card-coach/:id',
-  TrainingCardUser = '/training-card-user/:id',
+  TrainingCard = '/training-card/:id',
   TrainingCatalog = '/training-catalog',
   TrainingDiary = '/training-diary/:id',
   UserCardCoach = '/user-card-coach/:id',
@@ -109,6 +110,12 @@ export const RangePriceValue = {
 export const RangeRatingValue = {
   Min: 0,
   Max: 5,
+};
+
+export const PriceSortValue = {
+  Desc: 'desc',
+  Asc: 'asc',
+  Free: '0'
 };
 
 export const Message = {

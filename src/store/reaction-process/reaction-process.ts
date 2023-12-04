@@ -3,6 +3,7 @@ import { NameSpace } from '../../constant';
 import { ReactionProcess } from '../../types/state';
 import { notifications } from '../../mocks/notifications';
 import { createNextOrders, createNextOrdersToCoach, orders, ordersToCoach1 } from '../../mocks/orders';
+import { createFeedbacks } from '../../mocks/feedbacks';
 
 const COUNT_OF_ORDERS = 10;
 
@@ -13,6 +14,7 @@ const initialState: ReactionProcess = {
   isOrdersDataLoading: false,
   ordersCount: COUNT_OF_ORDERS,
   ordersToCoachCount: COUNT_OF_ORDERS,
+  feedbacks: createFeedbacks(5, 1),
 };
 
 export const reactionProcess = createSlice({

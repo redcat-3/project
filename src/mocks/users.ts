@@ -175,8 +175,8 @@ export const user = generateUserUser(22);
 export const coach = generateUserCoach(33);
 const createUsers = (ids: number[]) => ids.map((id) => generateUser(id));
 const createUserUsers = (ids: number[]) => ids.map((id) => generateUserUser(id));
-const arr = [0];
-for (let i = 6; i <= 11; i++) {
+const arr: number[] = [];
+for (let i = 0; i < 6; i++) {
 	arr.push(i);
 }
 export const users = createUsers(arr);

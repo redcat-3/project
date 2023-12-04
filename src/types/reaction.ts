@@ -34,3 +34,14 @@ export type OrderToCoach = {
   orderPrice: number;
   countWorkout: number;
 }
+
+export type Feedback = {
+  feedbackId?: number;
+  workoutId: number;
+  userId: string;
+  avatar: string;
+  name: string;
+  rating: number;
+  text: string;
+  createdDate: Date;
+}

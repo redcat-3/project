@@ -1,12 +1,42 @@
-import React from 'react';
-import CheckListItem from './items/check-list-item/check-list-item';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import MultiRangeSlider from '../multi-range-slider/multi-range-slider';
+import { CountCaloriesToSpend, PriceSortValue, RangePriceValue, RangeRatingValue } from '../../constant';
+import { WORKOUT_TYPES } from '../../types/workout-data';
+import { workoutTypeToName } from '../../utils';
 
-function GymCatalogForm(): JSX.Element {
+type GymCatalogFormProps = {
+  types: string[]
+};
+
+function GymCatalogForm({types}: GymCatalogFormProps): JSX.Element {
+  let navigate = useNavigate();
+  const goBack = () => {
+    navigate(-1);
+  };
+  const [price, setPrice] = useState({ min: RangePriceValue.Min, max: RangePriceValue.Max });
+  const [caloriesCount, setCaloriesCount] = useState({ min: CountCaloriesToSpend.Min, max: CountCaloriesToSpend.Max });
+  const [rating, setRating] = useState({ min: RangeRatingValue.Min, max: RangeRatingValue.Max });
+  const [currentTypes, setTypes] = useState(types);
+  const [priceSort, setPriceSort] = useState(PriceSortValue.Desc);
+  const onChangePrice = ({min, max}: {min: number, max: number}) => {
+    setPrice({ min, max })
+  };
+  const onChangeCaloriesCount = ({min, max}: {min: number, max: number}) => {
+    setCaloriesCount({ min, max })
+  };
+  const onChangeRating = ({min, max}: {min: number, max: number}) => {
+    setRating({ min, max })
+  };
   return (
     <div className="gym-catalog-form">
       <h2 className="visually-hidden">Мои тренировки Фильтр</h2>
       <div className="gym-catalog-form__wrapper">
-        <button className="btn-flat btn-flat--underlined gym-catalog-form__btnback" type="button">
+        <button
+          className="btn-flat btn-flat--underlined gym-catalog-form__btnback"
+          type="button"
+          onClick={goBack}
+        >
           <svg width="14" height="10" aria-hidden="true">
             <use xlinkHref="#arrow-left"></use>
           </svg>
@@ -16,84 +46,95 @@ function GymCatalogForm(): JSX.Element {
         <form className="gym-catalog-form__form">
           <div className="gym-catalog-form__block gym-catalog-form__block--price">
             <h4 className="gym-catalog-form__block-title">Цена, ₽</h4>
-            <div className="filter-price">
-              <div className="filter-price__input-text filter-price__input-text--min">
-                <input type="number" id="text-min" name="text-min" value="0" />
-                <label htmlFor="text-min">от</label>
-              </div>
-              <div className="filter-price__input-text filter-price__input-text--max">
-                <input type="number" id="text-max" name="text-max" value="3200" />
-                <label htmlFor="text-max">до</label>
-              </div>
-            </div>
-            <div className="filter-range">
-              <div className="filter-range__scale">
-                <div className="filter-range__bar">
-                  <span className="visually-hidden">Полоса прокрутки</span>
-                </div>
-              </div>
-              <div className="filter-range__control">
-                <button className="filter-range__min-toggle"><span className="visually-hidden">Минимальное значение</span></button>
-                <button className="filter-range__max-toggle"><span className="visually-hidden">Максимальное значение</span></button>
-              </div>
-            </div>
+            <MultiRangeSlider
+              withValue={true}
+              minMax={false}
+              min={RangePriceValue.Min}
+              max={RangePriceValue.Max}
+              onChange={onChangePrice}
+            ></MultiRangeSlider>
           </div>
           <div className="gym-catalog-form__block gym-catalog-form__block--calories">
             <h4 className="gym-catalog-form__block-title">Калории</h4>
-            <div className="filter-calories">
-              <div className="filter-calories__input-text filter-calories__input-text--min">
-                <input type="number" id="text-min-cal" name="text-min-cal" />
-                <label htmlFor="text-min-cal">от</label>
-              </div>
-              <div className="filter-calories__input-text filter-calories__input-text--max">
-                <input type="number" id="text-max-cal" name="text-max-cal" />
-                <label htmlFor="text-max-cal">до</label>
-              </div>
-            </div>
-            <div className="filter-range">
-              <div className="filter-range__scale">
-                <div className="filter-range__bar"><span className="visually-hidden">Полоса прокрутки</span></div>
-              </div>
-              <div className="filter-range__control">
-                <button className="filter-range__min-toggle"><span className="visually-hidden">Минимальное значение</span></button>
-                <button className="filter-range__max-toggle"><span className="visually-hidden">Максимальное значение</span></button>
-              </div>
-            </div>
+            <MultiRangeSlider
+              withValue={true}
+              minMax={false}
+              min={CountCaloriesToSpend.Min}
+              max={CountCaloriesToSpend.Max}
+              onChange={onChangeCaloriesCount}
+            ></MultiRangeSlider>
           </div>
           <div className="gym-catalog-form__block gym-catalog-form__block--rating">
             <h4 className="gym-catalog-form__block-title">Рейтинг</h4>
-            <div className="filter-raiting">
-              <div className="filter-raiting__scale">
-                <div className="filter-raiting__bar">
-                  <span className="visually-hidden">Полоса прокрутки</span>
-                </div>
-              </div>
-              <div className="filter-raiting__control">
-                <button className="filter-raiting__min-toggle"><span className="visually-hidden">Минимальное значение</span></button><span>1</span>
-                <button className="filter-raiting__max-toggle"><span className="visually-hidden">Максимальное значение</span></button><span>5</span>
-              </div>
-            </div>
+            <MultiRangeSlider
+              withValue={false}
+              minMax={true}
+              min={RangeRatingValue.Min}
+              max={RangeRatingValue.Max}
+              onChange={onChangeRating}
+            ></MultiRangeSlider>
           </div>
           <div className="gym-catalog-form__block gym-catalog-form__block--type">
             <h4 className="gym-catalog-form__block-title">Тип</h4>
             <ul className="gym-catalog-form__check-list">
-              <CheckListItem />
-              <CheckListItem />
-              <CheckListItem />
-              <CheckListItem />
+              {WORKOUT_TYPES.map((item, index) => (
+                <li className="gym-catalog-form__check-list-item" key={index}>                          
+                  <div className="custom-toggle custom-toggle--checkbox">
+                    <label>
+                      <input
+                        type="checkbox"
+                        value={item}
+                        name="type"
+                        onClick={() => {
+                          const typesNew = currentTypes.slice();
+                          const index = typesNew.indexOf(item);
+                          if(index !== -1) {
+                            typesNew.splice(index,1);
+                          } else {
+                            typesNew.push(item);
+                          }
+                          setTypes(typesNew);
+                        }}
+                        checked={currentTypes.includes(item)}
+                      />
+                      <span className="custom-toggle__icon">
+                        <svg width="9" height="6" aria-hidden="true">
+                          <use xlinkHref="#arrow-check"></use>
+                        </svg>
+                      </span>
+                      <span className="custom-toggle__label">{workoutTypeToName(item)}</span>
+                    </label>
+                  </div>
+                </li>
+              ))}
             </ul>
           </div>
           <div className="gym-catalog-form__block gym-catalog-form__block--sort">
             <h4 className="gym-catalog-form__title gym-catalog-form__title--sort">Сортировка</h4>
             <div className="btn-radio-sort gym-catalog-form__radio">
               <label>
-                <input type="radio" name="sort" checked /><span className="btn-radio-sort__label" >Дешевле</span>
+                <input
+                  type="radio"
+                  name="sort"
+                  checked={priceSort === PriceSortValue.Asc}
+                  onClick={() => setPriceSort(PriceSortValue.Asc)}
+                /><span className="btn-radio-sort__label" >Дешевле</span>
               </label>
               <label>
-                <input type="radio" name="sort" /><span className="btn-radio-sort__label">Дороже</span>
+                <input
+                  type="radio"
+                  name="sort"
+                  checked={priceSort === PriceSortValue.Desc}
+                  onClick={() => setPriceSort(PriceSortValue.Desc)}
+                /><span className="btn-radio-sort__label">Дороже</span>
               </label>
               <label>
-                <input type="radio" name="sort" /><span className="btn-radio-sort__label">Бесплатные</span>
+                <input
+                  type="radio"
+                  name="sort"
+                  checked={priceSort === PriceSortValue.Free}
+                  onClick={() => setPriceSort(PriceSortValue.Free)}
+                /><span className="btn-radio-sort__label">Бесплатные</span>
               </label>
             </div>
           </div>

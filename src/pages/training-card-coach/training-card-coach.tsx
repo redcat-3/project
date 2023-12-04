@@ -19,10 +19,7 @@ function TrainingCardCoach(): JSX.Element {
                 </button>
                 <h2 className="reviews-side-bar__title">Отзывы</h2>
                 <ul className="reviews-side-bar__list">
-                  <ReviewsSideBarItem />
-                  <ReviewsSideBarItem />
-                  <ReviewsSideBarItem />
-                  <ReviewsSideBarItem />
+
                 </ul>
                 <button className="btn btn--medium reviews-side-bar__button" type="button" disabled>Оставить отзыв</button>
               </aside>
@@ -51,18 +48,7 @@ function TrainingCardCoach(): JSX.Element {
                         <span className="training-info__name">Валерия</span>
                       </div>
                     </div>
-                    <button className="btn-flat btn-flat--light training-info__edit training-info__edit--edit" type="button">
-                      <svg width="12" height="12" aria-hidden="true">
-                        <use xlinkHref="#icon-edit"></use>
-                      </svg>
-                      <span>Редактировать</span>
-                    </button>
-                    <button className="btn-flat btn-flat--light btn-flat--underlined training-info__edit training-info__edit--save" type="button">
-                      <svg width="12" height="12" aria-hidden="true">
-                        <use xlinkHref="#icon-edit"></use>
-                      </svg>
-                      <span>Сохранить</span>
-                    </button>
+                    
                   </div>
                   <div className="training-info__main-content">
                     <form action="#" method="get">
@@ -117,12 +103,7 @@ function TrainingCardCoach(): JSX.Element {
                             </label>
                             <div className="training-info__error">Введите число</div>
                           </div>
-                          <button className="btn-flat btn-flat--light btn-flat--underlined training-info__discount" type="button">
-                            <svg width="14" height="14" aria-hidden="true">
-                              <use xlinkHref="#icon-discount"></use>
-                            </svg>
-                            <span>Сделать скидку 10%</span>
-                          </button>
+                          
                         </div>
                       </div>
                     </form>

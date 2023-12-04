@@ -51,7 +51,7 @@ const MultiRangeSlider = ({ min, max, withValue, minMax, onChange }: MultiRangeS
   return (
     <React.Fragment>
       {withValue &&
-        <div className="filter-price">
+        <div className="filter-price filter-calories">
           <div className="filter-price__input-text filter-price__input-text--min">
             <input
               type="number"
@@ -122,16 +122,18 @@ const MultiRangeSlider = ({ min, max, withValue, minMax, onChange }: MultiRangeS
           className="thumb thumb--zindex-4"
         />
         <div className="slider filter-range__scale">
-          <div className="slider__track" />
-          <div ref={range} className="slider__range" />
-          <div className="slider__left-value">{minVal}</div>
-          <div className="slider__right-value">{maxVal}</div>
+          <div className="slider filter-range__bar">
+            <div className="slider__track "/>
+            <div ref={range} className="slider__range" />
+            <div className="slider__left-value">{minVal}</div>
+            <div className="slider__right-value">{maxVal}</div>
+          </div>          
         </div>
         <div className="filter-raiting__control">
           <span className="visually-hidden">Минимальное значение</span>
-          {minMax && <span>{min}</span>}
+          {minMax && <span>{minVal}</span>}
           <span className="visually-hidden">Максимальное значение</span>
-          {minMax && <span>{max}</span>}
+          {minMax && <span>{maxVal}</span>}
         </div>
       </div>
     </React.Fragment>

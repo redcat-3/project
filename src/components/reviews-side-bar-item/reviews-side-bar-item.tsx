@@ -1,4 +1,10 @@
-function ReviewsSideBarItem(): JSX.Element {
+import { Feedback } from "../../types/reaction";
+
+type ReviewsSideBarItemProps = {
+  feedback: Feedback;
+};
+
+function ReviewsSideBarItem({feedback}: ReviewsSideBarItemProps): JSX.Element {
   return (
     <li className="reviews-side-bar__item">
       <div className="review">
@@ -7,25 +13,25 @@ function ReviewsSideBarItem(): JSX.Element {
             <picture>
               <source
                 type="image/webp"
-                srcSet="img/content/avatars/users//photo-1.webp, img/content/avatars/users//photo-1@2x.webp 2x"
+                srcSet={`${feedback.avatar}.webp, ${feedback.avatar}@2x.webp 2x,`}
               />
               <img
-                src="img/content/avatars/users//photo-1.png"
-                srcSet="img/content/avatars/users//photo-1@2x.png 2x"
+                src={`${feedback.avatar}.png`}
+                srcSet={`${feedback.avatar}@2x.jpg 2x`}
                 width="64"
                 height="64"
                 alt="Изображение пользователя"
               />
             </picture>
-          </div><span className="review__user-name">Никита</span>
+          </div><span className="review__user-name">{feedback.name}</span>
           <div className="review__rating">
             <svg width="16" height="16" aria-hidden="true">
               <use xlinkHref="#icon-star"></use>
             </svg>
-            <span>5</span>
+            <span>{feedback.rating}</span>
           </div>
         </div>
-        <p className="review__comment">Эта тренировка для меня зарядка по&nbsp;утрам, помогает проснуться.</p>
+        <p className="review__comment">{feedback.text}</p>
       </div>
     </li>
   );

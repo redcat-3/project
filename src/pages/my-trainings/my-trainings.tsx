@@ -8,7 +8,7 @@ import MultiRangeSlider from '../../components/multi-range-slider/multi-range-sl
 import { WORKOUT_TIMES } from '../../types/workout-data';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getWorkouts, getWorkoutsCount } from '../../store/workout-process/selectors';
-import { filterWorkouts, workoutsInc } from '../../store/workout-process/workout-process';
+import { workoutsInc } from '../../store/workout-process/workout-process';
 import { TrainigQuery } from '../../types/query';
 
 const TIMES = [
@@ -145,7 +145,6 @@ function MyTranings(): JSX.Element {
                                     }
                                     setTimes(timesNew);
                                     filterQuery.times = timesNew;
-                                    dispatch(filterWorkouts(filterQuery));
                                   }}
                                   checked={times.includes(item)}
                                 />
