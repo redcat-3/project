@@ -1,6 +1,7 @@
 .slider {
   overflow: hidden;
   position: relative;
+  max-height: 600;
 }
 .slider .slide-list {
   display: flex;
@@ -9,13 +10,13 @@
   width: 100%;
 }
 .slider .slide-list .slide {
-  flex: 1 0 33,4%;
+  flex: 1 0 100%;
   position: relative;
+  margin-right: 20px;
 }
 .slider .slide-list .slide .slide-image {
   display: flex;
   margin: 0;
-  max-height: 300px;
-  width: 33%;
+  width: 100%;
   object-fit: contain;
 }

@@ -1,16 +1,29 @@
+import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import TrainingDiaryCell from './items/training-diary-cell/training-diary-cell';
 import TrainingDiaryItem from './items/training-diary-item/training-diary-item';
+import { useNavigate } from 'react-router-dom';
 
 function TrainingDiary(): JSX.Element {
+  let navigate = useNavigate();
+  const goBack = () => {
+    navigate(-1);
+  };
   return (
     <div className="wrapper">
+      <Helmet>
+        <title>FitFriends. Дневник тренировок</title>
+      </Helmet>
       <Header />
       <main>
         <div className="inner-page inner-page--no-sidebar">
           <div className="container">
             <div className="inner-page__wrapper">
-              <button className="btn-flat inner-page__back" type="button">
+              <button
+                className="btn-flat inner-page__back"
+                type="button"
+                onClick={goBack}
+              >
                 <svg width="14" height="10" aria-hidden="true">
                   <use xlinkHref="#arrow-left"></use>
                 </svg><span>Назад</span>

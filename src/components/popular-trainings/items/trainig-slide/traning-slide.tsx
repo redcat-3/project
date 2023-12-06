@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Workout } from "../../../../types/workout-data";
-import { AppRoute } from "../../../../constant";
 
 type TraningsSlideProps = {
   workout: Workout;
@@ -8,7 +7,7 @@ type TraningsSlideProps = {
 
 function TraningsSlide ({workout}: TraningsSlideProps): JSX.Element {
   return (
-    <li className="popular-trainings__item slide" key={workout.workoutId}>
+    <li className="popular-trainings__item" key={workout.workoutId}>
       <div className="thumbnail-training">
         <div className="thumbnail-training__inner">
           <div className="thumbnail-training__image slide-image">
@@ -51,8 +50,8 @@ function TraningsSlide ({workout}: TraningsSlideProps): JSX.Element {
             <p className="thumbnail-training__text">{workout.description}</p>
           </div>
           <div className="thumbnail-training__button-wrapper">
-            <Link to={`/training-card-user/${workout.workoutId}`} className="btn btn--small thumbnail-training__button-catalog">Подробнее</Link>
-            <Link to={`/training-card-user/feedbacks/${workout.workoutId}`} className="btn btn--small btn--outlined thumbnail-training__button-catalog">Отзывы</Link>
+            <Link to={`/training-card/${workout.workoutId}`} className="btn btn--small thumbnail-training__button-catalog">Подробнее</Link>
+            <Link to={`/training-card/feedbacks/${workout.workoutId}`} className="btn btn--small btn--outlined thumbnail-training__button-catalog">Отзывы</Link>
           </div>
         </div>
       </div>

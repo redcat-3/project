@@ -90,7 +90,7 @@ const generateUserCoach = ( number: number): UserCoach => {
     image: getRandomArrayElement(AVATARS),
     level: getRandomArrayElement(LEVELS) as unknown as UserLevel,
     typeOfTrain: getRandomArray(TYPES_OF_TRAIN).slice(0, 3),
-    certificate: getRandomArray(CERTIFICATE),
+    certificate: CERTIFICATE,
     merit: getRandomArrayElement(MERITS),
     trainingReady: getRandomBoolean()
     }

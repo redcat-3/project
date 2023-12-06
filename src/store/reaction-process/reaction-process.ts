@@ -4,6 +4,7 @@ import { ReactionProcess } from '../../types/state';
 import { notifications } from '../../mocks/notifications';
 import { createNextOrders, createNextOrdersToCoach, orders, ordersToCoach1 } from '../../mocks/orders';
 import { createFeedbacks } from '../../mocks/feedbacks';
+import { Feedback, Notification, Request } from '../../types/reaction';
 
 const COUNT_OF_ORDERS = 10;
 
@@ -14,7 +15,8 @@ const initialState: ReactionProcess = {
   isOrdersDataLoading: false,
   ordersCount: COUNT_OF_ORDERS,
   ordersToCoachCount: COUNT_OF_ORDERS,
-  feedbacks: createFeedbacks(5, 1),
+  feedbacks: createFeedbacks(2, 1),
+  requests: [],
 };
 
 export const reactionProcess = createSlice({
@@ -30,6 +32,23 @@ export const reactionProcess = createSlice({
         }
       }
       state.notifications = notificationsNew;
+    },
+    addNotifications: (state, action: PayloadAction<Notification>) => {
+      if(action.payload) {
+        state.notifications.push(action.payload);
+      }
+    },
+    addRequest: (state, action: PayloadAction<Request>) => {
+      if(action.payload) {
+        state.requests.push(action.payload);
+      }
+    },
+    setFeedback: (state, action: PayloadAction<Feedback>) => {
+      const feddbacksNew = state.feedbacks;
+      if(action.payload) {
+        feddbacksNew.push(action.payload);
+      }
+      state.feedbacks = feddbacksNew;
     },
     ordersInc: (state, action: PayloadAction<number>) => {
       const count = Math.min(state.ordersCount - state.orders.length, action.payload);
@@ -55,4 +74,13 @@ export const reactionProcess = createSlice({
 
   }
 });
-export const { setNotifications, ordersInc, ordersToCoachInc, sortByPrice, sortByCount } = reactionProcess.actions;
+export const {
+  setNotifications,
+  ordersInc,
+  ordersToCoachInc,
+  sortByPrice,
+  sortByCount,
+  setFeedback,
+  addNotifications,
+  addRequest
+} = reactionProcess.actions;

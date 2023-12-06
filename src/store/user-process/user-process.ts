@@ -15,6 +15,7 @@ const initialState: UserProcess = {
   //{...coach, timeOfTrain: '' as UserTime, caloriesToReset: 0, caloriesToSpend: 0},
   usersCount: COUNT_OF_USERS,
   isUsersDataLoading: false,
+  friendsList: [],
 };
 
 export const userProcess = createSlice({
@@ -24,6 +25,19 @@ export const userProcess = createSlice({
     usersInc: (state, action: PayloadAction<number>) => {
       const usersCount = Math.min(state.usersCount - state.users.length, action.payload);
       state.users = state.users.concat(createNextUsers(usersCount));
+    },
+    addFriend: (state, action: PayloadAction<string>) => {
+      state.friendsList.push(action.payload);
+    },
+    removeFriend: (state, action: PayloadAction<string>) => {
+      const friendsNew = state.friendsList;
+      if(action.payload) {
+        const index = friendsNew.findIndex(item => item === action.payload);
+        if (index !== -1) {
+          friendsNew.splice(index, 1);
+        }
+      }
+      state.friendsList = friendsNew;
     }
   },
   extraReducers(builder) {
@@ -47,4 +61,4 @@ export const userProcess = createSlice({
       });
   }
 });
-export const { usersInc } = userProcess.actions;
+export const { usersInc, addFriend, removeFriend } = userProcess.actions;

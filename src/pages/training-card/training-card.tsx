@@ -5,16 +5,21 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getUser } from '../../store/user-process/selectors';
 import { getFeedbacks } from '../../store/reaction-process/selectors';
-import { createWorkout } from '../../mocks/workouts';
 import NotFound from '../not-found/not-found';
 import { UserRole } from '../../types/user-data';
 import { generateUser } from '../../mocks/users';
-import React, { ChangeEventHandler, useState } from 'react';
-import { AppRoute, ErrorMessage, NameLength, WorkoutDescriptionLength } from '../../constant';
-import { redirectToRoute } from '../../store/action';
+import React, { ChangeEventHandler, useEffect, useRef, useState } from 'react';
+import { ErrorMessage, NameLength, WorkoutDescriptionLength } from '../../constant';
 import Poster from './items/poster/poster';
 import Video from './items/video/video';
 import FormVideo from './items/form-video/form-video';
+import { getWorkout } from '../../store/workout-process/selectors';
+import PopupBuy from '../../components/popup-buy/popup-buy';
+import { Workout } from '../../types/workout-data';
+import PopupFeedback from '../../components/popup-feedback/popup-feedback';
+import { Feedback } from '../../types/reaction';
+import dayjs from 'dayjs';
+import { setFeedback } from '../../store/reaction-process/reaction-process';
 
 const message = 'К сожалению тренировка не найдена';
 
@@ -23,9 +28,9 @@ function TrainingCard(): JSX.Element {
   const params = useParams();
   const user = useAppSelector(getUser);
   const creatorWorkout = generateUser(2);
-  let workout = null;
+  let workout: Workout | null = null;
   if (params.id) {
-    workout = createWorkout(+params.id);
+    workout = useAppSelector(getWorkout);
   }
   if (workout === null) {
     return (
@@ -37,6 +42,8 @@ function TrainingCard(): JSX.Element {
     const goBack = () => {
       navigate(-1);
     };
+    const popupBuyRef = useRef<HTMLDivElement>(null);
+    const popupFeedbackRef = useRef<HTMLDivElement>(null);
     const [formData, setFormData] = useState({
       name: workout.name,
       background: workout.background,
@@ -54,10 +61,13 @@ function TrainingCard(): JSX.Element {
     const [isEdit, setIsEdit] = useState(true);
     const [isPaid, setIsPaid] = useState(false);
     const [isPlay, setIsPlay] = useState(false);
+    const [isSpecial, setIsSpecial] = useState(workout.special);
     const [formError, setFormError] = useState(false);
     const [nameError, setNameError] = useState(false);
     const [priceError, setPriceError] = useState(false);
     const [descriptionError, setDescriptionError] = useState(false);
+    const [isBuyOpen, setIsBuyOpen] = useState(false);
+    const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
     const handleNameChange: ChangeEventHandler<HTMLInputElement> = (event) => {
       setFormData({...formData, name: event.target.value});
       if(event.target.value.length <= NameLength.Min || NameLength.Max <= event.target.value.length) {
@@ -81,7 +91,10 @@ function TrainingCard(): JSX.Element {
     const handlePriceChange: ChangeEventHandler<HTMLInputElement> = (event) => {
       const newPrice = event.target.value.substring(0, event.target.value.length - 2)
       setFormData({...formData, price: +newPrice});
-      if(+newPrice >= 0) {
+      if(Number.isNaN(+newPrice)) {
+        setPriceError(true);
+        setFormError(true);
+      } else if(+newPrice >= 0) {
         setPriceError(false);
         setFormError(false);
       } else if (+newPrice < 0){
@@ -100,6 +113,58 @@ function TrainingCard(): JSX.Element {
         setFormError(true);
       }
     };
+    const handleSpecialClick = () => {
+      if(isSpecial) {
+        setFormData({...formData, special: false});
+        setFormData({...formData, price: formData.price*10/9});
+        setIsSpecial(false);
+      } else {
+        setFormData({...formData, special: true});
+        setFormData({...formData, price: formData.price - formData.price/10});
+        setIsSpecial(true)
+      }
+    };
+    const onBuyClick = (count: number) => {
+      console.log(`Вы купили ${count} тренировок ${workout ? workout.name : ''}`);
+      setIsPaid(true);
+      setIsBuyOpen(false);
+    };
+    const onSendFeddback = (rating: number, text: string) => {
+      if(workout) {
+        const feedback: Feedback = {
+        feedbackId: feedbacks.length,
+        workoutId: workout.workoutId,
+        userId: user.id,
+        avatar: user.avatar,
+        name: user.name,
+        rating,
+        text,
+        createdDate: new Date(dayjs().date())};
+        dispatch(setFeedback(feedback));
+    }
+      setIsFeedbackOpen(false);
+    };
+    
+    useEffect(() => {
+      const handleEscapePress = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          setIsBuyOpen(false);
+          setIsFeedbackOpen(false);
+        }
+      };
+      const handleClickOutside = (event: MouseEvent) => {
+        const { target } = event;
+        if (target instanceof Node && popupBuyRef.current && popupBuyRef.current === target) {
+          alert("You clicked outside of me!");
+        }
+      };
+      window.addEventListener('keydown', handleEscapePress);
+      document.addEventListener('click', handleClickOutside, true);
+      return () => {
+        window.removeEventListener('keydown', handleEscapePress);
+        document.removeEventListener('click', handleClickOutside, true);
+      }
+    });
     return (
       <div className="wrapper">
         <Helmet>
@@ -130,9 +195,14 @@ function TrainingCard(): JSX.Element {
                       />
                     ))}
                   </ul>
-                  <button className="btn btn--medium reviews-side-bar__button" type="button" disabled>Оставить отзыв</button>
+                  <button
+                    className="btn btn--medium reviews-side-bar__button"
+                    type="button"
+                    disabled={user.role !== UserRole.User}
+                    onClick={() => setIsFeedbackOpen(true)}
+                  >Оставить отзыв</button>
                 </aside>
-                <div className="training-card">
+                <div className={(user.id === creatorWorkout.id) ? "training-card training-card--edit" : "training-card"}>
                   <div className="training-info">
                     <h2 className="visually-hidden">Информация о тренировке</h2>
                     <div className="training-info__header">
@@ -158,11 +228,12 @@ function TrainingCard(): JSX.Element {
                         </div>
                       </div>
                       {user.id === creatorWorkout.id && <React.Fragment>
-                        {isEdit ?
+                        {isEdit ?                   
                           <button
                             className="btn-flat btn-flat--light training-info__edit training-info__edit--edit"
                             type="button"
                             onClick={() => {setIsEdit(false)}}
+                            style={{display: 'flex'}}
                           >
                             <svg width="12" height="12" aria-hidden="true">
                               <use xlinkHref="#icon-edit"></use>
@@ -180,14 +251,14 @@ function TrainingCard(): JSX.Element {
                             </svg>
                             <span>Сохранить</span>
                           </button>
-                        }
-                      </React.Fragment>}
+                        }  
+                      </React.Fragment>}                    
                     </div>
                     <div className="training-info__main-content">
                       <form action="#" method="get">
                         <div className="training-info__form-wrapper">
                           <div className="training-info__info-wrapper">
-                            <div className="training-info__input training-info__input--training">
+                            <div className={nameError ?  "training-info__input training-info__input--training is-invalid" : "training-info__input training-info__input--training"}>
                               <label>
                                 <span className="training-info__label">{workout.name}</span>
                                 <input
@@ -195,20 +266,19 @@ function TrainingCard(): JSX.Element {
                                   name="training"
                                   value={formData.name}
                                   onChange={handleNameChange}
-                                  disabled={user.id !== creatorWorkout.id || isEdit}
+                                  disabled={user.role === UserRole.User}
                                 />
-                                {nameError && <span className="training-info__error">{ErrorMessage.Title}</span>}
                               </label>
-                              <div className="training-info__error">Обязательное поле</div>
+                              <div className="training-info__error">{nameError && ErrorMessage.Title}</div>
                             </div>
-                            <div className="training-info__textarea">
+                            <div className={descriptionError ? "training-info__textarea training-info__input is-invalid" : "training-info__textarea"}>
                               <label>
                                 <span className="training-info__label">Описание тренировки</span>
                                 <textarea
                                   name="description"
                                   value={formData.description}
                                   onChange={handleDescriptionChange}
-                                  disabled={user.id !== creatorWorkout.id || isEdit}
+                                  disabled={user.role === UserRole.User}
                                 >{formData.description}</textarea>
                                 {descriptionError && <span className="training-info__error">{ErrorMessage.Description}</span>}
                               </label>
@@ -246,7 +316,7 @@ function TrainingCard(): JSX.Element {
                             </ul>
                           </div>
                           <div className="training-info__price-wrapper">
-                            <div className="training-info__input training-info__input--price">
+                            <div className={priceError ? "training-info__input training-info__input--price is-invalid" : "training-info__input training-info__input--price"}>
                               <label>
                                 <span className="training-info__label">Стоимость</span>
                                 <input
@@ -254,33 +324,39 @@ function TrainingCard(): JSX.Element {
                                   type="text"
                                   name="price"
                                   value={`${formData.price} ₽`}
-                                  disabled={user.id !== creatorWorkout.id || isEdit}
+                                  disabled={user.role === UserRole.User}
                                 />
-                                {priceError && <span className="training-info__error">{ErrorMessage.Price}</span>}
                               </label>
-                              <div className="training-info__error">Введите число</div>
+                              <div className="training-info__error">{priceError && ErrorMessage.Price}</div>
                             </div>
                             {user.role === UserRole.User && 
                               <button
                                 className="btn training-info__buy"
                                 type="button"
                                 style={{display: 'inline-flex'}}
+                                onClick={() => setIsBuyOpen(true)}
+                                disabled={isPaid}
                               >Купить</button>
                             }
-                            {user.id === creatorWorkout.id &&
-                              <button className="btn-flat btn-flat--light btn-flat--underlined training-info__discount" type="button">
+                            <button
+                              className="btn-flat btn-flat--light btn-flat--underlined training-info__discount"
+                              type="button"
+                              onClick={handleSpecialClick}
+                              disabled={user.id !== creatorWorkout.id || isEdit}
+                            >
+                              {isSpecial && 
                                 <svg width="14" height="14" aria-hidden="true">
                                   <use xlinkHref="#icon-discount"></use>
                                 </svg>
-                                <span>Сделать скидку 10%</span>
-                              </button>
-                            }
+                              }
+                              {user.id === creatorWorkout.id && !isEdit && <span>{isSpecial ? 'Отменить скидку' : 'Сделать скидку 10%'}</span>}
+                            </button>                            
                           </div>
                         </div>
                       </form>
                     </div>
                   </div>
-                  <div className="training-video">
+                  <div className={isPlay ? "training-video training-video--stop" : "training-video"}>
                     <h2 className="training-video__title">Видео</h2>
                     {(formData.video === '') ?
                       <FormVideo handleVideoChange={handleVideoChange}/> :
@@ -307,18 +383,17 @@ function TrainingCard(): JSX.Element {
                     }
                     {isEdit ?
                       <div className="training-video__buttons-wrapper">
-                        {!isPlay ? 
-                          <button
-                            className="btn training-video__button training-video__button--start"
-                            type="button"
-                            disabled={!isPaid}
-                          >Приступить</button> :
-                          <button
-                            className="btn training-video__button training-video__button--stop"
-                            type="button"
-                            style={{display: 'block'}}
-                          >Закончить</button>
-                        }
+                        <button
+                          className="btn training-video__button training-video__button--start"
+                          type="button"
+                          disabled={!isPaid}
+                          onClick={() => setIsPlay(true)}
+                        >Приступить</button>
+                        <button
+                          className="btn training-video__button training-video__button--stop"
+                          type="button"
+                          onClick={() => setIsPlay(false)}
+                        >Закончить</button>
                       </div> :
                       <div className="training-video__buttons-wrapper">
                         <div className="training-video__edit-buttons" style={{display:'grid'}}>
@@ -338,6 +413,25 @@ function TrainingCard(): JSX.Element {
                 </div>
               </div>
             </div>
+            {isBuyOpen && 
+              <div className="popup-form popup-form--buy" ref={popupBuyRef}>
+                <PopupBuy
+                  background={workout.background}
+                  name={workout.name}
+                  price={workout.price}
+                  onBuyClick={onBuyClick}
+                  onClose={() => setIsBuyOpen(false)}
+                />
+              </div>
+            }
+            {isFeedbackOpen && 
+              <div className="popup-form popup-form--feedback" ref={popupFeedbackRef}>
+                <PopupFeedback
+                  onClose={() => setIsFeedbackOpen(false)}
+                  onSendFeedback={onSendFeddback}
+                />
+              </div>
+            }
           </section>
         </main>
       </div>

@@ -8,4 +8,5 @@ export const getAuthCheckedStatus = (state: State): boolean => state[NameSpace.U
 export const getUsersCount = (state: State): number => state[NameSpace.User].usersCount;
 export const getUsersDataLoadingStatus = (state: State): boolean => state[NameSpace.User].isUsersDataLoading;
 export const getUsers = (state: State): User[] => state[NameSpace.User].users;
+export const getFriendsList = (state: State): string[] => state[NameSpace.User].friendsList;
 export const getUser = (state: State): User => state[NameSpace.User].user;

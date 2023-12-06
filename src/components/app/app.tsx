@@ -15,11 +15,10 @@ import QuestionnaireUser from '../../pages/questionnaire-user/questionnaire-user
 import SignUp from '../../pages/sign-up/sign-up';
 import TrainingCatalog from '../../pages/training-catalog/training-catalog';
 import TrainingDiary from '../../pages/training-diary/training-diary';
-import UserCardCoach from '../../pages/user-card-coach/user-card-coach';
-import UserCardUser from '../../pages/user-card-user/user-card-user';
 import UserCatalog from '../../pages/users-catalog/users-catalog';
 import PersonalAccount from '../../pages/personal-account/personal-account';
 import TrainingCard from '../../pages/training-card/training-card';
+import UserCard from '../../pages/user-card/user-card';
 
 function App(): JSX.Element {
   return (
@@ -102,14 +101,9 @@ function App(): JSX.Element {
             key={AppRoute.TrainingDiary}
           />
           <Route
-            path={AppRoute.UserCardCoach}
-            element={<UserCardCoach/>}
-            key={AppRoute.UserCardCoach}
-          />
-          <Route
-            path={AppRoute.UserCardUser}
-            element={<UserCardUser/>}
-            key={AppRoute.UserCardUser}
+            path={AppRoute.UserCard}
+            element={<UserCard/>}
+            key={AppRoute.UserCard}
           />
           <Route
             path={AppRoute.UsersCatalog}

@@ -45,3 +45,15 @@ export type Feedback = {
   text: string;
   createdDate: Date;
 }
+
+export enum PaymentMethod {
+  Visa = 'visa',
+  Mir = 'mir',
+  Umoney = 'umoney',
+}
+
+export const PAYMENT_METHOD = [
+  'visa',
+  'mir',
+  'iomoney'
+] as const;

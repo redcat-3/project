@@ -1,7 +1,7 @@
 import {store} from '../store/index.js';
 import {AuthorizationStatus} from '../constant';
 import { User } from './user-data.js';
-import { Feedback, Notification, Order, OrderToCoach } from './reaction.js';
+import { Feedback, Notification, Order, OrderToCoach, Request } from './reaction.js';
 import { Workout } from './workout-data.js';
 
 export type ReactionProcess = {
@@ -12,6 +12,7 @@ export type ReactionProcess = {
   ordersCount: number;
   ordersToCoachCount: number;
   feedbacks: Feedback[];
+  requests: Request[];
 };
 
 export type WorkoutProcess = {
@@ -30,6 +31,7 @@ export type UserProcess = {
   user: User;
   usersCount: number;
   isUsersDataLoading: boolean;
+  friendsList: string[];
 };
 
 export type State = ReturnType<typeof store.getState>;

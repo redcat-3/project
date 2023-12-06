@@ -27,8 +27,7 @@ export enum AppRoute {
   TrainingCard = '/training-card/:id',
   TrainingCatalog = '/training-catalog',
   TrainingDiary = '/training-diary/:id',
-  UserCardCoach = '/user-card-coach/:id',
-  UserCardUser = '/user-card-user/:id',
+  UserCard = '/user-card/:id',
   UsersCatalog = '/users-catalog',
   Error404 = '/error404'
 }
@@ -118,6 +117,11 @@ export const PriceSortValue = {
   Free: '0'
 };
 
+export const FeedbackTextLength = {
+  Min: 100,
+  Max: 1024,
+};
+
 export const Message = {
   Empty: 'Скоро тут будет интересно',
 } as const
@@ -131,9 +135,44 @@ export const ErrorMessage = {
   Email: 'Неверный формат электронной почты',
   Password: `Mинимальная длина ${UserPasswordLength.Min} символов, максимальная длина ${UserPasswordLength.Max} символов`,
   Description: `Mинимальная длина ${WorkoutDescriptionLength.Min} символов, максимальная длина ${WorkoutDescriptionLength.Max} символов`,
-  Price: 'Цена должна быть больше или равна 0',
+  Feedback: `Mинимальная длина ${FeedbackTextLength.Min} символов, максимальная длина ${FeedbackTextLength.Max} символов`,
+  Price: 'Введите не отрицательное число',
   Form: 'Необходимо заполнить все поля',
   TypesCount: `Одновременно может быть выбрано не больше ${MAX_TYPES_COUNT} типов тренировок`,
   CaloriesToReset: `Минимальное значение ${CountCaloriesToReset.Min}, максимально значение ${CountCaloriesToReset.Max}, только целые числа.`,
   CaloriesToSpend: `Минимальное значение ${CountCaloriesToSpend.Min}, максимально значение ${CountCaloriesToSpend.Max}, только целые числа.`
 } as const
+
+export const CITY = {
+  title: 'Saint-Petersburg',
+  lat: 59.937500,
+  lng: 30.308611,
+  zoom: 10,
+};
+
+export const URL_MARKER_DEFAULT = '/img/sprite/icon-pin.svg';
+export const URL_MARKER_CURRENT = '/img/sprite/icon-pin-user.svg';
+
+export const POINTS = [
+  {
+    title: 'Пионерская',
+    lat: 60.0025,
+    lng: 30.29666,
+  }, {
+    title: 'Петроградская',
+    lat: 59.96611,
+    lng: 30.31138,
+  }, {
+    title: 'Удельная',
+    lat: 60.01638,
+    lng: 30.31555,
+  }, {
+    title: 'Звёздная',
+    lat: 59.83305,
+    lng: 30.34944,
+  }, {
+    title: 'Спортивная',
+    lat: 59.95194,
+    lng: 30.29055,
+  },
+];

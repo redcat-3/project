@@ -58,7 +58,7 @@ function FriendsListItem({
     <li className="friends-list__item">
       <div className="thumbnail-friend">
         <div className={(role === UserRole.User) && (userRole === UserRole.Coach) ? "thumbnail-friend__info thumbnail-friend__info--theme-dark" : "thumbnail-friend__info thumbnail-friend__info--theme-light"}>
-          <Link to={`/user-card-user/${id}/`}>
+          <Link to={`/user-card/${id}/`}>
             <div className="thumbnail-friend__image-status">
               <div className="thumbnail-friend__image">
                 <picture>

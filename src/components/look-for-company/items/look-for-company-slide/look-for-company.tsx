@@ -47,7 +47,7 @@ function LookForCompanySlide ({id, avatar, name, location, typeOfTrain}: LookFor
               </li>))
             }
         </ul>
-        <Link to={`/user-card-user/${id}/`} className="btn btn--outlined btn--dark-bg btn--medium thumbnail-user__button">Подробнее</Link>
+        <Link to={`/user-card/${id}/`} className="btn btn--outlined btn--dark-bg btn--medium thumbnail-user__button">Подробнее</Link>
       </div>
     </li>
   )

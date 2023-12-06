@@ -1,7 +1,8 @@
 import dayjs from "dayjs";
 import { UserGender, UserLevel, UserLocation } from "./types/user-data";
 import { WorkoutType } from "./types/workout-data";
-import { NOTIFICATION_DATE_FORMAT } from "./constant";
+import { NOTIFICATION_DATE_FORMAT, POINTS } from "./constant";
+import { Coordinate } from "./types/map";
 
 export function workoutTypeToValue (type: string): string {
   switch (type) {
@@ -115,6 +116,39 @@ export function locationToEnum (location: string): UserLocation {
       return UserLocation.Star;
     case 'Спортивная':
       return UserLocation.Sport;
+  }
+}
+
+
+export function locationToRussian (location: UserLocation): string {
+  switch (location) {
+    case UserLocation.Pion:
+      return 'Пионерская';
+    case UserLocation.Petr:
+    default:
+      return 'Петроградская';
+    case UserLocation.Udel:
+      return 'Удельная';
+    case UserLocation.Star:
+      return 'Звёздная';
+    case UserLocation.Sport:
+      return 'Спортивная';
+  }
+}
+
+export function locationToMap (location: UserLocation): Coordinate {
+  switch (location) {
+    case UserLocation.Pion:
+      return POINTS[0];
+    case UserLocation.Petr:
+    default:
+      return POINTS[1];
+    case UserLocation.Udel:
+      return POINTS[2];
+    case UserLocation.Star:
+      return POINTS[3];
+    case UserLocation.Sport:
+      return POINTS[4];
   }
 }
 

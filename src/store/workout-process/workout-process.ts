@@ -7,7 +7,7 @@ import { TrainigQuery } from '../../types/query';
 const COUNT_OF_WORKOUTS = 10;
 
 const initialState: WorkoutProcess = {
-  workout: null,
+  workout: createWorkout(1),
   workouts,
   isWorkoutsDataLoading: false,
   workoutsCount: COUNT_OF_WORKOUTS,
