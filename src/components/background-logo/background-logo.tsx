@@ -2,7 +2,7 @@ import React from 'react';
 
 function BackgroundLogo(): JSX.Element {
   return (
-    <div className="background-logo">
+    <div className="background-logo" title="background-logo" >
       <svg className="background-logo__logo" width="750" height="284" aria-hidden="true">
         <use xlinkHref="#logo-big"></use>
       </svg>
