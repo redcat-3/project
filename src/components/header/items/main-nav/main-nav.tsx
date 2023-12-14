@@ -19,7 +19,9 @@ function MainNav ({id}: MainNavProps): JSX.Element {
     <nav className="main-nav">
       <ul className="main-nav__list">
         <li className="main-nav__item">
-          <NavLink end className={({isActive}) => isActive ? "main-nav__link is-active" : "main-nav__link"}
+          <NavLink title="icon-home"
+            end
+            className={({isActive}) => isActive ? "main-nav__link is-active" : "main-nav__link"}
             aria-label="На главную"
             to={AppRoute.Main}>
             <svg width="18" height="18" aria-hidden="true">
@@ -28,7 +30,10 @@ function MainNav ({id}: MainNavProps): JSX.Element {
           </NavLink>
         </li>
         <li className="main-nav__item">
-          <NavLink to={`/personal-account/${id}`} end className={({isActive}) => isActive ? "main-nav__link is-active" : "main-nav__link"}
+          <NavLink title="icon-user"
+            to={`/personal-account/${id}`}
+            end
+            className={({isActive}) => isActive ? "main-nav__link is-active" : "main-nav__link"}
             aria-label="Личный кабинет"
           >
             <svg width="16" height="18" aria-hidden="true">
@@ -37,7 +42,10 @@ function MainNav ({id}: MainNavProps): JSX.Element {
           </NavLink>
         </li>
         <li className="main-nav__item">
-          <NavLink to={`/friends-list/${id}`} end className={({isActive}) => isActive ? "main-nav__link is-active" : "main-nav__link"}
+          <NavLink title="icon-friends"
+            to={`/friends-list/${id}`}
+            end
+            className={({isActive}) => isActive ? "main-nav__link is-active" : "main-nav__link"}
             aria-label="Друзья"
           >
             <svg width="22" height="16" aria-hidden="true">
@@ -56,7 +64,7 @@ function MainNav ({id}: MainNavProps): JSX.Element {
           </div>
           <div className="main-nav__dropdown">
             <p className="main-nav__label">Оповещения</p>
-            <ul className="main-nav__sublist">
+            <ul className="main-nav__sublist" title="notifications">
               {notifications.map((item) => (
                 <Notification key={item.notificationId}
                   notificationId={item.notificationId}
