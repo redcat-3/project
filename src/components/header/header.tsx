@@ -8,7 +8,7 @@ import { getUser } from '../../store/user-process/selectors';
 function Header(): JSX.Element {
   const user = useAppSelector(getUser);
   return (
-    <header className="header">
+    <header className="header" title="header">
       <div className="container">
         <HeaderLogo />
         <MainNav id={user.id} />
