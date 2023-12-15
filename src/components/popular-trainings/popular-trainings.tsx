@@ -107,8 +107,8 @@ function PopularTranings(): JSX.Element {
             className="popular-trainings__list slide-list"
             style={{ transform: `translateX(-${slide * 20}%)`}}
           >
-            {items.map((slide) => (
-              <TraningsSlide
+            {items.map((slide, index) => (
+              <TraningsSlide key={index}
                 workout={slide}
               />
             ))}

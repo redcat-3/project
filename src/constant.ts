@@ -136,6 +136,7 @@ export const ErrorMessage = {
   Password: `Mинимальная длина ${UserPasswordLength.Min} символов, максимальная длина ${UserPasswordLength.Max} символов`,
   Description: `Mинимальная длина ${WorkoutDescriptionLength.Min} символов, максимальная длина ${WorkoutDescriptionLength.Max} символов`,
   Feedback: `Mинимальная длина ${FeedbackTextLength.Min} символов, максимальная длина ${FeedbackTextLength.Max} символов`,
+  Merit: `Mинимальная длина ${CoachMeritLength.Min} символов, максимальная длина ${CoachMeritLength.Max} символов`,
   Price: 'Введите не отрицательное число',
   Form: 'Необходимо заполнить все поля',
   TypesCount: `Одновременно может быть выбрано не больше ${MAX_TYPES_COUNT} типов тренировок`,
