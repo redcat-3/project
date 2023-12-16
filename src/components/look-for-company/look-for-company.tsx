@@ -106,8 +106,8 @@ function LookForCompany(): JSX.Element {
             className="look-for-company__list slide-list"
             style={{ transform: `translateX(-${slide * 20}%)`}}
           >
-            {items.map((slide) => (
-              <LookForCompanySlide
+            {items.map((slide, index) => (
+              <LookForCompanySlide key={index}
                 id={slide.id}
                 avatar={slide.avatar}
                 name={slide.name}

@@ -18,7 +18,7 @@ function MainNav ({id}: MainNavProps): JSX.Element {
   return (
     <nav className="main-nav">
       <ul className="main-nav__list">
-        <li className="main-nav__item">
+        <li className="main-nav__item" key="icon-home">
           <NavLink title="icon-home"
             end
             className={({isActive}) => isActive ? "main-nav__link is-active" : "main-nav__link"}
@@ -29,7 +29,7 @@ function MainNav ({id}: MainNavProps): JSX.Element {
             </svg>
           </NavLink>
         </li>
-        <li className="main-nav__item">
+        <li className="main-nav__item" key="icon-user">
           <NavLink title="icon-user"
             to={`/personal-account/${id}`}
             end
@@ -41,7 +41,7 @@ function MainNav ({id}: MainNavProps): JSX.Element {
             </svg>
           </NavLink>
         </li>
-        <li className="main-nav__item">
+        <li className="main-nav__item" key="icon-friends">
           <NavLink title="icon-friends"
             to={`/friends-list/${id}`}
             end
@@ -53,7 +53,7 @@ function MainNav ({id}: MainNavProps): JSX.Element {
             </svg>
           </NavLink>
         </li>
-        <li className={notifications.length === 0 ? "main-nav__item main-nav__item--notifications" : "main-nav__item main-nav__item--notifications is-notifications"}>
+        <li key="notifications" className={notifications.length === 0 ? "main-nav__item main-nav__item--notifications" : "main-nav__item main-nav__item--notifications is-notifications"}>
           <div
             className="main-nav__link"
             aria-label="Уведомления"
@@ -65,8 +65,8 @@ function MainNav ({id}: MainNavProps): JSX.Element {
           <div className="main-nav__dropdown">
             <p className="main-nav__label">Оповещения</p>
             <ul className="main-nav__sublist" title="notifications">
-              {notifications.map((item) => (
-                <Notification key={item.notificationId}
+              {notifications.map((item, index) => (
+                <Notification key={index}
                   notificationId={item.notificationId}
                   text={item.text}
                   createdDate={item.createdDate}

@@ -19,8 +19,8 @@ function SpecialOffers(): JSX.Element {
         <div className="special-offers__wrapper">
           <h2 className="visually-hidden">Специальные предложения</h2>
           <ul className="special-offers__list">
-            {items.map((slide) => (
-              <div className={slide.workoutId === activeSlide ? "special-offers__item is-active" : "special-offers__item"}>
+            {items.map((slide, index) => (
+              <div key={index} className={slide.workoutId === activeSlide ? "special-offers__item is-active" : "special-offers__item"}>
                 <aside className="promo-slider">
                   <div className="promo-slider__overlay"></div>
                   <div className="promo-slider__image">
@@ -43,8 +43,8 @@ function SpecialOffers(): JSX.Element {
                   <span className="promo-slider__text">{slide.description}</span>
                   <div className="promo-slider__bottom-container">
                     <div className="promo-slider__slider-dots">
-                      {numbers.map((number) => (
-                        <button key={number}
+                      {numbers.map((number, index) => (
+                        <button key={index}
                           className={number === activeDot ? "promo-slider__slider-dot--active promo-slider__slider-dot" : "promo-slider__slider-dot"}
                           aria-label={`${number} слайд`}
                           onClick={() => {handleDotsClick(number)}}

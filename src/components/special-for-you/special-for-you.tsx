@@ -93,8 +93,8 @@ function SpecialForYou(): JSX.Element {
             className="special-for-you__list slide-list"
             style={{ transform: `translateX(-${slide * 33.4}%)` }}
           >
-            {items.map((slide) => (
-              <SpecialForYouSlide
+            {items.map((slide, index) => (
+              <SpecialForYouSlide key={index}
                 workoutId={slide.workoutId}
                 name={slide.name}
                 background={slide.background}

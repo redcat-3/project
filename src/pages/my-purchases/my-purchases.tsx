@@ -99,8 +99,8 @@ function MyPurchases(): JSX.Element {
                 </div>
               </div>
               <ul className="my-purchases__list">
-                {filteredOrders.map((item) => (
-                  <MyPurchasesItem key={item.orderId}
+                {filteredOrders.map((item, index) => (
+                  <MyPurchasesItem key={index}
                     id={item.orderId}
                     workoutId={item.workoutId}
                   />

@@ -169,10 +169,10 @@ function CreateTraning(): JSX.Element {
                               </span>
                             </button>
                             <ul className="custom-select__list" role="listbox">
-                            {WORKOUT_TYPES.map((el) =>
+                            {WORKOUT_TYPES.map((el, index) =>
                               (
                                 <li
-                                  key={el}
+                                  key={index}
                                   role="option"
                                   tabIndex={0}
                                   className="custom-select__item"
@@ -217,10 +217,10 @@ function CreateTraning(): JSX.Element {
                               </span>
                             </button>
                             <ul className="custom-select__list" role="listbox">
-                            {WORKOUT_TIMES.map((el) =>
+                            {WORKOUT_TIMES.map((el, index) =>
                               (
                                 <li
-                                  key={el}
+                                  key={index}
                                   role="option"
                                   tabIndex={0}
                                   className="custom-select__item"
@@ -265,10 +265,10 @@ function CreateTraning(): JSX.Element {
                               </span>
                             </button>
                             <ul className="custom-select__list" role="listbox">
-                            {LEVELS.map((el) =>
+                            {LEVELS.map((el, index) =>
                               (
                                 <li
-                                  key={el}
+                                  key={index}
                                   role="option"
                                   tabIndex={0}
                                   className="custom-select__item"

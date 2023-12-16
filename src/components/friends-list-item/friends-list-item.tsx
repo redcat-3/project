@@ -87,8 +87,8 @@ function FriendsListItem({
             </div>
           </div>
           <ul className="thumbnail-friend__training-types-list">
-            {typeOfTrain.map((item)=> (
-              <li>
+            {typeOfTrain.map((item, index)=> (
+              <li key={index}>
                 <div className="hashtag thumbnail-friend__hashtag">
                   <span>#{item}</span>
                 </div>

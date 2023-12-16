@@ -39,8 +39,8 @@ function LookForCompanySlide ({id, avatar, name, location, typeOfTrain}: LookFor
           </div>
         </div>
         <ul className="thumbnail-user__hashtags-list">
-          {typeOfTrain.map((item)=> (
-              <li className="thumbnail-user__hashtags-item">
+          {typeOfTrain.map((item, index)=> (
+              <li className="thumbnail-user__hashtags-item" key={index}>
                 <div className="hashtag thumbnail-user__hashtag">
                   <span>#{item}</span>
                 </div>

@@ -87,8 +87,8 @@ function FriendsList(): JSX.Element {
                 <h1 className="friends-list__title">Мои друзья</h1>
               </div>
               <ul className="friends-list__list">
-              {usersWithRequest.map((item) => (
-                  <FriendsListItem key={item.userId}
+              {usersWithRequest.map((item, index) => (
+                  <FriendsListItem key={index}
                     id={item.userId}
                     name={item.name}
                     location={item.location}
@@ -102,8 +102,8 @@ function FriendsList(): JSX.Element {
                     handleRequestClick={handleRequestClick}
                   />
                 ))}
-                {users.map((item) => (
-                  <FriendsListItem key={item.id}
+                {users.map((item, index) => (
+                  <FriendsListItem key={index}
                     id={item.id}
                     name={item.name}
                     location={item.location}

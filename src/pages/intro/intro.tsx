@@ -1,6 +1,4 @@
 import { Link } from "react-router-dom";
-import { generateUser } from "../../mocks/users";
-import { UserRole } from "../../types/user-data";
 import { AppRoute } from "../../constant";
 import { useAppDispatch } from "../../hooks";
 import { redirectToRoute } from "../../store/action";
