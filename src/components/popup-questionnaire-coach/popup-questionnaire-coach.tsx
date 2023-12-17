@@ -5,6 +5,7 @@ import { LEVELS, UserLevel } from '../../types/user-data';
 import { redirectToRoute } from '../../store/action';
 import { WORKOUT_TYPES } from '../../types/workout-data';
 import { levelToValue, workoutTypeToName, workoutTypeToValue } from '../../utils';
+import { user } from '../../mocks/users';
 
 function PopupQuestionnaireCoach(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -51,7 +52,7 @@ function PopupQuestionnaireCoach(): JSX.Element {
     if (
       formData.merit !== ''
     ){
-      dispatch(redirectToRoute(AppRoute.PersonalAccount))
+      dispatch(redirectToRoute(`/personal-account/${user.id}` as AppRoute))
     }
   };
   return (
@@ -71,15 +72,15 @@ function PopupQuestionnaireCoach(): JSX.Element {
                 <div className="questionnaire-coach__wrapper">
                   <div className="questionnaire-coach__block"><span className="questionnaire-coach__legend">Ваша специализация (тип) тренировок</span>
                     <div className="specialization-checkbox questionnaire-coach__specializations">
-                    {WORKOUT_TYPES.map((item) => (
-                        <div className="btn-checkbox">
+                    {WORKOUT_TYPES.map((item, index) => (
+                        <div className="btn-checkbox" key={index}>
                           <label>
                             <input
                               className="visually-hidden"
                               type="checkbox"
                               name="specialisation"
                               value={workoutTypeToValue(item)}
-                              onClick={() => {
+                              onChange={() => {
                                 const currentType: string = workoutTypeToValue(item);
                                 const types = formData.typeOfTrain.slice();
                                 const index = types.indexOf(currentType);
@@ -107,15 +108,15 @@ function PopupQuestionnaireCoach(): JSX.Element {
                   </div>
                   <div className="questionnaire-coach__block"><span className="questionnaire-coach__legend">Ваш уровень</span>
                     <div className="custom-toggle-radio custom-toggle-radio--big questionnaire-coach__radio">
-                    {LEVELS.map((item) => (
-                        <div className="custom-toggle-radio__block">
+                    {LEVELS.map((item, index) => (
+                        <div className="custom-toggle-radio__block" key={index}>
                           <label>
                             <input
                               className="visually-hidden"
                               type="radio"
                               name="level"
                               value={item}
-                              onClick={() => {
+                              onChange={() => {
                                 setFormData({...formData, level: levelToValue(item)});
                               }}
                               checked={formData.level === levelToValue(item)}
@@ -165,7 +166,7 @@ function PopupQuestionnaireCoach(): JSX.Element {
                           type="checkbox"
                           value="individual-training"
                           name="individual-training"
-                          onClick={() => {
+                          onChange={() => {
                             setFormData({...formData, trainingReady: !formData.trainingReady});
                           }}
                           checked={formData.trainingReady}

@@ -1,8 +1,8 @@
-import {fireEvent, getByLabelText, getByTitle, render, screen} from '@testing-library/react';
-import {HelmetProvider} from 'react-helmet-async';
-import {createMemoryHistory} from 'history';
-import {Provider} from 'react-redux';
-import {configureMockStore} from '@jedmao/redux-mock-store';
+import { render, screen } from '@testing-library/react';
+import { HelmetProvider } from 'react-helmet-async';
+import { createMemoryHistory } from 'history';
+import { Provider } from 'react-redux';
+import { configureMockStore } from '@jedmao/redux-mock-store';
 import HistoryRouter from '../history-router/history-router';
 import MultiRangeSlider from './multi-range-slider';
 import { AuthorizationStatus, CountCaloriesToSpend, RangePriceValue, RangeRatingValue } from '../../constant';
@@ -14,11 +14,11 @@ const history = createMemoryHistory();
 describe('Component: MultiRangeSlider, whith value box', () => {
   const store = mockStore({
     user: {
-        authorizationStatus: AuthorizationStatus.Auth,
-        user
-      }
-    });
-
+      authorizationStatus: AuthorizationStatus.Auth,
+      user
+    }
+  });
+  const onChange = jest.fn();
   it('should render correctly', () => {
     render(
       <Provider store={store}>
@@ -29,7 +29,7 @@ describe('Component: MultiRangeSlider, whith value box', () => {
               minMax={false}
               min={RangePriceValue.Min}
               max={RangePriceValue.Max}
-              onChange={() => {}}
+              onChange={onChange}
             />
           </HelmetProvider>
         </HistoryRouter>
@@ -48,7 +48,7 @@ describe('Component: MultiRangeSlider, whith value box', () => {
         user
       }
     });
-
+  const onChange = jest.fn();
   it('should render correctly', () => {
     render(
       <Provider store={store}>
@@ -59,7 +59,7 @@ describe('Component: MultiRangeSlider, whith value box', () => {
               minMax={false}
               min={CountCaloriesToSpend.Min}
               max={CountCaloriesToSpend.Max}
-              onChange={() => {}}
+              onChange={onChange}
             />
           </HelmetProvider>
         </HistoryRouter>
@@ -74,11 +74,11 @@ describe('Component: MultiRangeSlider, whith value box', () => {
 describe('Component: MultiRangeSlider, whithout value box', () => {
     const store = mockStore({
       user: {
-          authorizationStatus: AuthorizationStatus.Auth,
-          user
-        }
-      });
-  
+        authorizationStatus: AuthorizationStatus.Auth,
+        user
+      }
+    });
+      const onChange = jest.fn();
     it('should render correctly', () => {
       render(
         <Provider store={store}>
@@ -89,7 +89,7 @@ describe('Component: MultiRangeSlider, whithout value box', () => {
                 minMax={true}
                 min={RangeRatingValue.Min}
                 max={RangeRatingValue.Max}
-                onChange={() => {}}
+                onChange={onChange}
               />
             </HelmetProvider>
           </HistoryRouter>

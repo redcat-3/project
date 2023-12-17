@@ -46,15 +46,15 @@ function UsersCatalogItem({
           </div>
         </div>
         <ul className="thumbnail-user__hashtags-list">
-          {typeOfTrain.map((item)=> (
-            <li className="thumbnail-user__hashtags-item">
+          {typeOfTrain.map((item, index)=> (
+            <li key={index} className="thumbnail-user__hashtags-item">
               <div className="hashtag thumbnail-user__hashtag">
                 <span>#{item}</span>
               </div>
             </li>))
           }
         </ul>
-        <Link to={`/user-card-user/${id}/`} className="btn btn--medium thumbnail-user__button">Подробнее</Link>
+        <Link to={`/user-card/${id}/`} className="btn btn--medium thumbnail-user__button">Подробнее</Link>
       </div>
     </li>
   );

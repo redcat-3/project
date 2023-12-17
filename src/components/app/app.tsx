@@ -14,11 +14,11 @@ import QuestionnaireCoach from '../../pages/questionnaire-coach/questionnaire-co
 import QuestionnaireUser from '../../pages/questionnaire-user/questionnaire-user';
 import SignUp from '../../pages/sign-up/sign-up';
 import TrainingCatalog from '../../pages/training-catalog/training-catalog';
-import TrainingDiary from '../../pages/training-diary/training-diary';
 import UserCatalog from '../../pages/users-catalog/users-catalog';
 import PersonalAccount from '../../pages/personal-account/personal-account';
 import TrainingCard from '../../pages/training-card/training-card';
 import UserCard from '../../pages/user-card/user-card';
+import NotFound from '../../pages/not-found/not-found';
 
 function App(): JSX.Element {
   return (
@@ -96,11 +96,6 @@ function App(): JSX.Element {
             key={AppRoute.TrainingCatalog}
           />
           <Route
-            path={AppRoute.TrainingDiary}
-            element={<TrainingDiary/>}
-            key={AppRoute.TrainingDiary}
-          />
-          <Route
             path={AppRoute.UserCard}
             element={<UserCard/>}
             key={AppRoute.UserCard}
@@ -109,6 +104,11 @@ function App(): JSX.Element {
             path={AppRoute.UsersCatalog}
             element={<UserCatalog/>}
             key={AppRoute.UsersCatalog}
+          />
+          <Route
+            path={AppRoute.Error404}
+            element={<NotFound/>}
+            key={AppRoute.Error404}
           />
         </Routes>
       </ScrollToTop>

@@ -26,7 +26,6 @@ export enum AppRoute {
   SignUp = '/registr',
   TrainingCard = '/training-card/:id',
   TrainingCatalog = '/training-catalog',
-  TrainingDiary = '/training-diary/:id',
   UserCard = '/user-card/:id',
   UsersCatalog = '/users-catalog',
   Error404 = '/error404'

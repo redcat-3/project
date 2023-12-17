@@ -153,7 +153,7 @@ function UserCardCoach({id, name, onMapClick, onCertificateClick, trainingReady,
             </button>
             <ul className="user-card-coach__hashtag-list">
               {typeOfTrain.map((item, index) => (
-                <li className="user-card-coach__hashtag-item">
+                <li className="user-card-coach__hashtag-item" key={index}>
                   <div className="hashtag">
                     <span>#{typeToRussian(item as WorkoutType)}</span>
                   </div>
@@ -230,9 +230,10 @@ function UserCardCoach({id, name, onMapClick, onCertificateClick, trainingReady,
             </div>
             <ul className="user-card-coach__training-list slide-list"
             style={{ transform: `translateX(-${slide * 20}%)`}}>
-              {items.map((slide) => (
+              {items.map((slide, index) => (
                 <TraningsSlide
-                    workout={slide}
+                  key={index}
+                  workout={slide}
                 />
               ))}
             </ul>

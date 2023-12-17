@@ -76,7 +76,7 @@ function PopupCertificate({certificate, onClose}: PopupCertificateProps): JSX.El
           </button>
         </div>
         <div className="popup__content popup__content--certificates slider-list">
-          <div className="popup__slider-buttons">
+          <div className="popup__slider-buttons" style={{zIndex:100}}>
             <button
               className="btn-icon popup__slider-btn popup__slider-btn--prev"
               type="button"
@@ -99,18 +99,16 @@ function PopupCertificate({certificate, onClose}: PopupCertificateProps): JSX.El
                 <use xlinkHref="#arrow-right"></use>
               </svg>
             </button>
-          </div>
-        
+          </div>        
             <ul 
-                style={{ transform: `translateX(-${slide * 100}%)`, display: 'flex', flexDirection: 'row', width: 390}}>
-                {items.map((slide) => (
+                style={{ transform: `translateX(-${slide * 120}%)`, display: 'flex', flexDirection: 'row', width: 390}}>
+                {items.map((slide, index) => (
                 <CertificateSlide
-                    slide={slide}
+                  key={index}
+                  slide={slide}
                 />
                 ))}
-            </ul>
-   
-          
+            </ul>          
         </div>
       </div>
     </section>
