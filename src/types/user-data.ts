@@ -35,7 +35,7 @@ export type LoggedUser = {
   accessToken: string;
 }
 
-export type User = UserUser & UserCoach;
+export type User = UserUser | UserCoach;
 
 export type UserUser = {
   id: string;
@@ -74,6 +74,52 @@ export type UserCoach = {
   certificate: string[];
   merit: string;
   trainingReady: boolean;
+}
+
+export type UserUpdate = {
+  id: string;
+  name?: string;
+  avatar?: string;
+  gender?: UserGender;
+  dateBirth?: Date;
+  role?: UserRole;
+  description?: string;
+  location?: UserLocation;
+  createdAt?: Date;
+  image?: string;
+  level?: UserLevel;
+  typeOfTrain?: string[];
+  timeOfTraining?: UserTime;
+  caloriesToReset?: number;
+  caloriesToSpend?: number;
+  trainingReady?: boolean;
+  certificate?: string;
+  merit?: string;
+  followers?: string[];
+  followCoaches?: string[];
+  friends?: string[];
+}
+
+export type UserCreate = {
+  email: string;
+  name: string;
+  avatar?: string;
+  password: string;
+  gender: UserGender;
+  dateBirth?: Date;
+  role: UserRole;
+  description?: string;
+  location: UserLocation;
+  createdAt?: Date;
+  image?: string;
+  level: UserLevel;
+  typeOfTrain?: string[];
+  timeOfTraining?: UserTime;
+  caloriesToReset?: number;
+  caloriesToSpend?: number;
+  trainingReady: boolean;
+  certificate?: string;
+  merit?: string;
 }
 
 export const LEVELS = [

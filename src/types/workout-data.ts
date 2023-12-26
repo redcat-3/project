@@ -26,6 +26,36 @@ export type Workout = {
   rating: number;
 };
 
+export type WorkoutCreate = {
+  name: string;
+  background: string;
+  level: UserLevel;
+  type: WorkoutType;
+  timeOfTraining: UserTime;
+  price: number;
+  caloriesToSpend: number;
+  description: string;
+  gender: UserGender;
+  video: string;
+  special: boolean;
+};
+
+export type WorkoutUpdate = {
+  workoutId: number;
+  name?: string;
+  background?: string;
+  level?: UserLevel;
+  type?: WorkoutType;
+  timeOfTraining?: UserTime;
+  price?: number;
+  caloriesToSpend?: number;
+  description?: string;
+  gender?: UserGender;
+  video?: string;
+  special?: boolean;
+  rating?: number;
+};
+
 export const WORKOUT_TYPES = [
   'yoga',
   'running',

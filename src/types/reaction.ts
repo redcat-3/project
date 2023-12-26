@@ -1,10 +1,26 @@
+export enum PaymentMethod {
+  Visa = 'visa',
+  Mir = 'mir',
+  Umoney = 'umoney',
+}
+
+export const PAYMENT_METHOD = [
+  'visa',
+  'mir',
+  'iomoney'
+] as const;
+
 export enum RequestStatus {
   Consider = 'consider',
   Rejected = 'rejected',
   Accept = 'accept',
 }
 
-export type Request = {
+export enum OrderType {
+  subscription
+}
+
+export type IRequest = {
   requestId?: number;
   requester: string;
   userId: string;
@@ -13,7 +29,7 @@ export type Request = {
   status: RequestStatus;
 }
 
-export type Notification = {
+export type INotification = {
   notificationId: number;
   userId: string;
   createdDate: string;
@@ -23,10 +39,22 @@ export type Notification = {
 
 export type Order = {
   orderId?: number;
+  orderType: OrderType;
+  workoutId: number;
+  userId: string;
+  coachId: string;
+  price: number;
+  count: number;
+  orderPrice: number;
+  paymentMethod: PaymentMethod;
+  createdDate: Date;
+}
+
+export type OrderCreate = {
   workoutId: number;
   userId: string;
   count: number;
-  createdDate: Date;
+  orderType: OrderType;
 }
 
 export type OrderToCoach = {
@@ -46,14 +74,25 @@ export type Feedback = {
   createdDate: Date;
 }
 
-export enum PaymentMethod {
-  Visa = 'visa',
-  Mir = 'mir',
-  Umoney = 'umoney',
+export interface IFeedback {
+  feedbackId: number;
+  workoutId: number;
+  userId: string;
+  rating: number;
+  text: string;
+  createdDate: Date;
 }
 
-export const PAYMENT_METHOD = [
-  'visa',
-  'mir',
-  'iomoney'
-] as const;
+export type FeedbackCreate = {
+  workoutId: number;
+  rating: number;
+  text: string;
+}
+
+export type Balance = {
+  balanceId?: number;
+  userId: string;
+  workoutId: number;
+  price: number;
+  count: number;
+}

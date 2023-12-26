@@ -32,10 +32,18 @@ export enum AppRoute {
 }
 
 export enum APIRoute {
-  Feedbacks = '/feedback',
+  Users = '/users',
   Workouts = '/workouts',
-  Login = '/login',
-  Logout = '/logout',
+  Feedbacks = '/feedbacks',
+  Orders = '/orders',
+  Requests = '/requests',
+  Notifications = '/notifications',
+  Balances = 'balances',
+  Login = '/users/login',
+  Register = '/users/register',
+  ChangePassword = '/users/change-password',
+  UpdateAvatar = '/users/upload-avatar',
+  Friends = 'users/list/friends',
 }
 
 export enum NameSpace {
