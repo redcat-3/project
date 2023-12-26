@@ -5,41 +5,52 @@ import { redirectToRoute } from '../../store/action';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { Helmet } from 'react-helmet-async';
 import { RequestStatus } from '../../types/reaction';
-import { createRequests } from '../../mocks/requests';
-import { getUser, getUsers, getUsersCount, getUsersDataLoadingStatus } from '../../store/user-process/selectors';
+import { getFriendsList, getUser, getUsersDataLoadingStatus } from '../../store/user-process/selectors';
 import { useState } from 'react';
-import { usersInc } from '../../store/user-process/user-process';
 import { useNavigate } from 'react-router-dom';
-
-const usersWithRequest = createRequests(4);
+import { fetchFriendsAction, fetchRequestUpdateAction, fetchRequestsAction } from '../../store/api-actions';
+import { getRequests } from '../../store/reaction-process/selectors';
+import { User, UserRole } from '../../types/user-data';
 
 function FriendsList(): JSX.Element {
   let navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const isUsersDataLoading = useAppSelector(getUsersDataLoadingStatus);
-  const users = useAppSelector(getUsers);
   const user = useAppSelector(getUser);
-  const usersCount = useAppSelector(getUsersCount);
-  let renderedUsersCount = users.length + usersWithRequest.length;
-  const div = renderedUsersCount%(DEFAULT_LIMIT/2);
-  if(div > 0 && renderedUsersCount > DEFAULT_LIMIT) {
-    const del = DEFAULT_LIMIT/2 - div;
-    dispatch(usersInc(del));
-    renderedUsersCount = users.length + usersWithRequest.length;
+  if(!user) {
+    redirectToRoute(AppRoute.Intro);
   }
-  const [isMore, setIsMore] = useState(renderedUsersCount < (usersCount + usersWithRequest.length));
+  dispatch(fetchFriendsAction);
+  dispatch(fetchRequestsAction);
+  const isUsersDataLoading = useAppSelector(getUsersDataLoadingStatus);
+  const users = useAppSelector(getFriendsList);
+  const requests = useAppSelector(getRequests);
+  const usersCount = users.length;
+  const friendsRequests: User[] = [];
+  const friendsWithoutRequests: User[] = [];
+  for(let i=0; i < usersCount; i++) {
+    for(let j=0; j < requests.length; j++) {
+      if(users[i].id === requests[j].requester) {
+        friendsRequests.push(users[i]);
+      } else {
+        friendsWithoutRequests.push(users[i]);
+      }
+    }
+  }
+  const friends = [...friendsRequests, ...friendsWithoutRequests];
+  let renderedUsersCount = DEFAULT_LIMIT;
+  const renderedUsers = friends.slice(0, renderedUsersCount)
+  const [isMore, setIsMore] = useState(renderedUsersCount < (usersCount));
   const handleMoreClick = () => {
-    if((usersCount + usersWithRequest.length) > renderedUsersCount) {
+    if((usersCount) > renderedUsersCount) {
       renderedUsersCount = renderedUsersCount + DEFAULT_LIMIT;
-      dispatch(usersInc(DEFAULT_LIMIT));
-      setIsMore(renderedUsersCount < (usersCount + usersWithRequest.length));
+      setIsMore(renderedUsersCount < usersCount);
     }
   };
   const handleTopClick = () => {
     dispatch(redirectToRoute(AppRoute.Main));
   }
   const handleRequestClick = (requestId: number, status: RequestStatus) => {
-    console.log(`Update request ${requestId} to status ${status}`);
+    dispatch(fetchRequestUpdateAction({id: requestId, status}));
   }
   const goBack = () => {
     navigate(-1);
@@ -87,22 +98,7 @@ function FriendsList(): JSX.Element {
                 <h1 className="friends-list__title">Мои друзья</h1>
               </div>
               <ul className="friends-list__list">
-              {usersWithRequest.map((item, index) => (
-                  <FriendsListItem key={index}
-                    id={item.userId}
-                    name={item.name}
-                    location={item.location}
-                    avatar={item.avatar}
-                    trainingReady={item.trainingReady}
-                    typeOfTrain={item.typeOfTrain}
-                    request={item.request}
-                    requestId={item.requestId}
-                    userRole={item.role}
-                    role={user.role}
-                    handleRequestClick={handleRequestClick}
-                  />
-                ))}
-                {users.map((item, index) => (
+                {renderedUsers.map((item, index) => (
                   <FriendsListItem key={index}
                     id={item.id}
                     name={item.name}
@@ -112,7 +108,7 @@ function FriendsList(): JSX.Element {
                     typeOfTrain={item.typeOfTrain}
                     request={false}
                     userRole={item.role}
-                    role={user.role}
+                    role={user ? user.role : UserRole.User}
                     handleRequestClick={handleRequestClick}
                   />
                 ))}

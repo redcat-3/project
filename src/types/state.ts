@@ -1,26 +1,28 @@
 import {store} from '../store/index.js';
 import {AuthorizationStatus} from '../constant';
 import { User } from './user-data.js';
-import { Feedback, Notification, Order, OrderToCoach, Request } from './reaction.js';
+import { Feedback, INotification, Order, OrderToCoach, IRequest, IFeedback, Balance } from './reaction.js';
 import { Workout } from './workout-data.js';
 
 export type ReactionProcess = {
-  notifications: Notification[];
+  notifications: INotification[];
   orders: Order[];
   ordersToCoach: OrderToCoach[];
   isOrdersDataLoading: boolean;
   ordersCount: number;
   ordersToCoachCount: number;
-  feedbacks: Feedback[];
-  requests: Request[];
+  summaryPrice: number;
+  feedbacks: IFeedback[];
+  requests: IRequest[];
+  balances: Balance[];
 };
 
 export type WorkoutProcess = {
   workout: Workout | null;
+  isWorkoutDataLoading: boolean;
   workouts: Workout[];
   isWorkoutsDataLoading: boolean;
   workoutsCount: number;
-  filteredWorkouts: Workout[];
 }
 
 
@@ -28,10 +30,12 @@ export type UserProcess = {
   authorizationStatus: AuthorizationStatus;
   authorizationError: boolean;
   users: User[];
-  user: User;
+  isUserDataLoading: boolean;
+  user: User | null;
   usersCount: number;
   isUsersDataLoading: boolean;
-  friendsList: string[];
+  friendsList: User [];
+  isFriendsDataLoading: boolean;
 };
 
 export type State = ReturnType<typeof store.getState>;

@@ -31,7 +31,7 @@ export enum UserTime {
 }
 
 export type LoggedUser = {
-  email: string;
+  id: string;
   accessToken: string;
 }
 

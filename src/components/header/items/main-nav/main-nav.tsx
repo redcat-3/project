@@ -2,18 +2,18 @@ import { NavLink } from "react-router-dom";
 import Notification from "../notification/notification";
 import { AppRoute } from "../../../../constant";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
-import { getNotifications } from "../../../../store/reaction-process/selectors";
-import { setNotifications } from "../../../../store/reaction-process/reaction-process";
+import { getNotifications} from "../../../../store/reaction-process/selectors";
+import { fetchNotificationDeleteAction } from '../../../../store/api-actions';
 
 type MainNavProps = {
-  id: string,
+  userId: string,
 };
 
-function MainNav ({id}: MainNavProps): JSX.Element {
+function MainNav ({userId}: MainNavProps): JSX.Element {
   const dispatch = useAppDispatch();
   const notifications = useAppSelector(getNotifications);
   const OnNotificationClick = (notificationId: number) => {
-    dispatch(setNotifications(notificationId));
+    dispatch(fetchNotificationDeleteAction({id: notificationId}));
   }
   return (
     <nav className="main-nav">
@@ -31,7 +31,7 @@ function MainNav ({id}: MainNavProps): JSX.Element {
         </li>
         <li className="main-nav__item" key="icon-user">
           <NavLink title="icon-user"
-            to={`/personal-account/${id}`}
+            to={userId === '' ? AppRoute.Main : `/personal-account/${userId}`}
             end
             className={({isActive}) => isActive ? "main-nav__link is-active" : "main-nav__link"}
             aria-label="Личный кабинет"
@@ -43,7 +43,7 @@ function MainNav ({id}: MainNavProps): JSX.Element {
         </li>
         <li className="main-nav__item" key="icon-friends">
           <NavLink title="icon-friends"
-            to={`/friends-list/${id}`}
+            to={userId === '' ? AppRoute.Main : `/friends-list/${userId}`}
             end
             className={({isActive}) => isActive ? "main-nav__link is-active" : "main-nav__link"}
             aria-label="Друзья"
@@ -71,7 +71,10 @@ function MainNav ({id}: MainNavProps): JSX.Element {
                   text={item.text}
                   createdDate={item.createdDate}
                   isNotificationActive={item.isActive}
-                  OnNotificationClick={OnNotificationClick}
+                  OnNotificationClick={() => {
+                    item.isActive=false;
+                    OnNotificationClick
+                  }}
                 />
               ))}
             </ul>

@@ -8,6 +8,7 @@ import { levelToRussian, levelToValue, typeToRussian, workoutTypeToValue } from 
 import { redirectToRoute } from '../../store/action';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getUser } from '../../store/user-process/selectors';
+import { fetchWorkoutAddAction } from '../../store/api-actions';
 
 function CreateTraning(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -27,8 +28,8 @@ function CreateTraning(): JSX.Element {
     level: '' as UserLevel,
     type: '' as WorkoutType,
     timeOfTraining: '' as UserTime,
-    price: '',
-    caloriesToSpend: '',
+    price: 0,
+    caloriesToSpend: 0,
     description: '',
     gender: '' as UserGender,
     video: '',
@@ -40,7 +41,7 @@ function CreateTraning(): JSX.Element {
   };
 
   const handleCaloriesChange: ChangeEventHandler<HTMLInputElement> = (event): void => {
-    setFormData({...formData, caloriesToSpend: event.target.value});
+    setFormData({...formData, caloriesToSpend: +event.target.value});
     if(+event.target.value < CountCaloriesToSpend.Min || +event.target.value > CountCaloriesToSpend.Max) {
       setIsDisabled(true);
       setCaloriesError(true);
@@ -61,7 +62,7 @@ function CreateTraning(): JSX.Element {
   };
 
   const handlePriceChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-    setFormData({...formData, price: event.target.value});
+    setFormData({...formData, price: +event.target.value});
     if(+event.target.value >= 0) {
       setIsDisabled(false);
       setPriceError(false);
@@ -99,14 +100,14 @@ function CreateTraning(): JSX.Element {
       formData.level !== '' as UserLevel &&
       formData.type !== '' as WorkoutType &&
       formData.timeOfTraining !== '' as UserTime &&
-      formData.price !== '' &&
       formData.name !== '' &&
-      formData.caloriesToSpend !== '' &&
+      formData.caloriesToSpend !== 0 &&
       formData.description !== '' &&
       formData.gender !== '' as UserGender &&
       formData.video !== ''
     ) {
       setFormError(false);
+      dispatch(fetchWorkoutAddAction(formData));
       dispatch(redirectToRoute(`/my-trainings/${user.id}` as AppRoute))
     } else {
       setFormError(true);

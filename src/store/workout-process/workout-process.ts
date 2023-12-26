@@ -1,58 +1,55 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../constant';
 import { WorkoutProcess } from '../../types/state';
-import { createWorkout, createWorkouts, workouts } from '../../mocks/workouts';
-import { TrainigQuery } from '../../types/query';
-
-const COUNT_OF_WORKOUTS = 10;
+import { fetchWorkoutAction, fetchWorkoutsAction, fetchWorkoutsCoachAction } from '../api-actions';
 
 const initialState: WorkoutProcess = {
-  workout: createWorkout(1),
-  workouts,
+  workout: null,
+  isWorkoutDataLoading: false,
+  workouts: [],
   isWorkoutsDataLoading: false,
-  workoutsCount: COUNT_OF_WORKOUTS,
-  filteredWorkouts: workouts
+  workoutsCount: 0,
 };
 
 export const workoutProcess = createSlice({
   name: NameSpace.Workout,
   initialState,
   reducers: {
-    setWorkoutById: (state, action: PayloadAction<number>) => {
-      state.workout = createWorkout(action.payload);
-    },
-    workoutsInc: (state, action: PayloadAction<number>) => {
-      const count = Math.min(state.workoutsCount - state.workouts.length, action.payload);
-      state.workouts = state.workouts.concat(createWorkouts(count));
-    },
-    filterWorkouts: (state, action: PayloadAction<TrainigQuery>) => {
-      const workoutsNew = state.workouts.slice();
-      if(action.payload.times.length === 0) {
-        workoutsNew.filter((item) => {
-          item.price > action.payload.priceMin &&
-          item.price < action.payload.ratingMax &&
-          item.rating > action.payload.ratingMin &&
-          item.rating < action.payload.ratingMax &&
-          item.caloriesToSpend > action.payload.caloriesMin &&
-          item.caloriesToSpend < action.payload.caloriesMax
-        })
-      } else {
-        workoutsNew.filter((item) => {
-          item.price > action.payload.priceMin &&
-          item.price < action.payload.ratingMax &&
-          item.rating > action.payload.ratingMin &&
-          item.rating < action.payload.ratingMax &&
-          item.caloriesToSpend > action.payload.caloriesMin &&
-          item.caloriesToSpend < action.payload.caloriesMax &&
-          action.payload.times.includes(item.timeOfTraining)
-        })
-      }
-      state.filteredWorkouts = workoutsNew;
-    }
   },
   extraReducers(builder) {
     builder
-
+    .addCase(fetchWorkoutAction.pending, (state) => {
+      state.isWorkoutDataLoading = true;
+    })
+    .addCase(fetchWorkoutAction.fulfilled, (state, action) => {
+      state.workout = action.payload;
+      state.isWorkoutDataLoading = false;
+    })
+    .addCase(fetchWorkoutAction.rejected, (state) => {
+      state.isWorkoutDataLoading = false;
+    })
+    .addCase(fetchWorkoutsAction.pending, (state) => {
+      state.isWorkoutsDataLoading = true;
+    })
+    .addCase(fetchWorkoutsAction.fulfilled, (state, action) => {
+      state.workouts = action.payload.workoutsList;
+      state.workoutsCount = action.payload.count;
+      state.isWorkoutsDataLoading = false;
+    })
+    .addCase(fetchWorkoutsAction.rejected, (state) => {
+      state.isWorkoutsDataLoading = false;
+    })
+    .addCase(fetchWorkoutsCoachAction.pending, (state) => {
+      state.isWorkoutsDataLoading = true;
+    })
+    .addCase(fetchWorkoutsCoachAction.fulfilled, (state, action) => {
+      state.workouts = action.payload;
+      state.workoutsCount = state.workouts.length;
+      state.isWorkoutsDataLoading = false;
+    })
+    .addCase(fetchWorkoutsCoachAction.rejected, (state) => {
+      state.isWorkoutsDataLoading = false;
+    })
   }
 });
-export const { setWorkoutById, filterWorkouts, workoutsInc } = workoutProcess.actions;
+export const {} = workoutProcess.actions;

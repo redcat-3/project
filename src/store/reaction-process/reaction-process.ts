@@ -1,86 +1,67 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../constant';
 import { ReactionProcess } from '../../types/state';
-import { notifications } from '../../mocks/notifications';
-import { createNextOrders, createNextOrdersToCoach, orders, ordersToCoach1 } from '../../mocks/orders';
-import { createFeedbacks } from '../../mocks/feedbacks';
-import { Feedback, Notification, Request } from '../../types/reaction';
-
-const COUNT_OF_ORDERS = 10;
+import { fetchBalancesAction, 
+  fetchFeedbacksWorkoutAction, 
+  fetchNotificationsAction, 
+  fetchOrdersCoachtAction, 
+  fetchOrdersWorkoutAction, 
+  fetchRequestsAction } from '../api-actions';
 
 const initialState: ReactionProcess = {
-  notifications,
-  orders,
-  ordersToCoach: ordersToCoach1.sort((a,b) => b.countWorkout - a.countWorkout),
+  notifications: [],
+  orders: [],
   isOrdersDataLoading: false,
-  ordersCount: COUNT_OF_ORDERS,
-  ordersToCoachCount: COUNT_OF_ORDERS,
-  feedbacks: createFeedbacks(2, 1),
+  ordersCount: 0,
+  ordersToCoach: [],
+  ordersToCoachCount: 0,
+  summaryPrice: 0,
+  feedbacks: [],
   requests: [],
+  balances: []
 };
 
 export const reactionProcess = createSlice({
   name: NameSpace.Reaction,
   initialState,
-  reducers: {
-    setNotifications: (state, action: PayloadAction<number>) => {
-      const notificationsNew = state.notifications;
-      if(action.payload) {
-        const index = notificationsNew.findIndex(item => item.notificationId === action.payload);
-        if (index !== -1) {
-          notificationsNew.splice(index, 1);
-        }
-      }
-      state.notifications = notificationsNew;
-    },
-    addNotifications: (state, action: PayloadAction<Notification>) => {
-      if(action.payload) {
-        state.notifications.push(action.payload);
-      }
-    },
-    addRequest: (state, action: PayloadAction<Request>) => {
-      if(action.payload) {
-        state.requests.push(action.payload);
-      }
-    },
-    setFeedback: (state, action: PayloadAction<Feedback>) => {
-      const feddbacksNew = state.feedbacks;
-      if(action.payload) {
-        feddbacksNew.push(action.payload);
-      }
-      state.feedbacks = feddbacksNew;
-    },
-    ordersInc: (state, action: PayloadAction<number>) => {
-      const count = Math.min(state.ordersCount - state.orders.length, action.payload);
-      state.orders = state.orders.concat(createNextOrders(count));
-    },
-    ordersToCoachInc: (state, action: PayloadAction<number>) => {
-      const count = Math.min(state.ordersToCoachCount - state.ordersToCoach.length, action.payload);
-      state.ordersToCoach = state.ordersToCoach.concat(createNextOrdersToCoach(count));
-    },
-    sortByPrice: (state, action: PayloadAction<boolean>) => {
-      const ordersNew = state.ordersToCoach.slice();
-      action.payload ? ordersNew.sort((a, b) => b.orderPrice - a.orderPrice) : ordersNew.sort((a, b) => a.orderPrice - b.orderPrice);
-      state.ordersToCoach = ordersNew;
-    },
-    sortByCount: (state, action: PayloadAction<boolean>) => {
-      const ordersNew = state.ordersToCoach.slice();
-      action.payload ? ordersNew.sort((a, b) => b.countWorkout - a.countWorkout) : ordersNew.sort((a, b) => a.countWorkout - b.countWorkout);
-      state.ordersToCoach = ordersNew;
-    }
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
-
+    .addCase(fetchOrdersWorkoutAction.pending, (state) => {
+      state.isOrdersDataLoading = true;
+    })
+    .addCase(fetchOrdersWorkoutAction.fulfilled, (state, action) => {
+      state.orders = action.payload;
+      state.ordersCount = state.orders.length;
+      state.isOrdersDataLoading = false;
+    })
+    .addCase(fetchOrdersWorkoutAction.rejected, (state) => {
+      state.isOrdersDataLoading = false;
+    })
+    .addCase(fetchOrdersCoachtAction.pending, (state) => {
+      state.isOrdersDataLoading = true;
+    })
+    .addCase(fetchOrdersCoachtAction.fulfilled, (state, action) => {
+      state.ordersToCoach = action.payload.orders;
+      state.ordersToCoachCount = state.ordersToCoach.length;
+      state.summaryPrice = action.payload.summaryPrice;
+      state.isOrdersDataLoading = false;
+    })
+    .addCase(fetchOrdersCoachtAction.rejected, (state) => {
+      state.isOrdersDataLoading = false;
+    })
+    .addCase(fetchFeedbacksWorkoutAction.fulfilled, (state, action) => {
+      state.feedbacks = action.payload;
+    })
+    .addCase(fetchRequestsAction.fulfilled, (state, action) => {
+      state.requests = action.payload;
+    })
+    .addCase(fetchNotificationsAction.fulfilled, (state, action) => {
+      state.notifications = action.payload;
+    })
+    .addCase(fetchBalancesAction.fulfilled, (state, action) => {
+      state.balances = action.payload;
+    })
   }
 });
-export const {
-  setNotifications,
-  ordersInc,
-  ordersToCoachInc,
-  sortByPrice,
-  sortByCount,
-  setFeedback,
-  addNotifications,
-  addRequest
-} = reactionProcess.actions;
+export const {} = reactionProcess.actions;

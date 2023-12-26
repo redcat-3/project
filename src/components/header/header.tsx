@@ -11,7 +11,7 @@ function Header(): JSX.Element {
     <header className="header" title="header">
       <div className="container">
         <HeaderLogo />
-        <MainNav id={user.id} />
+        <MainNav userId={user ? user.id : ''} />
         <Search />
       </div>
     </header>

@@ -1,45 +1,24 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { NameSpace, AuthorizationStatus, DEFAULT_LIMIT } from '../../constant';
+import { createSlice } from '@reduxjs/toolkit';
+import { NameSpace, AuthorizationStatus } from '../../constant';
 import { UserProcess } from '../../types/state';
-import { checkAuthAction, loginAction, logoutAction } from '../api-actions';
-import { coach, createNextUsers, user, users } from '../../mocks/users';
-import { UserTime } from '../../types/user-data';
-
-const COUNT_OF_USERS = 20;
+import { checkAuthAction, fetchFriendsAction, fetchUserAction, fetchUsersAction, loginAction, registerAction } from '../api-actions';
 
 const initialState: UserProcess = {
   authorizationStatus: AuthorizationStatus.Unknown,
   authorizationError: false,
-  users,
-  user: //{...user, merit: '', certificate: ['']},
-  {...coach, timeOfTrain: '' as UserTime, caloriesToReset: 0, caloriesToSpend: 0},
-  usersCount: COUNT_OF_USERS,
+  user: null,
+  isUserDataLoading: false,
+  users: [],
+  usersCount: 0,
   isUsersDataLoading: false,
   friendsList: [],
+  isFriendsDataLoading: false,
 };
 
 export const userProcess = createSlice({
   name: NameSpace.User,
   initialState,
-  reducers: {
-    usersInc: (state, action: PayloadAction<number>) => {
-      const usersCount = Math.min(state.usersCount - state.users.length, action.payload);
-      state.users = state.users.concat(createNextUsers(usersCount));
-    },
-    addFriend: (state, action: PayloadAction<string>) => {
-      state.friendsList.push(action.payload);
-    },
-    removeFriend: (state, action: PayloadAction<string>) => {
-      const friendsNew = state.friendsList;
-      if(action.payload) {
-        const index = friendsNew.findIndex(item => item === action.payload);
-        if (index !== -1) {
-          friendsNew.splice(index, 1);
-        }
-      }
-      state.friendsList = friendsNew;
-    }
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
       .addCase(checkAuthAction.fulfilled, (state) => {
@@ -56,9 +35,41 @@ export const userProcess = createSlice({
         state.authorizationStatus = AuthorizationStatus.NoAuth;
         state.authorizationError = true;
       })
-      .addCase(logoutAction.fulfilled, (state) => {
-        state.authorizationStatus = AuthorizationStatus.NoAuth;
+      .addCase(registerAction.fulfilled, (state) => {
+        state.authorizationStatus = AuthorizationStatus.Auth;
+        state.authorizationError = false;
+      })
+      .addCase(fetchUserAction.pending, (state) => {
+        state.isUserDataLoading = true;
+      })
+      .addCase(fetchUserAction.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.isUserDataLoading = false;
+      })
+      .addCase(fetchUserAction.rejected, (state) => {
+        state.isUserDataLoading = false;
+      })
+      .addCase(fetchUsersAction.pending, (state) => {
+        state.isUsersDataLoading = true;
+      })
+      .addCase(fetchUsersAction.fulfilled, (state, action) => {
+        state.users = action.payload.usersList;
+        state.usersCount = action.payload.count;
+        state.isUsersDataLoading = false;
+      })
+      .addCase(fetchUsersAction.rejected, (state) => {
+        state.isUsersDataLoading = false;
+      })
+      .addCase(fetchFriendsAction.pending, (state) => {
+        state.isFriendsDataLoading = true;
+      })
+      .addCase(fetchFriendsAction.fulfilled, (state, action) => {
+        state.friendsList = action.payload;
+        state.isFriendsDataLoading = false;
+      })
+      .addCase(fetchFriendsAction.rejected, (state) => {
+        state.isFriendsDataLoading = false;
       });
   }
 });
-export const { usersInc, addFriend, removeFriend } = userProcess.actions;
+export const {} = userProcess.actions;
