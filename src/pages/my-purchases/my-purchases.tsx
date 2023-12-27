@@ -6,16 +6,17 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getOrders, getOrdersCount, getOrdersDataLoadingStatus } from '../../store/reaction-process/selectors';
 import { useState } from 'react';
 import { AppRoute, DEFAULT_LIMIT_ORDERS } from '../../constant';
-import { ordersInc } from '../../store/reaction-process/reaction-process';
 import { redirectToRoute } from '../../store/action';
+import { fetchOrdersUserAction } from '../../store/api-actions';
 
 function MyPurchases(): JSX.Element {
   let navigate = useNavigate();
   const dispatch = useAppDispatch();
+  dispatch(fetchOrdersUserAction);
   const isOrdersDataLoading = useAppSelector(getOrdersDataLoadingStatus);
   const orders = useAppSelector(getOrders);
   const ordersCount = useAppSelector(getOrdersCount);
-  let renderedOrdersCount = orders.length;
+  let renderedOrdersCount = DEFAULT_LIMIT_ORDERS;
   const [isMore, setIsMore] = useState(renderedOrdersCount < ordersCount);
   const [onlyActive, setOnlyActive] = useState(false);
   let filteredOrders;
@@ -24,13 +25,24 @@ function MyPurchases(): JSX.Element {
   } else {
     filteredOrders = orders;
   }
+  let renderedOrders = filteredOrders.slice(0, renderedOrdersCount);
   const handleMoreClick = () => {
     if(ordersCount > renderedOrdersCount) {
       renderedOrdersCount = renderedOrdersCount + DEFAULT_LIMIT_ORDERS;
-      dispatch(ordersInc(DEFAULT_LIMIT_ORDERS));
+      renderedOrders = orders.slice(0, renderedOrdersCount)
       setIsMore(renderedOrdersCount < ordersCount);
     }
   };
+  const handleOnlyActiveClick = () => {
+    setOnlyActive(!onlyActive);
+    if (onlyActive) {
+      filteredOrders = orders.filter((item) => item.count !== 0)
+    } else {
+      filteredOrders = orders;
+    }
+    renderedOrdersCount = DEFAULT_LIMIT_ORDERS;
+    renderedOrders = filteredOrders.slice(0, renderedOrdersCount);
+  }
   const handleTopClick = () => {
     dispatch(redirectToRoute(AppRoute.Main));
   }
@@ -86,7 +98,7 @@ function MyPurchases(): JSX.Element {
                         type="checkbox"
                         value="user-agreement-1"
                         name="user-agreement"
-                        onChange={() => setOnlyActive(!onlyActive)}
+                        onChange={handleOnlyActiveClick}
                       />
                       <span className="custom-toggle__icon">
                         <svg width="9" height="6" aria-hidden="true">
@@ -99,7 +111,7 @@ function MyPurchases(): JSX.Element {
                 </div>
               </div>
               <ul className="my-purchases__list">
-                {filteredOrders.map((item, index) => (
+                {renderedOrders.map((item, index) => (
                   <MyPurchasesItem key={index}
                     id={item.orderId}
                     workoutId={item.workoutId}

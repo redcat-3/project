@@ -4,10 +4,10 @@ import { redirectToRoute } from "../../store/action";
 import { AppRoute, EMAIL_REGEXP, ErrorMessage, UserPasswordLength } from "../../constant";
 import { UserRole } from "../../types/user-data";
 import { getUser } from "../../store/user-process/selectors";
+import { loginAction } from "../../store/api-actions";
 
 function PopupSignIn(): JSX.Element {
   const dispatch = useAppDispatch();
-  const user = useAppSelector(getUser);
   const [formError, setFormError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
@@ -29,7 +29,7 @@ function PopupSignIn(): JSX.Element {
 
   const handlePasswordChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     setFormData({...formData, password: event.target.value});
-    if(event.target.value.length <= UserPasswordLength.Min || UserPasswordLength.Max <= event.target.value.length) {
+    if(event.target.value.length < UserPasswordLength.Min || UserPasswordLength.Max < event.target.value.length) {
       setFormError(true);
       setPasswordError(true);
     } else {
@@ -43,11 +43,11 @@ function PopupSignIn(): JSX.Element {
       formData.email !== '' &&
       formData.password !== ''
     ) {
-      setFormError(false);
-      // в случае успешной авторизации
-      if(user.role === UserRole.Coach) {
+      dispatch(loginAction(formData));
+      const user = useAppSelector(getUser);
+      if(user && user.role === UserRole.Coach) {
         dispatch(redirectToRoute(AppRoute.PersonalAccount))
-      } else if(user.role === UserRole.User) {
+      } else if(user && user.role === UserRole.User) {
         dispatch(redirectToRoute(AppRoute.Main))
       }
     } else {

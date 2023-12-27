@@ -3,13 +3,12 @@ import Header from '../../components/header/header';
 import ReviewsSideBarItem from '../../components/reviews-side-bar-item/reviews-side-bar-item';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getUser } from '../../store/user-process/selectors';
+import { getCoach, getFeedbackUsers, getUser } from '../../store/user-process/selectors';
 import { getFeedbacks } from '../../store/reaction-process/selectors';
 import NotFound from '../not-found/not-found';
 import { UserRole } from '../../types/user-data';
-import { generateUser } from '../../mocks/users';
 import React, { ChangeEventHandler, useEffect, useRef, useState } from 'react';
-import { ErrorMessage, NameLength, WorkoutDescriptionLength } from '../../constant';
+import { DEFAULT_LIMIT, ErrorMessage, NameLength, WorkoutDescriptionLength } from '../../constant';
 import Poster from './items/poster/poster';
 import Video from './items/video/video';
 import FormVideo from './items/form-video/form-video';
@@ -19,7 +18,7 @@ import { Workout } from '../../types/workout-data';
 import PopupFeedback from '../../components/popup-feedback/popup-feedback';
 import { Feedback } from '../../types/reaction';
 import dayjs from 'dayjs';
-import { setFeedback } from '../../store/reaction-process/reaction-process';
+import { fetchCoachAction, fetchFeedbackAddAction, fetchFeedbackUsersAction, fetchFeedbacksWorkoutAction, fetchWorkoutAction } from '../../store/api-actions';
 
 const message = 'К сожалению тренировка не найдена';
 
@@ -27,9 +26,9 @@ function TrainingCard(): JSX.Element {
   const dispatch = useAppDispatch();
   const params = useParams();
   const user = useAppSelector(getUser);
-  const creatorWorkout = generateUser(2);
   let workout: Workout | null = null;
   if (params.id) {
+    dispatch(fetchWorkoutAction({id: +params.id}));
     workout = useAppSelector(getWorkout);
   }
   if (workout === null) {
@@ -37,7 +36,31 @@ function TrainingCard(): JSX.Element {
       <NotFound text={message}/>
     )
   } else {
-    const feedbacks = useAppSelector(getFeedbacks);
+    const query = {limit: DEFAULT_LIMIT, page: 1}
+    dispatch(fetchFeedbacksWorkoutAction({query, id: workout.workoutId}));
+    dispatch(fetchCoachAction({id: workout.coachId}));
+    const iFeedbacks = useAppSelector(getFeedbacks);
+    const coach = useAppSelector(getCoach);
+    const ids: string[] = [];
+    iFeedbacks.map((item, index) => {ids[index] = item.userId;});
+    dispatch(fetchFeedbackUsersAction(ids));
+    const feedbacksUsers = useAppSelector(getFeedbackUsers);
+    const feedbacks: Feedback[] = [];
+    iFeedbacks.map((item, index) => {
+      const author = feedbacksUsers.find((x) => x.id === item.userId);
+      if(author) {
+        feedbacks[index] = {
+          feedbackId: item.feedbackId,
+          workoutId: item.workoutId,
+          userId: item.userId,
+          avatar: author.avatar,
+          name: author.name,
+          rating: item.rating,
+          text: item.text,
+          createdDate: item.createdDate
+        }
+      }
+    })
     let navigate = useNavigate();
     const goBack = () => {
       navigate(-1);
@@ -130,7 +153,7 @@ function TrainingCard(): JSX.Element {
       setIsBuyOpen(false);
     };
     const onSendFeddback = (rating: number, text: string) => {
-      if(workout) {
+      if(workout && user) {
         const feedback: Feedback = {
         feedbackId: feedbacks.length,
         workoutId: workout.workoutId,
@@ -140,7 +163,7 @@ function TrainingCard(): JSX.Element {
         rating,
         text,
         createdDate: new Date(dayjs().date())};
-        dispatch(setFeedback(feedback));
+        dispatch(fetchFeedbackAddAction(feedback));
     }
       setIsFeedbackOpen(false);
     };
@@ -152,17 +175,8 @@ function TrainingCard(): JSX.Element {
           setIsFeedbackOpen(false);
         }
       };
-      const handleClickOutside = (event: MouseEvent) => {
-        const { target } = event;
-        if (target instanceof Node && popupBuyRef.current && popupBuyRef.current === target) {
-          alert("You clicked outside of me!");
-        }
-      };
-      window.addEventListener('keydown', handleEscapePress);
-      document.addEventListener('click', handleClickOutside, true);
       return () => {
         window.removeEventListener('keydown', handleEscapePress);
-        document.removeEventListener('click', handleClickOutside, true);
       }
     });
     return (
@@ -198,11 +212,11 @@ function TrainingCard(): JSX.Element {
                   <button
                     className="btn btn--medium reviews-side-bar__button"
                     type="button"
-                    disabled={user.role !== UserRole.User}
+                    disabled={user ? user.role !== UserRole.User : false}
                     onClick={() => setIsFeedbackOpen(true)}
                   >Оставить отзыв</button>
                 </aside>
-                <div className={(user.id === creatorWorkout.id) ? "training-card training-card--edit" : "training-card"}>
+                <div className={(user ? user.id === workout.coachId : false) ? "training-card training-card--edit" : "training-card"}>
                   <div className="training-info">
                     <h2 className="visually-hidden">Информация о тренировке</h2>
                     <div className="training-info__header">
@@ -211,11 +225,11 @@ function TrainingCard(): JSX.Element {
                           <picture>
                             <source
                               type="image/webp"
-                              srcSet={`${creatorWorkout.avatar}.webp, ${creatorWorkout.avatar}@2x.webp 2x,`}
+                              srcSet={`${coach && coach.avatar}.webp, ${coach && coach.avatar}@2x.webp 2x,`}
                             />
                             <img
-                              src={`${creatorWorkout.avatar}.png`}
-                              srcSet={`${creatorWorkout.avatar}@2x.jpg 2x`}
+                              src={`${coach && coach.avatar}.png`}
+                              srcSet={`${coach && coach.avatar}@2x.jpg 2x`}
                               width="64"
                               height="64"
                               alt="Изображение тренера"
@@ -224,10 +238,10 @@ function TrainingCard(): JSX.Element {
                         </div>
                         <div className="training-info__coach-info">
                           <span className="training-info__label">Тренер</span>
-                          <span className="training-info__name">{creatorWorkout.name}</span>
+                          <span className="training-info__name">{coach && coach.name}</span>
                         </div>
                       </div>
-                      {user.id === creatorWorkout.id && <React.Fragment>
+                      {(user ? user.id === workout.coachId : false) && <React.Fragment>
                         {isEdit ?                   
                           <button
                             className="btn-flat btn-flat--light training-info__edit training-info__edit--edit"
@@ -266,7 +280,7 @@ function TrainingCard(): JSX.Element {
                                   name="training"
                                   value={formData.name}
                                   onChange={handleNameChange}
-                                  disabled={user.role === UserRole.User}
+                                  disabled={user ? user.role === UserRole.User : false}
                                 />
                               </label>
                               <div className="training-info__error">{nameError && ErrorMessage.Title}</div>
@@ -278,7 +292,7 @@ function TrainingCard(): JSX.Element {
                                   name="description"
                                   value={formData.description}
                                   onChange={handleDescriptionChange}
-                                  disabled={user.role === UserRole.User}
+                                  disabled={user ? user.role === UserRole.User : false}
                                 >{formData.description}</textarea>
                                 {descriptionError && <span className="training-info__error">{ErrorMessage.Description}</span>}
                               </label>
@@ -324,12 +338,12 @@ function TrainingCard(): JSX.Element {
                                   type="text"
                                   name="price"
                                   value={`${formData.price} ₽`}
-                                  disabled={user.role === UserRole.User}
+                                  disabled={user ? user.role === UserRole.User : false}
                                 />
                               </label>
                               <div className="training-info__error">{priceError && ErrorMessage.Price}</div>
                             </div>
-                            {user.role === UserRole.User && 
+                            {(user ? user.role === UserRole.User : false) && 
                               <button
                                 className="btn training-info__buy"
                                 type="button"
@@ -342,15 +356,14 @@ function TrainingCard(): JSX.Element {
                               className="btn-flat btn-flat--light btn-flat--underlined training-info__discount"
                               type="button"
                               onClick={handleSpecialClick}
-                              disabled={user.id !== creatorWorkout.id || isEdit}
+                              disabled={user ? user.id !== workout.coachId : false || isEdit}
                             >
                               {isSpecial && 
                                 <svg width="14" height="14" aria-hidden="true">
                                   <use xlinkHref="#icon-discount"></use>
                                 </svg>
                               }
-                              {user.id === creatorWorkout.id && !isEdit && <span>{isSpecial ? 'Отменить скидку' : 'Сделать скидку 10%'}</span>}
-                            </button>                            
+                              {user ? user.id !== workout.coachId : false && !isEdit && <span>{isSpecial ? 'Отменить скидку' : 'Сделать скидку 10%'}</span>}                            </button>                            
                           </div>
                         </div>
                       </form>

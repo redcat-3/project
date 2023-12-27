@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { fetchFriendsAction, fetchRequestUpdateAction, fetchRequestsAction } from '../../store/api-actions';
 import { getRequests } from '../../store/reaction-process/selectors';
 import { User, UserRole } from '../../types/user-data';
+import { store } from '../../store';
 
 function FriendsList(): JSX.Element {
   let navigate = useNavigate();
@@ -19,8 +20,8 @@ function FriendsList(): JSX.Element {
   if(!user) {
     redirectToRoute(AppRoute.Intro);
   }
-  dispatch(fetchFriendsAction);
-  dispatch(fetchRequestsAction);
+  store.dispatch(fetchFriendsAction);
+  store.dispatch(fetchRequestsAction);
   const isUsersDataLoading = useAppSelector(getUsersDataLoadingStatus);
   const users = useAppSelector(getFriendsList);
   const requests = useAppSelector(getRequests);

@@ -2,12 +2,19 @@ import { ChangeEventHandler, FormEvent, useState } from "react";
 import { WORKOUT_TIMES, WORKOUT_TYPES } from "../../types/workout-data";
 import { levelToValue, workoutTypeToName, workoutTypeToValue } from "../../utils";
 import { AppRoute, CountCaloriesToReset, CountCaloriesToSpend, ErrorMessage, MAX_TYPES_COUNT } from "../../constant";
-import { LEVELS, UserLevel } from "../../types/user-data";
-import { useAppDispatch } from "../../hooks";
+import { LEVELS, UserLevel, UserTime } from "../../types/user-data";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { redirectToRoute } from "../../store/action";
+import { getReisterData, getUser } from "../../store/user-process/selectors";
+import { registerAction } from "../../store/api-actions";
+import { setRegisterData } from "../../store/user-process/user-process";
 
 function PopupQuestionnaireUser(): JSX.Element {
   const dispatch = useAppDispatch();
+  const registerUser = useAppSelector(getReisterData);
+  if(!registerUser) {
+    dispatch(redirectToRoute(AppRoute.SignUp));
+  }
   const [formData, setFormData] = useState({
     level: UserLevel.Beginner,
     typeOfTrain: [''],
@@ -51,7 +58,31 @@ function PopupQuestionnaireUser(): JSX.Element {
       formData.caloriesToReset !== 0 &&
       formData.caloriesToSpend !== 0
     ){
-      dispatch(redirectToRoute(AppRoute.Main))
+      if(registerUser) {
+        const newUser = {
+          email: registerUser.email,
+          name: registerUser.name,
+          password: registerUser.password,
+          avatarId: registerUser.avatar,
+          gender: registerUser.gender,
+          dateBirth: registerUser.dateBirth,
+          role: registerUser.role,
+          description: registerUser.description,
+          location: registerUser.location,
+          image: registerUser.image,
+          level: formData.level,
+          typeOfTrain: formData.typeOfTrain,
+          certificates: [''],
+          trainingReady: false,
+          merit: '',
+          timeOfTraining: formData.timeOfTrain as UserTime,
+          caloriesToReset: formData.caloriesToReset,
+          caloriesToSpend: formData.caloriesToSpend
+        }
+        registerAction(newUser);
+        setRegisterData(null);
+        dispatch(redirectToRoute(AppRoute.Main));
+      }
     }
   };
   return (
@@ -71,8 +102,8 @@ function PopupQuestionnaireUser(): JSX.Element {
                 <div className="questionnaire-user__wrapper">
                   <div className="questionnaire-user__block"><span className="questionnaire-user__legend">Ваша специализация (тип) тренировок</span>
                     <div className="specialization-checkbox questionnaire-user__specializations">
-                      {WORKOUT_TYPES.map((item) => (
-                        <div className="btn-checkbox">
+                      {WORKOUT_TYPES.map((item, index) => (
+                        <div className="btn-checkbox" key={index}>
                           <label>
                             <input
                               className="visually-hidden"
@@ -107,8 +138,8 @@ function PopupQuestionnaireUser(): JSX.Element {
                   </div>
                   <div className="questionnaire-user__block"><span className="questionnaire-user__legend">Сколько времени вы готовы уделять на тренировку в день</span>
                     <div className="custom-toggle-radio custom-toggle-radio--big questionnaire-user__radio">
-                    {WORKOUT_TIMES.map((item) => (
-                        <div className="custom-toggle-radio__block">
+                    {WORKOUT_TIMES.map((item, index) => (
+                        <div className="custom-toggle-radio__block" key={index}>
                           <label>
                             <input
                               className="visually-hidden"
@@ -129,8 +160,8 @@ function PopupQuestionnaireUser(): JSX.Element {
                   </div>
                   <div className="questionnaire-user__block"><span className="questionnaire-user__legend">Ваш уровень</span>
                     <div className="custom-toggle-radio custom-toggle-radio--big questionnaire-user__radio">
-                    {LEVELS.map((item) => (
-                        <div className="custom-toggle-radio__block">
+                    {LEVELS.map((item, index) => (
+                        <div className="custom-toggle-radio__block" key={index}>
                           <label>
                             <input
                               className="visually-hidden"

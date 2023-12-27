@@ -1,13 +1,20 @@
 import { getRandomNumber, randomDateDate } from "./utils";
-import { Order, OrderToCoach } from "../types/reaction";
+import { Order, OrderToCoach, OrderType, PaymentMethod } from "../types/reaction";
 
 export const generateOrder = ( number: number): Order => {
+  const count = getRandomNumber(0, 2);
+  const price = getRandomNumber(0, 2000);
   const order = {
     orderId: number,
     userId: `user22@pochta.local`,
     workoutId: number,
     createdDate: randomDateDate(new Date(2023, 1, 1), new Date()),
-    count: getRandomNumber(0, 2)
+    count,
+    price,
+    orderType: OrderType.subscription,
+    coachId: `user1@pochta.local`,
+    orderPrice: price*count,
+    paymentMethod: PaymentMethod.Mir
   }
   return order;
 }

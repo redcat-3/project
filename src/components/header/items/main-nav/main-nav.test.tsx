@@ -28,7 +28,7 @@ describe('Component: MainNav', () => {
       <Provider store={store}>
         <HistoryRouter history={history}>
           <HelmetProvider>
-            <MainNav id={user.id}/>
+            <MainNav userId={user.id}/>
           </HelmetProvider>
         </HistoryRouter>
       </Provider>,

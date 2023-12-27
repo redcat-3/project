@@ -39,7 +39,7 @@ function PersonalAccountCoachItem({certificate, id, userId}: PersonalAccountCoac
   };
   return (
     <li className="personal-account-coach__item slide">
-      <div className="certificate-card certificate-card--edit" key={id}>
+      <div className="certificate-card certificate-card--edit">
         <div className="certificate-card__image slide-image">
           <picture>
             <source

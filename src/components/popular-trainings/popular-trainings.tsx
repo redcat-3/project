@@ -3,12 +3,22 @@ import { createWorkouts } from '../../mocks/workouts';
 import './css/style.css';
 import TraningsSlide from './items/trainig-slide/traning-slide';
 import { redirectToRoute } from '../../store/action';
-import { AppRoute } from '../../constant';
-import { useAppDispatch } from '../../hooks';
+import { AppRoute, DEFAULT_LIMIT_POPULAR } from '../../constant';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchWorkoutsAction } from '../../store/api-actions';
+import { getWorkouts } from '../../store/workout-process/selectors';
 
 function PopularTranings(): JSX.Element {
   const dispatch = useAppDispatch();
-  const [items, setItems] = useState(createWorkouts(15));
+  const query = {
+    limit: DEFAULT_LIMIT_POPULAR,
+    page: 1,
+    sortBy: 'createdDate',
+    sortDirection: 'desc',
+    rating: '5,5'
+  };
+  dispatch(fetchWorkoutsAction(query));
+  const items = useAppSelector(getWorkouts);
   const [slide, setSlide] = useState(0);
   const [touchPosition, setTouchPosition] = useState(0);
   const changeSlide = (direction: number) => {

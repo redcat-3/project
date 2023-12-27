@@ -1,16 +1,14 @@
 import { typeToRussian } from '../../../../utils';
 import { WorkoutType } from '../../../../types/workout-data';
-import { Notification, Request, RequestStatus } from '../../../../types/reaction';
-import { getRandomNumber } from '../../../../mocks/utils';
+import { IRequest, RequestStatus } from '../../../../types/reaction';
 import dayjs from 'dayjs';
 import { useAppDispatch, useAppSelector } from '../../../../hooks';
-import { addNotifications, addRequest } from '../../../../store/reaction-process/reaction-process';
-import { addFriend, removeFriend } from '../../../../store/user-process/user-process';
 import { TouchEventHandler, useState } from 'react';
-import { createWorkouts } from '../../../../mocks/workouts';
 import TraningsSlide from '../../../../components/popular-trainings/items/trainig-slide/traning-slide';
 import { Link } from 'react-router-dom';
 import { getFriendsList } from '../../../../store/user-process/selectors';
+import { fetchAddFriendAction, fetchFollowAction, fetchFriendsAction, fetchRemoveFriendAction, fetchRequestAddAction, fetchUnfollowAction, fetchWorkoutsCoachAction } from '../../../../store/api-actions';
+import { getCoachWorkouts } from '../../../../store/workout-process/selectors';
 
 type UserCardCoachProps = {
   id: string;
@@ -23,27 +21,25 @@ type UserCardCoachProps = {
 };
 
 function UserCardCoach({id, name, onMapClick, onCertificateClick, trainingReady, description, typeOfTrain}: UserCardCoachProps): JSX.Element {
-    const dispatch = useAppDispatch();
-    const friendsList = useAppSelector(getFriendsList);
-    const [isFriend, setIsFriend] = useState(friendsList.includes(id));
-    const onRemoveFromFriend = () => {
-      dispatch(removeFriend(id));
-      setIsFriend(false);
-    };
-    const onAddToFriend = () => {
-    const notification: Notification = {
-      notificationId: getRandomNumber(),
-      userId: id,
-      createdDate: dayjs().toString(),
-      text: `${name} добавила вас в друзья`,
-      isActive: true
-    }
-    dispatch(addNotifications(notification));
-    dispatch(addFriend(id));
+  const dispatch = useAppDispatch();
+  dispatch(fetchFriendsAction);
+  dispatch(fetchWorkoutsCoachAction);
+  const friendsList = useAppSelector(getFriendsList);
+  const ids: string[] = [];
+  friendsList.map((item, index) => {
+    ids[index] = item.id;
+  })
+  const [isFriend, setIsFriend] = useState(ids.includes(id));
+  const onRemoveFromFriend = () => {
+    dispatch(fetchRemoveFriendAction({id}));
+    setIsFriend(false);
+  };
+  const onAddToFriend = () => {
+    dispatch(fetchAddFriendAction({id}));
     setIsFriend(true);
   };
   const [isSubscribe, setIsSubscribe] = useState(false);
-  const [items, setItems] = useState(createWorkouts(15));
+  const items = useAppSelector(getCoachWorkouts);
   const [slide, setSlide] = useState(0);
   const [touchPosition, setTouchPosition] = useState(0);
   const changeSlide = (direction: number) => {
@@ -66,7 +62,6 @@ function UserCardCoach({id, name, onMapClick, onCertificateClick, trainingReady,
   };
   const handleTouchStart: TouchEventHandler = (evt) => {
     const touchDown = evt.touches[0].clientX;
-
     setTouchPosition(touchDown);
   }
 
@@ -74,36 +69,32 @@ function UserCardCoach({id, name, onMapClick, onCertificateClick, trainingReady,
     if (touchPosition === 0) {
       return;
     }
-
     const currentPosition = evt.touches[0].clientX;
     const direction = touchPosition - currentPosition;
-
     if (direction > 10) {
       changeSlide(1);
     }
-
     if (direction < -10) {
       changeSlide(-1);
     }
-
     setTouchPosition(0);
   };
   const handleCreateRequest = () => {
-    const request: Request = {
+    const request: IRequest = {
       requester: 'user@5656kjkj',
       userId: id,
       createdDate: new Date(dayjs().date()),
       updatedDate:new Date(dayjs().date()),
       status: RequestStatus.Consider
     }
-    dispatch(addRequest(request));
+    dispatch(fetchRequestAddAction(request));
   } 
   const handleSubscribe = () => {
     if(isSubscribe) {
-      console.log(`Вы отписались от обновлений ${name}`);
+      dispatch(fetchUnfollowAction({id}));
       setIsSubscribe(false);
     } else {
-      console.log(`Вы подписались на обновления ${name}`);
+      dispatch(fetchFollowAction({id}));
       setIsSubscribe(true);
     }
   }

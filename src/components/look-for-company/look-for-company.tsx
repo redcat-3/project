@@ -1,14 +1,22 @@
 import React, { TouchEventHandler, useState } from 'react';
 import './css/style.css';
-import { createNextUsers } from '../../mocks/users';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { redirectToRoute } from '../../store/action';
-import { AppRoute } from '../../constant';
+import { AppRoute, DEFAULT_LIMIT_LOOK_FOR } from '../../constant';
 import LookForCompanySlide from './items/look-for-company-slide/look-for-company';
+import { fetchUsersAction } from '../../store/api-actions';
+import { getUsers } from '../../store/user-process/selectors';
 
 function LookForCompany(): JSX.Element {
   const dispatch = useAppDispatch();
-  const [items, setItems] = useState(createNextUsers(8));
+  const query = {
+    limit: DEFAULT_LIMIT_LOOK_FOR,
+    page: 1,
+    trainingReady: true,
+    sortDirection: 'desc',
+  };
+  dispatch(fetchUsersAction(query));
+  const items = useAppSelector(getUsers);
   const [slide, setSlide] = useState(0);
   const [touchPosition, setTouchPosition] = useState(0);
   const changeSlide = (direction: number) => {

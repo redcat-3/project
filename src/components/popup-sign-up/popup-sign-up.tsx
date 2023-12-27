@@ -1,8 +1,9 @@
 import { ChangeEventHandler, FormEvent, useState } from "react";
-import { LOCATIONS, UserGender, UserRole } from "../../types/user-data";
+import { LOCATIONS, UserGender, UserLevel, UserLocation, UserRole, UserTime } from "../../types/user-data";
 import { AppRoute, EMAIL_REGEXP, ErrorMessage, MAX_AVATAR_SIZE, UserNameLength, UserPasswordLength } from "../../constant";
 import { useAppDispatch } from "../../hooks";
 import { redirectToRoute } from "../../store/action";
+import { setRegisterData } from "../../store/user-process/user-process";
 
 function PopupSignUp(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -92,6 +93,27 @@ function PopupSignUp(): JSX.Element {
       agreement
     ) {
       setFormError(false);
+      const newUser = {
+        email: formData.email,
+        name: formData.name,
+        password: formData.password,
+        avatarId: formData.avatar,
+        gender: formData.gender,
+        dateBirth: formData.dateBirth,
+        role: formData.role,
+        description: '',
+        location: formData.location as UserLocation,
+        image: '',
+        level: '' as UserLevel,
+        typeOfTrain: [''],
+        certificates: [''],
+        trainingReady: false,
+        merit: '',
+        timeOfTraining: '' as UserTime,
+        caloriesToReset: 0,
+        caloriesToSpend: 0
+      }
+      dispatch(setRegisterData(newUser));
       if(formData.role === UserRole.Coach) {
         dispatch(redirectToRoute(AppRoute.QuestionnaireCoach))
       } else if(formData.role === UserRole.User) {

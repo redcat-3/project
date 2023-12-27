@@ -36,7 +36,7 @@ function CreateTraning(): JSX.Element {
     special: false,
   });
 
-  if(user.role === UserRole.User){
+  if(!user || user.role === UserRole.User){
     dispatch(redirectToRoute(AppRoute.Main));
   };
 
@@ -108,7 +108,7 @@ function CreateTraning(): JSX.Element {
     ) {
       setFormError(false);
       dispatch(fetchWorkoutAddAction(formData));
-      dispatch(redirectToRoute(`/my-trainings/${user.id}` as AppRoute))
+      dispatch(redirectToRoute(user ? `/my-trainings/${user.id}` as AppRoute : AppRoute.Main))
     } else {
       setFormError(true);
     }

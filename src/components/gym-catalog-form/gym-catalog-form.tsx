@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MultiRangeSlider from '../multi-range-slider/multi-range-slider';
-import { CountCaloriesToSpend, PriceSortValue, RangePriceValue, RangeRatingValue } from '../../constant';
+import { CountCaloriesToSpend, DEFAULT_LIMIT, PriceSortValue, RangePriceValue, RangeRatingValue } from '../../constant';
 import { WORKOUT_TYPES } from '../../types/workout-data';
 import { workoutTypeToName } from '../../utils';
+import { WorkoutQueryDto } from '../../types/query';
 
 type GymCatalogFormProps = {
-  types: string[]
+  types: string[];
+  handleChange: (query: WorkoutQueryDto) => void
 };
 
-function GymCatalogForm({types}: GymCatalogFormProps): JSX.Element {
+function GymCatalogForm({types, handleChange}: GymCatalogFormProps): JSX.Element {
   let navigate = useNavigate();
   const goBack = () => {
     navigate(-1);
@@ -19,14 +21,30 @@ function GymCatalogForm({types}: GymCatalogFormProps): JSX.Element {
   const [rating, setRating] = useState({ min: RangeRatingValue.Min, max: RangeRatingValue.Max });
   const [currentTypes, setTypes] = useState(types);
   const [priceSort, setPriceSort] = useState(PriceSortValue.Desc);
+  const query = {
+    limit: DEFAULT_LIMIT, 
+    page: 1,
+    sortBy: 'createdDate',
+    sortDirection: 'desc',
+    caloriesToSpend: `${caloriesCount.min},${caloriesCount.max}`,
+    price: `${price.min},${price.max}`,
+    type: types.join(','),
+    rating: `${rating.min},${rating.max}`
+  };
   const onChangePrice = ({min, max}: {min: number, max: number}) => {
-    setPrice({ min, max })
+    setPrice({ min, max });
+    query.price = `${price.min},${price.max}`;
+    handleChange(query);
   };
   const onChangeCaloriesCount = ({min, max}: {min: number, max: number}) => {
-    setCaloriesCount({ min, max })
+    setCaloriesCount({ min, max });
+    query.caloriesToSpend = `${caloriesCount.min},${caloriesCount.max}`;
+    handleChange(query);
   };
   const onChangeRating = ({min, max}: {min: number, max: number}) => {
-    setRating({ min, max })
+    setRating({ min, max });
+    query.rating = `${rating.min},${rating.max}`;
+    handleChange(query);
   };
   return (
     <div className="gym-catalog-form">
@@ -94,6 +112,8 @@ function GymCatalogForm({types}: GymCatalogFormProps): JSX.Element {
                             typesNew.push(item);
                           }
                           setTypes(typesNew);
+                          query.type = typesNew.join(',');
+                          handleChange(query);
                         }}
                         checked={currentTypes.includes(item)}
                       />
@@ -117,7 +137,12 @@ function GymCatalogForm({types}: GymCatalogFormProps): JSX.Element {
                   type="radio"
                   name="sort"
                   checked={priceSort === PriceSortValue.Asc}
-                  onClick={() => setPriceSort(PriceSortValue.Asc)}
+                  onClick={() => {
+                    setPriceSort(PriceSortValue.Asc);
+                    query.sortBy = 'price';
+                    query.sortDirection = PriceSortValue.Asc;
+                    handleChange(query)
+                  }}
                 /><span className="btn-radio-sort__label" >Дешевле</span>
               </label>
               <label>
@@ -125,7 +150,12 @@ function GymCatalogForm({types}: GymCatalogFormProps): JSX.Element {
                   type="radio"
                   name="sort"
                   checked={priceSort === PriceSortValue.Desc}
-                  onClick={() => setPriceSort(PriceSortValue.Desc)}
+                  onClick={() => {
+                    setPriceSort(PriceSortValue.Desc);
+                    query.sortBy = 'price';
+                    query.sortDirection = PriceSortValue.Desc;
+                    handleChange(query)
+                  }}
                 /><span className="btn-radio-sort__label">Дороже</span>
               </label>
               <label>
@@ -133,7 +163,11 @@ function GymCatalogForm({types}: GymCatalogFormProps): JSX.Element {
                   type="radio"
                   name="sort"
                   checked={priceSort === PriceSortValue.Free}
-                  onClick={() => setPriceSort(PriceSortValue.Free)}
+                  onClick={() => {
+                    setPriceSort(PriceSortValue.Free);
+                    query.sortBy = 'price';
+                    query.price ='0,0'
+                  }}
                 /><span className="btn-radio-sort__label">Бесплатные</span>
               </label>
             </div>

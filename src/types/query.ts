@@ -16,26 +16,28 @@ export type UserQuery = {
   location?: string;
   typeOfTrain?: string;
   level?: UserLevel;
-  sortDirection: 'asc' | 'desc';
+  sortDirection: string;
+  trainingReady: boolean;
 }
 
 export type WorkoutQueryDto = {
   limit: number;
   page: Number;
-  sortBy: 'createdDate' | 'price';
+  sortBy: string;
   caloriesToSpend?: string;
   price?: string;
   type?: string;
   rating?: string;
   timeOfTraining?: string;
-  sortDirection: 'asc' | 'desc';
+  sortDirection: string;
+  special?: boolean;
 }
 
 export type OrderQueryDto = {
   limit: number;
   page: number;
-  sortDirection: 'asc' | 'desc';
-  sortBy: 'orderPrice' | 'count';
+  sortDirection: string; //'asc' | 'desc';
+  sortBy: string; //'orderPrice' | 'count';
 }
 
 export type FeedbackQueryDto = {

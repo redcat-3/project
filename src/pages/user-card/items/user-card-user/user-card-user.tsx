@@ -4,11 +4,7 @@ import { WorkoutType } from '../../../../types/workout-data';
 import { useAppDispatch, useAppSelector } from '../../../../hooks';
 import { getFriendsList } from '../../../../store/user-process/selectors';
 import { useState } from 'react';
-import { addFriend, removeFriend } from '../../../../store/user-process/user-process';
-import { Notification } from '../../../../types/reaction';
-import { getRandomNumber } from '../../../../mocks/utils';
-import dayjs from 'dayjs';
-import { addNotifications } from '../../../../store/reaction-process/reaction-process';
+import { fetchAddFriendAction, fetchFriendsAction, fetchRemoveFriendAction } from '../../../../store/api-actions';
 
 type UserCardUserProps = {
   id: string;
@@ -21,22 +17,19 @@ type UserCardUserProps = {
 
 function UserCardUser({id, name, onMapUserClick, trainingReady, description, typeOfTrain}: UserCardUserProps): JSX.Element {
   const dispatch = useAppDispatch();
+  dispatch(fetchFriendsAction);
   const friendsList = useAppSelector(getFriendsList);
-  const [isFriend, setIsFriend] = useState(friendsList.includes(id));
+  const ids: string[] = [];
+  friendsList.map((item, index) => {
+    ids[index] = item.id;
+  })
+  const [isFriend, setIsFriend] = useState(ids.includes(id));
   const onRemoveFromFriend = () => {
-    dispatch(removeFriend(id));
-      setIsFriend(false);
+    dispatch(fetchRemoveFriendAction({id}));
+    setIsFriend(false);
   };
   const onAddToFriend = () => {
-  const notification: Notification = {
-    notificationId: getRandomNumber(),
-    userId: id,
-    createdDate: dayjs().toString(),
-    text: `${name} добавила вас в друзья`,
-    isActive: true
-  }
-  dispatch(addNotifications(notification));
-    dispatch(addFriend(id));
+    dispatch(fetchAddFriendAction({id}));
     setIsFriend(true);
   };
   return (

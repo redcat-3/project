@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../constant';
 import { WorkoutProcess } from '../../types/state';
-import { fetchWorkoutAction, fetchWorkoutsAction, fetchWorkoutsCoachAction } from '../api-actions';
+import { fetchWorkoutAction, fetchWorkoutsAction, fetchWorkoutsCoachAction, fetchWorkoutsCoachQueryAction } from '../api-actions';
 
 const initialState: WorkoutProcess = {
   workout: null,
@@ -9,12 +9,25 @@ const initialState: WorkoutProcess = {
   workouts: [],
   isWorkoutsDataLoading: false,
   workoutsCount: 0,
+  forYouWorkouts: [],
+  specials: [],
+  coachWorkouts: []
 };
 
 export const workoutProcess = createSlice({
   name: NameSpace.Workout,
   initialState,
   reducers: {
+    setForYou: (state) => {
+      if(state.workouts.length !== 0) {
+        state.forYouWorkouts = state.workouts;
+      }
+    },
+    setSpecials: (state) => {
+      if(state.workouts.length !== 0) {
+        state.specials = state.workouts;
+      }
+    }
   },
   extraReducers(builder) {
     builder
@@ -43,13 +56,15 @@ export const workoutProcess = createSlice({
       state.isWorkoutsDataLoading = true;
     })
     .addCase(fetchWorkoutsCoachAction.fulfilled, (state, action) => {
-      state.workouts = action.payload;
-      state.workoutsCount = state.workouts.length;
+      state.coachWorkouts = action.payload;
       state.isWorkoutsDataLoading = false;
     })
     .addCase(fetchWorkoutsCoachAction.rejected, (state) => {
       state.isWorkoutsDataLoading = false;
     })
+    .addCase(fetchWorkoutsCoachQueryAction.fulfilled, (state, action) => {
+      state.coachWorkouts = action.payload;
+    })
   }
 });
-export const {} = workoutProcess.actions;
+export const {setForYou, setSpecials} = workoutProcess.actions;

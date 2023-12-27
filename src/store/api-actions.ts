@@ -1,9 +1,8 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state.js';
-import { redirectToRoute } from './action';
 import { saveToken } from '../services/token';
-import { APIRoute, AppRoute } from '../constant';
+import { APIRoute } from '../constant';
 import { AuthData } from '../types/auth-data';
 import { LoggedUser, User, UserCreate, UserUpdate } from '../types/user-data';
 import { FeedbackQueryDto, OrderQueryDto, UserQuery, WorkoutQueryDto } from '../types/query.js';
@@ -26,8 +25,6 @@ export const registerAction = createAsyncThunk<User, UserCreate, {
   extra: AxiosInstance;
 }>('user/register', async (newUser, {dispatch, extra: api}) => {
   const {data} = await api.post<User>(`${APIRoute.Register}`, newUser);
-  const id = data.id;
-  dispatch(fetchUserAction({id}));
   return data;
 });
 
@@ -36,10 +33,9 @@ export const loginAction = createAsyncThunk<void, AuthData, {
   state: State;
   extra: AxiosInstance;
 }>('user/login',
-  async ({login: email, password}, {dispatch, extra: api}) => {
+  async ({email, password}, {dispatch, extra: api}) => {
     const {data: {accessToken, id}} = await api.post<LoggedUser>(APIRoute.Login, {email, password});
     saveToken(accessToken);
-    dispatch(fetchUserAction({id}));
   },
 );
 
@@ -52,13 +48,30 @@ export const fetchUsersAction = createAsyncThunk<{usersList: User[], count: numb
   return data;
 });
 
+export const fetchFeedbackUsersAction = createAsyncThunk<User[], string[], {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>('user/fetchFeedbackUsers', async (ids, {dispatch, extra: api}) => {
+  const {data} = await api.post<User[]>(`${APIRoute.Users}/list/friends/feedbacks`, ids);
+  return data;
+});
+
 export const fetchUserAction = createAsyncThunk<User, { id: string }, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>('user/fetchUser', async ({id}, {dispatch, extra: api}) => {
   const {data} = await api.get<User>(`${APIRoute.Users}/list/friends/${id}`);
-  dispatch(fetchNotificationsAction);
+  return data;
+});
+
+export const fetchCoachAction = createAsyncThunk<User, { id: string }, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>('user/fetchUserCoach', async ({id}, {dispatch, extra: api}) => {
+  const {data} = await api.get<User>(`${APIRoute.Users}/list/friends/coach${id}`);
   return data;
 });
 
@@ -134,7 +147,7 @@ export const fetchWorkoutUpdateAction = createAsyncThunk<Workout, WorkoutUpdate,
   return data;
 });
 
-export const fetchWorkoutAction = createAsyncThunk<Workout, { id: string }, {
+export const fetchWorkoutAction = createAsyncThunk<Workout, { id: number }, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
@@ -158,6 +171,15 @@ export const fetchWorkoutsCoachAction = createAsyncThunk<Workout[], undefined, {
   extra: AxiosInstance;
 }>('workout/fetchWorkoutsCoach', async (_arg, {dispatch, extra: api}) => {
   const {data} = await api.get<Workout[]>(`${APIRoute.Workouts}/list/coach`);
+  return data;
+});
+
+export const fetchWorkoutsCoachQueryAction = createAsyncThunk<Workout[], WorkoutQueryDto, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>('workout/fetchWorkoutsCoachQuery', async (dto, {dispatch, extra: api}) => {
+  const {data} = await api.post<Workout[]>(`${APIRoute.Workouts}/list/coach`, dto);
   return data;
 });
 
@@ -198,12 +220,21 @@ export const fetchOrderAction = createAsyncThunk<Order, {id: number}, {
   return data;
 });
 
-export const fetchOrdersCoachtAction = createAsyncThunk<{orders: OrderToCoach[], summaryPrice: number}, {query: OrderQueryDto}, {
+export const fetchOrdersCoachAction = createAsyncThunk<{orders: OrderToCoach[], summaryPrice: number}, {query: OrderQueryDto}, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>('order/fetchOrdersCoach', async (query, {dispatch, extra: api}) => {
   const {data} = await api.post<{orders: OrderToCoach[], summaryPrice: number}>(`${APIRoute.Orders}/coach/list/index`, query);
+  return data;
+});
+
+export const fetchOrdersUserAction = createAsyncThunk<Order[], undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>('order/fetchOrdersUser', async (_arg, {dispatch, extra: api}) => {
+  const {data} = await api.get<Order[]>(`${APIRoute.Orders}/user/list/index`);
   return data;
 });
 

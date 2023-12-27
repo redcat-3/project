@@ -1,10 +1,29 @@
-import React, { TouchEventHandler, useEffect, useState } from 'react';
-import { createSpecials } from '../../mocks/workouts';
+import React, { TouchEventHandler, useState } from 'react';
 import './css/style.css';
 import SpecialForYouSlide from './items/special-for-you-slide/special-for-you-slide';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getUser } from '../../store/user-process/selectors';
+import { fetchWorkoutsAction } from '../../store/api-actions';
+import { DEFAULT_LIMIT_FOR_YOU } from '../../constant';
+import { getForYou, getWorkout, getWorkouts } from '../../store/workout-process/selectors';
+import { setForYou } from '../../store/workout-process/workout-process';
+import { store } from '../../store';
 
 function SpecialForYou(): JSX.Element {
-  const [items, setItems] = useState(createSpecials(5));
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(getUser);
+  if(user) {
+    const query = {
+      limit: DEFAULT_LIMIT_FOR_YOU,
+      page: 1,
+      sortBy: 'createdDate',
+      type: user.typeOfTrain.join(','),
+      sortDirection: 'desc'
+    };
+    store.dispatch(fetchWorkoutsAction(query));
+  }
+  dispatch(setForYou);
+  const items = useAppSelector(getWorkouts);
   const [slide, setSlide] = useState(0);
   const [touchPosition, setTouchPosition] = useState(0);
   const prevItemIndex = slide - 1 < -1 ? -1 : slide - 1;
@@ -93,8 +112,8 @@ function SpecialForYou(): JSX.Element {
             className="special-for-you__list slide-list"
             style={{ transform: `translateX(-${slide * 33.4}%)` }}
           >
-            {items.map((slide, index) => (
-              <SpecialForYouSlide key={index}
+            {items.map((slide) => (
+              <SpecialForYouSlide key={slide.workoutId}
                 workoutId={slide.workoutId}
                 name={slide.name}
                 background={slide.background}

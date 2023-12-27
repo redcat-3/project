@@ -1,7 +1,7 @@
 import { randomDate } from "./utils";
-import { Notification } from "../types/reaction";
+import { INotification } from "../types/reaction";
 
-export const generateNotification = ( number: number): Notification => {
+export const generateNotification = ( number: number): INotification => {
   const notification = {
     notificationId: number,
     userId: `user${number}@pochta.local`,

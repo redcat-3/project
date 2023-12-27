@@ -6,10 +6,17 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getOrdersToCoach, getOrdersToCoachCount } from '../../store/reaction-process/selectors';
 import { DEFAULT_LIMIT_ORDERS } from '../../constant';
-import { ordersToCoachInc, sortByCount, sortByPrice } from '../../store/reaction-process/reaction-process';
+import { fetchOrdersCoachAction } from '../../store/api-actions';
 
 function MyOrders(): JSX.Element {
   const dispatch = useAppDispatch();
+  const query = {
+    limit: DEFAULT_LIMIT_ORDERS,
+    page: 1,
+    sortDirection: 'desc',
+    sortBy: 'count'
+  };
+  dispatch(fetchOrdersCoachAction({query}));
   const orders = useAppSelector(getOrdersToCoach);
   const ordersCount = useAppSelector(getOrdersToCoachCount);
   let renderedOrdersCount = orders.length;
@@ -21,18 +28,23 @@ function MyOrders(): JSX.Element {
     navigate(-1);
   };
   const handleSortByPrice = () => {
-    dispatch(sortByPrice(!sortByPriceDown));
     setSortByPriceDown(!sortByPriceDown);
+    query.sortBy = 'orderPrice';
+    query.sortDirection = sortByPriceDown ? 'desc' : 'asc';
+    dispatch(fetchOrdersCoachAction({query}));
   };
   const handleSortByCount = () => {
-    dispatch(sortByCount(!sortByCountDown));
     setSortByCountDown(!sortByCountDown);
+    query.sortBy = 'count';
+    query.sortDirection = sortByCountDown ? 'desc' : 'asc';
+    dispatch(fetchOrdersCoachAction({query}));
   };
 
   const handleMoreClick = () => {
     if(ordersCount > renderedOrdersCount) {
       renderedOrdersCount = renderedOrdersCount + DEFAULT_LIMIT_ORDERS;
-      dispatch(ordersToCoachInc(DEFAULT_LIMIT_ORDERS));
+      query.limit = renderedOrdersCount;
+      dispatch(fetchOrdersCoachAction({query}));
       setIsMore(renderedOrdersCount < ordersCount);
     }
   };

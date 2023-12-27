@@ -29,7 +29,7 @@ describe('Component: PopupCertificate', () => {
         <HistoryRouter history={history}>
           <HelmetProvider>
             <PopupCertificate
-              certificate={coach.certificate}
+              certificate={coach.certificates}
               onClose={()=>{}}
             />
           </HelmetProvider>

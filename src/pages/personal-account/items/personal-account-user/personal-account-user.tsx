@@ -2,9 +2,10 @@ import { useAppSelector } from '../../../../hooks';
 import { getUser } from '../../../../store/user-process/selectors';
 import { Link } from 'react-router-dom';
 import BlockNews from '../../../../components/bock-news/block-news';
+import { UserUser } from '../../../../types/user-data';
 
 function PersonalAccountUser(): JSX.Element {
-  const user = useAppSelector(getUser);
+  const user = useAppSelector(getUser) as UserUser;
   return (
     <div className="inner-page__content">
       <div className="personal-account-user">

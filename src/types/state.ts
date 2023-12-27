@@ -1,7 +1,7 @@
 import {store} from '../store/index.js';
 import {AuthorizationStatus} from '../constant';
-import { User } from './user-data.js';
-import { Feedback, INotification, Order, OrderToCoach, IRequest, IFeedback, Balance } from './reaction.js';
+import { User, UserCreate } from './user-data.js';
+import { INotification, Order, OrderToCoach, IRequest, IFeedback, Balance, Feedback } from './reaction.js';
 import { Workout } from './workout-data.js';
 
 export type ReactionProcess = {
@@ -23,6 +23,9 @@ export type WorkoutProcess = {
   workouts: Workout[];
   isWorkoutsDataLoading: boolean;
   workoutsCount: number;
+  forYouWorkouts: Workout[];
+  specials: Workout[];
+  coachWorkouts: Workout[];
 }
 
 
@@ -32,10 +35,13 @@ export type UserProcess = {
   users: User[];
   isUserDataLoading: boolean;
   user: User | null;
+  coach: User | null;
   usersCount: number;
   isUsersDataLoading: boolean;
   friendsList: User [];
   isFriendsDataLoading: boolean;
+  registerData: UserCreate | null;
+  feddbackUsers: User [];
 };
 
 export type State = ReturnType<typeof store.getState>;

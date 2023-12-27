@@ -71,7 +71,7 @@ export type UserCoach = {
   image?: string;
   level: UserLevel;
   typeOfTrain: string[];
-  certificate: string[];
+  certificates: string[];
   merit: string;
   trainingReady: boolean;
 }
@@ -106,11 +106,10 @@ export type UserCreate = {
   avatar?: string;
   password: string;
   gender: UserGender;
-  dateBirth?: Date;
+  dateBirth?: string;
   role: UserRole;
   description?: string;
   location: UserLocation;
-  createdAt?: Date;
   image?: string;
   level: UserLevel;
   typeOfTrain?: string[];

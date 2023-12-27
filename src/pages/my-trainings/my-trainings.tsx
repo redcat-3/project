@@ -7,9 +7,9 @@ import { CountCaloriesToSpend, DEFAULT_LIMIT, RangePriceValue, RangeRatingValue 
 import MultiRangeSlider from '../../components/multi-range-slider/multi-range-slider';
 import { WORKOUT_TIMES } from '../../types/workout-data';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getWorkouts, getWorkoutsCount } from '../../store/workout-process/selectors';
-import { workoutsInc } from '../../store/workout-process/workout-process';
+import { getCoachWorkouts } from '../../store/workout-process/selectors';
 import { TrainigQuery } from '../../types/query';
+import { fetchWorkoutsCoachAction, fetchWorkoutsCoachQueryAction } from '../../store/api-actions';
 
 const TIMES = [
   '10 мин - 30 мин',
@@ -21,6 +21,7 @@ const TIMES = [
 
 function MyTranings(): JSX.Element {
   const dispatch = useAppDispatch();
+  dispatch(fetchWorkoutsCoachAction);
   let navigate = useNavigate();
   const goBack = () => {
     navigate(-1);
@@ -39,14 +40,14 @@ function MyTranings(): JSX.Element {
     ratingMin: rating.min,
     times,
   }
-  const workouts = useAppSelector(getWorkouts);
-  const workoutsCount = useAppSelector(getWorkoutsCount);
-  let renderedWorkoutsCount = workouts.length;
+  const workouts = useAppSelector(getCoachWorkouts);
+  const workoutsCount = workouts.length;
+  let renderedWorkoutsCount = DEFAULT_LIMIT;
   const [isMore, setIsMore] = useState(renderedWorkoutsCount < workoutsCount);
   const handleMoreClick = () => {
     if(workoutsCount > renderedWorkoutsCount) {
       renderedWorkoutsCount = renderedWorkoutsCount + DEFAULT_LIMIT;
-      dispatch(workoutsInc(DEFAULT_LIMIT));
+      workouts.slice(0, renderedWorkoutsCount)
       setIsMore(renderedWorkoutsCount < workoutsCount);
     }
   };
@@ -54,16 +55,49 @@ function MyTranings(): JSX.Element {
     setPrice({ min, max });
     filterQuery.priceMin = min;
     filterQuery.priceMax = max;
+    const query = {
+      limit: 0,
+      page: 0,
+      sortBy: '',
+      caloriesToSpend: `${filterQuery.caloriesMin},${filterQuery.caloriesMax}`,
+      price: `${filterQuery.priceMin},${filterQuery.priceMax}`,
+      rating: `${filterQuery.ratingMin},${filterQuery.ratingMax}`,
+      timeOfTraining: filterQuery.times.join(','),
+      sortDirection: ''
+    };
+    dispatch(fetchWorkoutsCoachQueryAction(query));
   };
   const onChangeCaloriesCount = ({min, max}: {min: number, max: number}) => {
     setCaloriesCount({ min, max });
     filterQuery.caloriesMin = min;
     filterQuery.caloriesMax = max;
+    const query = {
+      limit: 0,
+      page: 0,
+      sortBy: '',
+      caloriesToSpend: `${filterQuery.caloriesMin},${filterQuery.caloriesMax}`,
+      price: `${filterQuery.priceMin},${filterQuery.priceMax}`,
+      rating: `${filterQuery.ratingMin},${filterQuery.ratingMax}`,
+      timeOfTraining: filterQuery.times.join(','),
+      sortDirection: ''
+    };
+    dispatch(fetchWorkoutsCoachQueryAction(query));
   };
   const onChangeRating = ({min, max}: {min: number, max: number}) => {
     setRating({ min, max });
     filterQuery.ratingMin = min;
     filterQuery.ratingMax = max;
+    const query = {
+      limit: 0,
+      page: 0,
+      sortBy: '',
+      caloriesToSpend: `${filterQuery.caloriesMin},${filterQuery.caloriesMax}`,
+      price: `${filterQuery.priceMin},${filterQuery.priceMax}`,
+      rating: `${filterQuery.ratingMin},${filterQuery.ratingMax}`,
+      timeOfTraining: filterQuery.times.join(','),
+      sortDirection: ''
+    };
+    dispatch(fetchWorkoutsCoachQueryAction(query));
   };
   
   return (
@@ -166,7 +200,7 @@ function MyTranings(): JSX.Element {
               <div className="inner-page__content">
                 <div className="my-trainings">
                   <ul className="my-trainings__list">
-                    {workouts.map((item, index) => (
+                    {workouts.slice(0, renderedWorkoutsCount).map((item, index) => (
                       <TraningsItem key={index}
                         workout={item}
                       />

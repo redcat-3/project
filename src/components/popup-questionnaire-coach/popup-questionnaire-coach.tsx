@@ -1,18 +1,24 @@
 import { ChangeEventHandler, FormEvent, useState } from 'react';
 import { AppRoute, CoachMeritLength, ErrorMessage, MAX_AVATAR_SIZE, MAX_TYPES_COUNT, TabIndex } from '../../constant';
-import { useAppDispatch } from '../../hooks';
-import { LEVELS, UserLevel } from '../../types/user-data';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { LEVELS, UserLevel, UserTime } from '../../types/user-data';
 import { redirectToRoute } from '../../store/action';
 import { WORKOUT_TYPES } from '../../types/workout-data';
 import { levelToValue, workoutTypeToName, workoutTypeToValue } from '../../utils';
-import { user } from '../../mocks/users';
+import { getReisterData, getUser } from '../../store/user-process/selectors';
+import { registerAction } from '../../store/api-actions';
+import { setRegisterData } from '../../store/user-process/user-process';
 
 function PopupQuestionnaireCoach(): JSX.Element {
   const dispatch = useAppDispatch();
+  const registerUser = useAppSelector(getReisterData);
+  if(!registerUser) {
+    dispatch(redirectToRoute(AppRoute.SignUp));
+  }
   const [formData, setFormData] = useState({
     level: UserLevel.Beginner,
     typeOfTrain: [''],
-    certificate: [''],
+    certificates: [''],
     trainingReady: false,
     merit: '',
   });
@@ -39,9 +45,9 @@ function PopupQuestionnaireCoach(): JSX.Element {
         setIsDisabled(true);
         setCertificateError(true);
       }
-      const files = formData.certificate;
+      const files = formData.certificates;
       files.push(URL.createObjectURL(event.target.files[0]))
-      setFormData({...formData, certificate: files});
+      setFormData({...formData, certificates: files});
       setCertificateError(false);
       setIsDisabled(false);
       return;
@@ -51,8 +57,32 @@ function PopupQuestionnaireCoach(): JSX.Element {
   const onSendForm = () => {
     if (
       formData.merit !== ''
-    ){
-      dispatch(redirectToRoute(`/personal-account/${user.id}` as AppRoute))
+    ) {
+      if(registerUser) {
+        const newCoach = {
+          email: registerUser.email,
+          name: registerUser.name,
+          password: registerUser.password,
+          avatarId: registerUser.avatar,
+          gender: registerUser.gender,
+          dateBirth: registerUser.dateBirth,
+          role: registerUser.role,
+          description: registerUser.description,
+          location: registerUser.location,
+          image: registerUser.image,
+          level: formData.level,
+          typeOfTrain: formData.typeOfTrain,
+          certificates: formData.certificates,
+          trainingReady: formData.trainingReady,
+          merit: formData.merit,
+          timeOfTraining: '' as UserTime,
+          caloriesToReset: 0,
+          caloriesToSpend: 0
+        }
+        registerAction(newCoach);
+        setRegisterData(null);
+        dispatch(redirectToRoute(AppRoute.SignIn))
+      }
     }
   };
   return (
@@ -142,7 +172,7 @@ function PopupQuestionnaireCoach(): JSX.Element {
                           tabIndex={TabIndex.indexMinus1}
                           accept=".pdf, .jpg, .png"
                           onChange={handleCertificateChange}
-                          value={formData.certificate}
+                          value={formData.certificates}
                         />
                         {certificateError && <span className="custom-input__error">{ErrorMessage.File}</span>}
                       </label>

@@ -88,6 +88,7 @@ const TIMES_OF_TRAIN = [
 const createWorkout = (id: number) => {
   const workout = {
     workoutId: id,
+    coachId: `user${id}@pochta.local`,
     name: getRandomArrayElement(NAMES),
     background: getRandomArrayElement(BACKS),
     level: getRandomArrayElement(LEVELS),

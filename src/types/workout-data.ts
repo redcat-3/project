@@ -12,6 +12,7 @@ export enum WorkoutType {
 
 export type Workout = {
   workoutId: number;
+  coachId: string;
   name: string;
   background: string;
   level: UserLevel;

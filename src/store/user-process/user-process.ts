@@ -1,7 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { NameSpace, AuthorizationStatus } from '../../constant';
 import { UserProcess } from '../../types/state';
-import { checkAuthAction, fetchFriendsAction, fetchUserAction, fetchUsersAction, loginAction, registerAction } from '../api-actions';
+import { checkAuthAction, fetchBalanceAction, fetchCoachAction, fetchFeedbackUsersAction, fetchFriendsAction, fetchUserAction, fetchUsersAction, loginAction, registerAction } from '../api-actions';
+import { UserCreate } from '../../types/user-data';
 
 const initialState: UserProcess = {
   authorizationStatus: AuthorizationStatus.Unknown,
@@ -9,16 +10,23 @@ const initialState: UserProcess = {
   user: null,
   isUserDataLoading: false,
   users: [],
+  coach: null,
   usersCount: 0,
   isUsersDataLoading: false,
   friendsList: [],
   isFriendsDataLoading: false,
+  registerData: null,
+  feddbackUsers: []
 };
 
 export const userProcess = createSlice({
   name: NameSpace.User,
   initialState,
-  reducers: {},
+  reducers: {
+    setRegisterData: (state, action: PayloadAction<UserCreate | null>) => {
+      state.registerData = action.payload;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(checkAuthAction.fulfilled, (state) => {
@@ -69,7 +77,13 @@ export const userProcess = createSlice({
       })
       .addCase(fetchFriendsAction.rejected, (state) => {
         state.isFriendsDataLoading = false;
+      })
+      .addCase(fetchFeedbackUsersAction.fulfilled, (state, action) => {
+        state.feddbackUsers = action.payload;
+      })
+      .addCase(fetchCoachAction.fulfilled, (state, action) => {
+        state.coach = action.payload;
       });
   }
 });
-export const {} = userProcess.actions;
+export const {setRegisterData} = userProcess.actions;

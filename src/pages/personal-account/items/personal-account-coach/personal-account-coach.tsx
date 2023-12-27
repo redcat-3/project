@@ -4,10 +4,11 @@ import { TouchEventHandler, useRef, useState } from 'react';
 import '../css/style.css';
 import { useAppSelector } from '../../../../hooks';
 import { getUser } from '../../../../store/user-process/selectors';
+import { UserCoach } from '../../../../types/user-data';
 
 function PersonalAccountCoach(): JSX.Element {
-  const user = useAppSelector(getUser);
-  const [items, setItems] = useState(user.certificate);
+  const user = useAppSelector(getUser) as UserCoach;
+  const items = user.certificates;
   const [slide, setSlide] = useState(0);
   const [touchPosition, setTouchPosition] = useState(0);
   const prevItemIndex = slide - 1 < -1 ? -1 : slide - 1;

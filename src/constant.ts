@@ -1,7 +1,11 @@
 export const BACKEND_URL = 'http://localhost:4000';
 export const REQUEST_TIMEOUT = 5000;
 export const DEFAULT_LIMIT = 6;
+export const DEFAULT_LIMIT_FOR_YOU = 9;
+export const DEFAULT_LIMIT_SPECIAL = 3;
 export const DEFAULT_LIMIT_ORDERS = 4;
+export const DEFAULT_LIMIT_POPULAR = 9;
+export const DEFAULT_LIMIT_LOOK_FOR = 8;
 export const EMAIL_REGEXP = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
 export const MAX_AVATAR_SIZE = 2200000;
 export const MAX_TYPES_COUNT = 3;

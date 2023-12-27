@@ -4,9 +4,10 @@ import { ReactionProcess } from '../../types/state';
 import { fetchBalancesAction, 
   fetchFeedbacksWorkoutAction, 
   fetchNotificationsAction, 
-  fetchOrdersCoachtAction, 
+  fetchOrdersCoachAction, 
+  fetchOrdersUserAction, 
   fetchOrdersWorkoutAction, 
-  fetchRequestsAction } from '../api-actions';
+  fetchRequestsAction} from '../api-actions';
 
 const initialState: ReactionProcess = {
   notifications: [],
@@ -38,16 +39,27 @@ export const reactionProcess = createSlice({
     .addCase(fetchOrdersWorkoutAction.rejected, (state) => {
       state.isOrdersDataLoading = false;
     })
-    .addCase(fetchOrdersCoachtAction.pending, (state) => {
+    .addCase(fetchOrdersUserAction.pending, (state) => {
       state.isOrdersDataLoading = true;
     })
-    .addCase(fetchOrdersCoachtAction.fulfilled, (state, action) => {
+    .addCase(fetchOrdersUserAction.fulfilled, (state, action) => {
+      state.orders = action.payload;
+      state.ordersCount = state.orders.length;
+      state.isOrdersDataLoading = false;
+    })
+    .addCase(fetchOrdersUserAction.rejected, (state) => {
+      state.isOrdersDataLoading = false;
+    })
+    .addCase(fetchOrdersCoachAction.pending, (state) => {
+      state.isOrdersDataLoading = true;
+    })
+    .addCase(fetchOrdersCoachAction.fulfilled, (state, action) => {
       state.ordersToCoach = action.payload.orders;
       state.ordersToCoachCount = state.ordersToCoach.length;
       state.summaryPrice = action.payload.summaryPrice;
       state.isOrdersDataLoading = false;
     })
-    .addCase(fetchOrdersCoachtAction.rejected, (state) => {
+    .addCase(fetchOrdersCoachAction.rejected, (state) => {
       state.isOrdersDataLoading = false;
     })
     .addCase(fetchFeedbacksWorkoutAction.fulfilled, (state, action) => {
